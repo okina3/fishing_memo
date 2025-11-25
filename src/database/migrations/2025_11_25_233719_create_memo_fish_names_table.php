@@ -12,8 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('memo_fish_names', function (Blueprint $table) {
-            $table->id();
+            $table->foreignId('memo_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('fish_name_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->unsignedInteger('count')
+                ->default(0)
+                ->comment('匹数');
+            $table->unsignedSmallInteger('length')
+                ->nullable()
+                ->comment('cm');
             $table->timestamps();
+            $table->primary(['memo_id', 'fish_name_id']);
         });
     }
 

@@ -13,6 +13,37 @@ return new class extends Migration
     {
         Schema::create('memos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('spot_id')
+                ->nullable()
+                ->constrained('spots')
+                ->restrictOnDelete();
+
+            // 釣行日時
+            $table->date('fishing_date');
+            $table->time('start_time');
+            $table->time('end_time');
+
+            // 天候・気象
+            $table->string('weather', 15);
+            $table->integer('air_temp')->nullable();
+            $table->integer('max_wind')->nullable();
+            $table->string('wind_dir', 2)->nullable();
+
+            // 川の状態 
+            $table->string('river_flow', 20);
+            $table->string('turbidity', 20)->nullable();
+            $table->string('debris', 20);
+            $table->decimal('water_level', 4, 1)->nullable();
+            $table->integer('water_temp')->nullable();
+
+            // 備考
+            $table->text('content');
+            //ソフトデリート
+            $table->softDeletes();
             $table->timestamps();
         });
     }
