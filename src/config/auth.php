@@ -35,10 +35,21 @@ return [
     |
     */
 
+    // ガードの設定
     'guards' => [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+        // ユーザー用のガード
+        'users' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+        // 管理者用のガード
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin',
         ],
     ],
 
@@ -59,16 +70,23 @@ return [
     |
     */
 
+    // プロバイダの設定
+    // 'providers' => [
+    //     'users' => [
+    //         'driver' => 'eloquent',
+    //         'model' => env('AUTH_MODEL', App\Models\User::class),
+    //     ],
     'providers' => [
+        // ユーザー用のプロバイダ
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => App\Models\User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        // 管理者用のプロバイダ
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
     ],
 
     /*
@@ -90,10 +108,19 @@ return [
     |
     */
 
+    // パスワードリセットの設定
     'passwords' => [
+        // ユーザー用のパスワードリセット
         'users' => [
             'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        // 管理者用のパスワードリセット
+        'admin' => [
+            'provider' => 'admin',
+            'table' => env('AUTH_ADMIN_PASSWORD_RESET_TOKEN_TABLE', 'admin_password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
         ],

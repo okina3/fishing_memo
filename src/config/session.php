@@ -127,9 +127,17 @@ return [
     |
     */
 
+    # マルチログイン用のSession Cookie の設定
+    // ユーザー用
     'cookie' => env(
         'SESSION_COOKIE',
-        Str::slug((string) env('APP_NAME', 'laravel')).'-session'
+        Str::slug((string) env('APP_NAME', 'laravel')) . '-session'
+    ),
+
+    // 管理者用
+    'cookie_admin' => env(
+        'SESSION_COOKIE_ADMIN',
+        Str::slug((string) env('APP_NAME', 'laravel')) . '-session-admin'
     ),
 
     /*
