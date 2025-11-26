@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\BaitController;
+use App\Http\Controllers\User\FishNameController;
+use App\Http\Controllers\User\MastersController;
 use App\Http\Controllers\User\MemoController;
+use App\Http\Controllers\User\SpotController;
 use App\Http\Controllers\User\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +36,38 @@ Route::prefix('/')->as('user.')->group(function () {
             Route::get('index', 'index')->name('index');
         });
 
+        // マスターズ管理画面（釣り場・エサ・魚名）
+        Route::controller(MastersController::class)->prefix('masters')->group(function () {
+            Route::get('/', 'index')->name('masters.index');
+            Route::post('/spot/store', 'storeSpot')->name('masters.spot.store');
+            Route::post('/bait/store', 'storeBait')->name('masters.bait.store');
+            Route::post('/fish-name/store', 'storeFishName')->name('masters.fish-name.store');
+        });
+
+        // 釣り場の登録
+        Route::controller(SpotController::class)->prefix('spot')
+            ->group(function () {
+                Route::get('/edit/{spot}', 'edit')->name('spot.edit');
+                Route::patch('/update', 'update')->name('spot.update');
+                Route::delete('/destroy', 'destroy')->name('spot.destroy');
+            });
+
+        // エサの登録
+        Route::controller(BaitController::class)->prefix('bait')
+            ->group(function () {
+                Route::get('/edit/{bait}', 'edit')->name('bait.edit');
+                Route::patch('/update', 'update')->name('bait.update');
+                Route::delete('/destroy', 'destroy')->name('bait.destroy');
+            });
+
+        // 魚名の登録
+        Route::controller(FishNameController::class)->prefix('fish-name')
+            ->group(function () {
+                Route::get('/edit/{fishName}', 'edit')->name('fish-name.edit');
+                Route::patch('/update', 'update')->name('fish-name.update');
+                Route::delete('/destroy', 'destroy')->name('fish-name.destroy');
+            });
+            
         //タグ管理画面
         Route::controller(TagController::class)->prefix('tag')->group(function () {
             Route::get('/', 'index')->name('tag.index');
