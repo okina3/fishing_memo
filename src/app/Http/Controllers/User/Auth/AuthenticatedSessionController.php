@@ -28,6 +28,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
         // ログイン後はメモ一覧ページへリダイレクト
         return redirect()->intended(route('user.index', absolute: false));
     }
