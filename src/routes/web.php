@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\MemoController;
+use App\Http\Controllers\User\TagController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -29,6 +30,13 @@ Route::prefix('/')->as('user.')->group(function () {
         //メモ管理画面
         Route::controller(MemoController::class)->group(function () {
             Route::get('index', 'index')->name('index');
+        });
+
+        //タグ管理画面
+        Route::controller(TagController::class)->prefix('tag')->group(function () {
+            Route::get('/', 'index')->name('tag.index');
+            Route::post('/store', 'store')->name('tag.store');
+            Route::delete('/destroy', 'destroy')->name('tag.destroy');
         });
 
         // プロフィール関連（デフォルト）
