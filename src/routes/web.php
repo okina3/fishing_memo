@@ -4,14 +4,24 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\MemoController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // ユーザー用ダッシュボード
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth:users', 'verified'])->name('dashboard');
+
+// 公開トップページ
+Route::get('/', function () {
+    // ログイン済みの users ガードがいる場合はメモ一覧へリダイレクト
+    if (auth('users')->check()) {
+        return redirect()->route('user.index');
+    }
+    // 未ログイン時は公開トップを表示
+    return view('user.top');
+});
 
 // ユーザー用ルーティング
 Route::prefix('/')->as('user.')->group(function () {
