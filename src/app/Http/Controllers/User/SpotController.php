@@ -45,7 +45,7 @@ class SpotController extends Controller
             Log::error($e);
             return response()->json([
                 'message' => '釣り場の登録に失敗しました。',
-                'status' => 'alert'
+                'status' => 'error'
             ], 500);
         }
     }
@@ -77,10 +77,10 @@ class SpotController extends Controller
             SpotService::updateSpot((int) $request->spotId, (string) $request->input('spot_name'));
 
             return to_route('user.masters.index', ['tab' => 'spots'])
-                ->with(['message' => '釣り場名を更新しました。', 'status' => 'info']);
+                ->with(['message' => '釣り場名を更新しました。', 'status' => 'success']);
         } catch (Throwable $e) {
             Log::error($e);
-            return back()->with(['message' => '釣り場名の更新に失敗しました。', 'status' => 'alert']);
+            return back()->with(['message' => '釣り場名の更新に失敗しました。', 'status' => 'error']);
         }
     }
 
@@ -96,14 +96,14 @@ class SpotController extends Controller
             $spot = Spot::availableSelectSpot($request->spotId)->first();
             // 関連がある場合は削除不可
             if ($spot->memos()->exists()) {
-                return redirect()->back()->with(['message' => '関連データのため削除できません。', 'status' => 'alert']);
+                return redirect()->back()->with(['message' => '関連データのため削除できません。', 'status' => 'error']);
             }
             // 選択した釣り場を削除
             $spot->delete();
-            return redirect()->back()->with(['message' => '正常に釣り場を削除しました。', 'status' => 'info']);
+            return redirect()->back()->with(['message' => '正常に釣り場を削除しました。', 'status' => 'success']);
         } catch (Throwable $e) {
             Log::error($e);
-            return redirect()->back()->with(['message' => '釣り場の削除に失敗しました。', 'status' => 'alert']);
+            return redirect()->back()->with(['message' => '釣り場の削除に失敗しました。', 'status' => 'error']);
         }
     }
 }

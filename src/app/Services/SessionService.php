@@ -39,14 +39,14 @@ class SessionService
             if (!$has || $value !== config('common_browser_back.browser_back_key')) {
                 throw new HttpResponseException(
                     redirect()->route('user.index')
-                        ->with(['message' => '予期せぬエラーが起きました。トップページに戻ります。', 'status' => 'alert'])
+                        ->with(['message' => '予期せぬエラーが起きました。トップページに戻ります。', 'status' => 'error'])
                 );
             }
         } catch (\Throwable $e) {
             // 復号失敗など異常時も安全にトップへリダイレクト
             throw new HttpResponseException(
                 redirect()->route('user.index')
-                    ->with(['message' => '予期せぬエラーが起きました。トップページに戻ります。', 'status' => 'alert'])
+                    ->with(['message' => '予期せぬエラーが起きました。トップページに戻ります。', 'status' => 'error'])
             );
         }
     }

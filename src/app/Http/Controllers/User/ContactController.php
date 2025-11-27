@@ -36,6 +36,6 @@ class ContactController extends Controller
         // 問い合わせ情報を保存
         ContactService::createContact($request);
 
-        return to_route('user.index')->with(['message' => '管理人にメッセージを送りました。', 'status' => 'info']);
+        return to_route('user.index')->with(['message' => '管理人にメッセージを送りました。', 'status' => 'success']);
     }
 }

@@ -34,7 +34,7 @@ class TrashedMemoController extends Controller
     {
         Memo::availableSelectTrashedMemo($request->memoId)->restore();
 
-        return to_route('user.trashed-memo.index')->with(['message' => 'メモを元に戻しました。', 'status' => 'info']);
+        return to_route('user.trashed-memo.index')->with(['message' => 'メモを元に戻しました。', 'status' => 'success']);
     }
 
     /**
@@ -46,6 +46,6 @@ class TrashedMemoController extends Controller
     {
         Memo::availableSelectTrashedMemo($request->memoId)->forceDelete();
 
-        return to_route('user.trashed-memo.index')->with(['message' => 'メモを完全に削除しました。', 'status' => 'alert']);
+        return to_route('user.trashed-memo.index')->with(['message' => 'メモを完全に削除しました。', 'status' => 'success']);
     }
 }

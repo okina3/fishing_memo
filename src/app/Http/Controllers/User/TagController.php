@@ -37,7 +37,7 @@ class TagController extends Controller
         //タグを保存
         TagService::createTag($request->new_tag);
 
-        return to_route('user.tag.index')->with(['message' => 'タグを登録しました。', 'status' => 'info']);
+        return to_route('user.tag.index')->with(['message' => 'タグを登録しました。', 'status' => 'success']);
     }
 
     /**
@@ -50,6 +50,6 @@ class TagController extends Controller
         // タグを複数まとめて削除
         TagService::deleteTags((array) $request->tags);
 
-        return to_route('user.tag.index')->with(['message' => '正常にタグを削除しました。', 'status' => 'info']);
+        return to_route('user.tag.index')->with(['message' => '正常にタグを削除しました。', 'status' => 'success']);
     }
 }

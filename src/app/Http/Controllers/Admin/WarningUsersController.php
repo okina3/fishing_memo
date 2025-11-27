@@ -34,7 +34,7 @@ class WarningUsersController extends Controller
     {
         User::onlyTrashed()->availableSelectUser($request->userId)->restore();
 
-        return to_route('admin.warning.index')->with(['message' => 'ユーザーのサービス利用を再開しました', 'status' => 'info']);
+        return to_route('admin.warning.index')->with(['message' => 'ユーザーのサービス利用を再開しました', 'status' => 'success']);
     }
 
     /**
@@ -46,6 +46,6 @@ class WarningUsersController extends Controller
     {
         User::onlyTrashed()->availableSelectUser($request->userId)->forceDelete();
 
-        return to_route('admin.warning.index')->with(['message' => 'ユーザーの情報を完全に削除しました。', 'status' => 'alert']);
+        return to_route('admin.warning.index')->with(['message' => 'ユーザーの情報を完全に削除しました。', 'status' => 'success']);
     }
 }

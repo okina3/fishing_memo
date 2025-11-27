@@ -60,10 +60,10 @@ class ShareSettingController extends Controller
                 ShareSettingService::createSetting($request, $shared_user->id);
             }, 10);
 
-            return to_route('user.index')->with(['message' => 'メモを共有しました。', 'status' => 'info']);
+            return to_route('user.index')->with(['message' => 'メモを共有しました。', 'status' => 'success']);
         } catch (Throwable $e) {
             Log::error($e);
-            return back()->with(['message' => '共有の登録に失敗しました。', 'status' => 'alert']);
+            return back()->with(['message' => '共有の登録に失敗しました。', 'status' => 'error']);
         }
     }
 
@@ -140,7 +140,7 @@ class ShareSettingController extends Controller
         $memo->save();
 
         return to_route('user.share-setting.index')
-            ->with(['message' => '共有されたメモを更新しました。', 'status' => 'info']);
+            ->with(['message' => '共有されたメモを更新しました。', 'status' => 'success']);
     }
 
     /**
@@ -154,6 +154,6 @@ class ShareSettingController extends Controller
         //ユーザーを特定できたら、共有を解除する
         ShareSetting::availableSelectSetting($shared_user->id, $request->memoId)->delete();
 
-        return to_route('user.index')->with(['message' => '共有を解除しました。', 'status' => 'info']);
+        return to_route('user.index')->with(['message' => '共有を解除しました。', 'status' => 'success']);
     }
 }

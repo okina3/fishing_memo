@@ -35,7 +35,7 @@ class TrashedContactController extends Controller
         Contact::onlyTrashed()->availableSelectContact($request->contentId)->restore();
 
         return to_route('admin.trashed-contact.index')
-            ->with(['message' => 'ユーザーの問い合わせを、元に戻しました。', 'status' => 'info']);
+            ->with(['message' => 'ユーザーの問い合わせを、元に戻しました。', 'status' => 'success']);
     }
 
     /**
@@ -48,6 +48,6 @@ class TrashedContactController extends Controller
         Contact::onlyTrashed()->availableSelectContact($request->contentId)->forceDelete();
 
         return to_route('admin.trashed-contact.index')
-            ->with(['message' => 'ユーザーの問い合わせを、完全に削除しました。', 'status' => 'alert']);
+            ->with(['message' => 'ユーザーの問い合わせを、完全に削除しました。', 'status' => 'success']);
     }
 }
