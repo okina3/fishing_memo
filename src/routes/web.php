@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\BaitController;
+use App\Http\Controllers\User\ContactController;
 use App\Http\Controllers\User\FishNameController;
 use App\Http\Controllers\User\ImageController;
 use App\Http\Controllers\User\MastersController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\User\MemoController;
 use App\Http\Controllers\User\ShareSettingController;
 use App\Http\Controllers\User\SpotController;
 use App\Http\Controllers\User\TagController;
+use App\Http\Controllers\User\TrashedMemoController;
 use App\Http\Middleware\KeepBackFlashForAjax;
 use Illuminate\Support\Facades\Route;
 
@@ -104,6 +106,19 @@ Route::prefix('/')->as('user.')->group(function () {
             Route::get('/edit/{share}', 'edit')->name('share-setting.edit');
             Route::patch('/update', 'update')->name('share-setting.update');
             Route::delete('/destroy', 'destroy')->name('share-setting.destroy');
+        });
+
+        // 問い合わせ画面
+        Route::controller(ContactController::class)->prefix('contact')->group(function () {
+            Route::get('/create', 'create')->name('contact.create');
+            Route::post('/store', 'store')->name('contact.store');
+        });
+
+        //ソフトデリートしたメモの画面
+        Route::controller(TrashedMemoController::class)->prefix('trashed-memo')->group(function () {
+            Route::get('/', 'index')->name('trashed-memo.index');
+            Route::patch('/undo', 'undo')->name('trashed-memo.undo');
+            Route::delete('/destroy', 'destroy')->name('trashed-memo.destroy');
         });
 
         // プロフィール関連（デフォルト）
