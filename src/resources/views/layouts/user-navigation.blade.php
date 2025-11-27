@@ -25,6 +25,11 @@
                <x-nav-link :href="route('user.tag.index')" :active="request()->routeIs('user.tag.index')">
                   タグ管理
                </x-nav-link>
+               <div class="hidden space-x-8 sm:-my-px sm:ml-8 sm:flex">
+                  <x-nav-link :href="route('user.image.index')" :active="request()->routeIs('user.image.index')">
+                     画像管理
+                  </x-nav-link>
+               </div>
             </div>
          </div>
 
@@ -91,6 +96,9 @@
          </x-responsive-nav-link>
          <x-responsive-nav-link :href="route('user.tag.index')" :active="request()->routeIs('user.tag.index')">
             タグ管理
+         </x-responsive-nav-link>
+         <x-responsive-nav-link :href="route('user.image.index')" :active="request()->routeIs('user.image.index')">
+            画像管理
          </x-responsive-nav-link>
       </div>
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\BaitController;
 use App\Http\Controllers\User\FishNameController;
+use App\Http\Controllers\User\ImageController;
 use App\Http\Controllers\User\MastersController;
 use App\Http\Controllers\User\MemoController;
 use App\Http\Controllers\User\SpotController;
@@ -67,12 +68,21 @@ Route::prefix('/')->as('user.')->group(function () {
                 Route::patch('/update', 'update')->name('fish-name.update');
                 Route::delete('/destroy', 'destroy')->name('fish-name.destroy');
             });
-            
+
         //タグ管理画面
         Route::controller(TagController::class)->prefix('tag')->group(function () {
             Route::get('/', 'index')->name('tag.index');
             Route::post('/store', 'store')->name('tag.store');
             Route::delete('/destroy', 'destroy')->name('tag.destroy');
+        });
+
+        //画像管理画面
+        Route::controller(ImageController::class)->prefix('image')->group(function () {
+            Route::get('/', 'index')->name('image.index');
+            Route::get('/create', 'create')->name('image.create');
+            Route::post('/store', 'store')->name('image.store');
+            Route::get('/show/{image}', 'show')->name('image.show');
+            Route::delete('/destroy', 'destroy')->name('image.destroy');
         });
 
         // プロフィール関連（デフォルト）
