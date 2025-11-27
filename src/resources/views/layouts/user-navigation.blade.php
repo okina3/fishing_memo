@@ -25,12 +25,18 @@
                <x-nav-link :href="route('user.tag.index')" :active="request()->routeIs('user.tag.index')">
                   タグ管理
                </x-nav-link>
-               <div class="hidden space-x-8 sm:-my-px sm:ml-8 sm:flex">
-                  <x-nav-link :href="route('user.image.index')" :active="request()->routeIs('user.image.index')">
-                     画像管理
-                  </x-nav-link>
-               </div>
             </div>
+            <div class="hidden space-x-8 sm:-my-px sm:ml-8 sm:flex">
+               <x-nav-link :href="route('user.image.index')" :active="request()->routeIs('user.image.index')">
+                  画像管理
+               </x-nav-link>
+            </div>
+            <div class="hidden space-x-8 sm:-my-px sm:ml-8 sm:flex">
+               <x-nav-link :href="route('user.share-setting.index')" :active="request()->routeIs('user.share-setting.index')">
+                  共有メモ
+               </x-nav-link>
+            </div>
+
          </div>
 
          <!-- Settings Dropdown -->
@@ -99,6 +105,9 @@
          </x-responsive-nav-link>
          <x-responsive-nav-link :href="route('user.image.index')" :active="request()->routeIs('user.image.index')">
             画像管理
+         </x-responsive-nav-link>
+         <x-responsive-nav-link :href="route('user.share-setting.index')" :active="request()->routeIs('user.share-setting.index')">
+            共有メモ
          </x-responsive-nav-link>
       </div>
 
