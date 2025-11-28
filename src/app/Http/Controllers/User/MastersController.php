@@ -55,6 +55,7 @@ class MastersController extends Controller
    {
       try {
          SpotService::createSpot($request->input('spot_name'));
+
          return to_route('user.masters.index', ['tab' => 'spots'])
             ->with(['message' => '釣り場を追加しました。', 'status' => 'success']);
       } catch (Throwable $e) {
@@ -72,6 +73,7 @@ class MastersController extends Controller
    {
       try {
          BaitService::createBait($request->input('bait_name'));
+
          return to_route('user.masters.index', ['tab' => 'baits'])
             ->with(['message' => 'エサを追加しました。', 'status' => 'success']);
       } catch (Throwable $e) {
@@ -89,6 +91,7 @@ class MastersController extends Controller
    {
       try {
          FishNameService::createFishName($request->input('fish_name'));
+         
          return to_route('user.masters.index', ['tab' => 'fishNames'])
             ->with(['message' => '魚名を追加しました。', 'status' => 'success']);
       } catch (Throwable $e) {

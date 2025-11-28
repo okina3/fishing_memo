@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DeleteUserRequest;
 use App\Http\Requests\Admin\IndexUserRequest;
 use App\Models\User;
+use App\Services\WarningUsersService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use Throwable;
 
 class WarningUsersController extends Controller
 {
@@ -44,8 +47,13 @@ class WarningUsersController extends Controller
      */
     public function destroy(DeleteUserRequest $request): RedirectResponse
     {
-        User::onlyTrashed()->availableSelectUser($request->userId)->forceDelete();
+        try {
+            WarningUsersService::permanentlyDeleteUser((int) $request->userId);
 
-        return to_route('admin.warning.index')->with(['message' => 'ユーザーの情報を完全に削除しました。', 'status' => 'success']);
+            return to_route('admin.warning.index')->with(['message' => 'ユーザーの情報を完全に削除しました。', 'status' => 'success']);
+        } catch (Throwable $e) {
+            Log::error($e);
+            return back()->with(['message' => 'ユーザーの完全削除に失敗しました。', 'status' => 'error']);
+        }
     }
 }
