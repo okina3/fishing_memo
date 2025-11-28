@@ -37,10 +37,14 @@ class TagController extends Controller
      */
     public function store(StoreTagRequest $request): RedirectResponse
     {
-        //タグを保存
-        TagService::createTag($request->new_tag);
+        try {
+            TagService::createTag($request->new_tag);
 
-        return to_route('user.tag.index')->with(['message' => 'タグを登録しました。', 'status' => 'success']);
+            return to_route('user.tag.index')->with(['message' => 'タグを登録しました。', 'status' => 'success']);
+        } catch (Throwable $e) {
+            Log::error($e);
+            return back()->with(['message' => 'タグの登録に失敗しました。', 'status' => 'error']);
+        }
     }
 
     /**
