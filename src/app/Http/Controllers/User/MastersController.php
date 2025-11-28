@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\SearchKeywordRequest;
 use App\Http\Requests\User\StoreBaitRequest;
 use App\Http\Requests\User\StoreFishRequest;
 use App\Http\Requests\User\StoreSpotRequest;
@@ -23,10 +24,10 @@ class MastersController extends Controller
 {
    /**
     * スポット/エサ/魚名（マスターズ管理画面）を一覧表示するメソッド。
-    * @param Request $request
+    * @param SearchKeywordRequest $request
     * @return View
     */
-   public function index(Request $request): View
+   public function index(SearchKeywordRequest $request): View
    {
       // ブラウザバック対策（値を削除する）
       SessionService::resetBrowserBackSession();
@@ -91,7 +92,7 @@ class MastersController extends Controller
    {
       try {
          FishNameService::createFishName($request->input('fish_name'));
-         
+
          return to_route('user.masters.index', ['tab' => 'fishNames'])
             ->with(['message' => '魚名を追加しました。', 'status' => 'success']);
       } catch (Throwable $e) {
