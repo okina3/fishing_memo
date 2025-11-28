@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DeleteContactRequest;
-use App\Http\Requests\Admin\IndexUserRequest;
+use App\Http\Requests\Admin\SearchKeywordRequest;
 use App\Models\Contact;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,13 +14,16 @@ class ContactController extends Controller
 {
     /**
      * ユーザーの問い合わせ一覧を表示するメソッド。
-     * @param IndexUserRequest $request
+     * @param SearchKeywordRequest $request
      * @return View
      */
-    public function index(IndexUserRequest $request): View
+    public function index(SearchKeywordRequest $request): View
     {
         // 全ての問い合わせ情報を取得する
-        $all_contact = Contact::with('user')->searchKeyword($request->keyword)->availableAllContacts()->get();
+        $all_contact = Contact::with(['user' => function ($q) {
+            $q->withTrashed();
+        }])
+            ->searchKeyword($request->keyword)->availableAllContacts()->get();
 
         return view('admin.contacts.index', compact('all_contact'));
     }
@@ -33,7 +36,10 @@ class ContactController extends Controller
     public function show(int $id): View
     {
         // 選択した問い合わせ情報を取得する
-        $select_contact = Contact::with('user')->availableSelectContact($id)->first();
+        $select_contact = Contact::with(['user' => function ($q) {
+            $q->withTrashed();
+        }])
+            ->availableSelectContact($id)->first();
 
         return view('admin.contacts.show', compact('select_contact'));
     }

@@ -10,7 +10,9 @@
                {{-- ユーザー名 --}}
                <p class="mb-1 truncate">
                   ユーザー名<span class="font-normal">・・・・・</span>
-                  <span class="border-b border-slate-400">{{ $contact->user->name }}</span>
+                  <span class="border-b border-slate-400">
+                     {{ optional($contact->user)->name ?? '' }}
+                  </span>
                </p>
                {{-- 件名 --}}
                <p class="mb-1 truncate">

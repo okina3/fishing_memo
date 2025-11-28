@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndexUserRequest extends FormRequest
+class SearchKeywordRequest extends FormRequest
 {
    /**
     * @return bool
@@ -22,7 +22,19 @@ class IndexUserRequest extends FormRequest
    public function rules(): array
    {
       return [
-         'keyword' => ['nullable', 'string', 'max:100'],
+         'keyword' => ['nullable', 'string', 'max:50'],
+      ];
+   }
+
+   /**
+    * バリデーションエラーメッセージを定義するメソッド。
+    * @return string[]
+    */
+   public function messages(): array
+   {
+      return [
+         'keyword.string' => 'キーワードは、文字列で指定してください。',
+         'keyword.max' => 'キーワードは、50文字以内で入力してください。',
       ];
    }
 }

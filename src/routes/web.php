@@ -27,9 +27,9 @@ Route::get('/', function () {
 Route::prefix('/')->as('user.')->group(function () {
     Route::middleware('auth:users')->group(function () {
         // ユーザー用ダッシュボード
-        // Route::get('dashboard', function () {
-        //     return view('dashboard');
-        // })->middleware('verified')->name('dashboard');
+        Route::get('dashboard', function () {
+            return view('user.dashboard');
+        })->middleware('verified')->name('dashboard');
 
         //メモ管理画面
         Route::controller(MemoController::class)->group(function () {

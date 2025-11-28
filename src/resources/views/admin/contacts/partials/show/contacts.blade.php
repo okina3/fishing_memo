@@ -6,12 +6,16 @@
       {{-- 選択した問い合わせ情報のユーザー名を表示 --}}
       <div class="mb-5">
          <h2 class="sub_heading mb-1">ユーザー名</h2>
-         <p class="p-2 border border-gray-500 rounded bg-white">{{ $select_contact->user->name }}</p>
+         <p class="p-2 border border-gray-500 rounded bg-white">
+            {{ optional($select_contact->user)->name ?? '' }}
+         </p>
       </div>
       {{-- 選択した問い合わせ情報のメールアドレスを表示 --}}
       <div class="mb-5">
          <h2 class="sub_heading mb-1">メールアドレス</h2>
-         <p class="p-2 border border-gray-500 rounded bg-white">{{ $select_contact->user->email }}</p>
+         <p class="p-2 border border-gray-500 rounded bg-white">
+            {{ optional($select_contact->user)->email ?? '' }}
+         </p>
       </div>
       {{-- 選択した問い合わせ情報の件名を表示 --}}
       <div class="mb-5">

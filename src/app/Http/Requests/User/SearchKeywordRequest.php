@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteContactRequest extends FormRequest
+class SearchKeywordRequest extends FormRequest
 {
    /**
     * @return bool
     */
    public function authorize(): bool
    {
-      // admin ガードで認証されていることを確認する
-      return $this->user('admin') !== null;
+      // users ガードで認証されていることを確認する
+      return $this->user('users') !== null;
    }
 
    /**
@@ -22,7 +22,7 @@ class DeleteContactRequest extends FormRequest
    public function rules(): array
    {
       return [
-         'contentId' => ['required', 'integer', 'exists:contacts,id'],
+         'keyword' => ['nullable', 'string', 'max:50'],
       ];
    }
 
@@ -33,9 +33,8 @@ class DeleteContactRequest extends FormRequest
    public function messages(): array
    {
       return [
-         'contentId.required' => '問い合わせIDは必須です。',
-         'contentId.integer' => '問い合わせIDは整数で指定してください。',
-         'contentId.exists' => '指定された問い合わせIDは存在しません。',
+         'keyword.string' => 'キーワードは、文字列で指定してください。',
+         'keyword.max' => 'キーワードは、50文字以内で入力してください。',
       ];
    }
 }

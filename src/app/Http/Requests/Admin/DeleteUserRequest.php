@@ -25,4 +25,17 @@ class DeleteUserRequest extends FormRequest
          'userId' => ['required', 'integer', 'exists:users,id'],
       ];
    }
+
+   /**
+    * バリデーションエラーメッセージを定義するメソッド。
+    * @return string[]
+    */
+   public function messages(): array
+   {
+      return [
+         'userId.required' => 'ユーザーIDは必須です。',
+         'userId.integer' => 'ユーザーIDは整数で指定してください。',
+         'userId.exists' => '指定されたユーザーIDは存在しません。',
+      ];
+   }
 }

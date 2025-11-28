@@ -28,5 +28,7 @@
             検索
          </button>
       </form>
+      {{-- エラーメッセージ（検索エリア） --}}
+      <x-input-error class="mt-2 bg-white" :messages="$errors->get('keyword')" />
    </div>
 </div>
