@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('admin')->as('admin.')->group(function () {
     Route::middleware('auth:admin')->group(function () {
         // 管理者用ダッシュボード
-        // Route::get('/dashboard', function () {
-        //     return view('admin.dashboard');
-        // })->name('dashboard');
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->middleware('verified')->name('dashboard');
 
         // ユーザーの管理画面
         Route::controller(UsersController::class)->group(function () {
