@@ -4,11 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Memo;
-use App\Models\MemoBait;
-use App\Models\MemoFishName;
-use App\Models\MemoImage;
-use App\Models\MemoTag;
 use App\Services\SessionService;
+use App\Services\TrashedMemoService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,6 +45,7 @@ class TrashedMemoController extends Controller
      * ソフトデリートしたメモを完全削除するメソッド。
      * @param Request $request
      * @return RedirectResponse
+     * @throws Throwable
      */
     public function destroy(Request $request): RedirectResponse
     {
@@ -55,11 +53,8 @@ class TrashedMemoController extends Controller
             DB::transaction(function () use ($request) {
                 // メモを完全削除
                 Memo::availableSelectTrashedMemo($request->memoId)->forceDelete();
-                // 中間テーブルのデータを削除
-                MemoBait::where('memo_id', $request->memoId)->delete();
-                MemoFishName::where('memo_id', $request->memoId)->delete();
-                MemoTag::where('memo_id', $request->memoId)->delete();
-                MemoImage::where('memo_id', $request->memoId)->delete();
+                // 中間テーブルのデータも削除
+                TrashedMemoService::deleteRelatedRecords((int) $request->memoId);
             }, 10);
 
             return to_route('user.trashed-memo.index')->with(['message' => 'メモを完全に削除しました。', 'status' => 'success']);
