@@ -9,7 +9,10 @@ use App\Models\Tag;
 use App\Services\SessionService;
 use App\Services\TagService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use Throwable;
 
 class TagController extends Controller
 {
@@ -47,9 +50,16 @@ class TagController extends Controller
      */
     public function destroy(DeleteTagRequest $request): RedirectResponse
     {
-        // タグを複数まとめて削除
-        TagService::deleteTags((array) $request->tags);
+        try {
+            DB::transaction(function () use ($request) {
+                // タグを複数まとめて削除
+                TagService::deleteTags((array) $request->tags);
+            }, 10);
 
-        return to_route('user.tag.index')->with(['message' => '正常にタグを削除しました。', 'status' => 'success']);
+            return to_route('user.tag.index')->with(['message' => '正常にタグを削除しました。', 'status' => 'success']);
+        } catch (Throwable $e) {
+            Log::error($e);
+            return back()->with(['message' => 'タグの削除に失敗しました。', 'status' => 'error']);
+        }
     }
 }

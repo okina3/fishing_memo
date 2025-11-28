@@ -5,10 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DeleteUserRequest;
 use App\Http\Requests\Admin\IndexUserRequest;
+use App\Models\Image;
 use App\Models\User;
+use App\Services\ImageService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use Throwable;
 
 class WarningUsersController extends Controller
 {
@@ -44,8 +49,23 @@ class WarningUsersController extends Controller
      */
     public function destroy(DeleteUserRequest $request): RedirectResponse
     {
-        User::onlyTrashed()->availableSelectUser($request->userId)->forceDelete();
+        try {
+            DB::transaction(function () use ($request) {
+                // 対象ユーザーを取得
+                $user = User::onlyTrashed()->availableSelectUser($request->userId)->firstOrFail();
 
-        return to_route('admin.warning.index')->with(['message' => 'ユーザーの情報を完全に削除しました。', 'status' => 'success']);
+                // Storage 内の画像ファイルを先に削除
+                $filenames = Image::where('user_id', $user->id)->pluck('filename');
+                $filenames->each(fn($filename) => ImageService::deleteStorage($filename));
+
+                // ユーザーを完全削除
+                $user->forceDelete();
+            }, 10);
+
+            return to_route('admin.warning.index')->with(['message' => 'ユーザーの情報を完全に削除しました。', 'status' => 'success']);
+        } catch (Throwable $e) {
+            Log::error($e);
+            return back()->with(['message' => 'ユーザーの完全削除に失敗しました。', 'status' => 'error']);
+        }
     }
 }
