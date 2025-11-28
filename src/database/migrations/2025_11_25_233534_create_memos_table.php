@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('spot_id')
                 ->nullable()
                 ->constrained('spots')
-                ->restrictOnDelete();
+                ->nullOnDelete();
 
             // 釣行日時
             $table->date('fishing_date');
