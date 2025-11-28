@@ -25,4 +25,17 @@ class DeleteContactRequest extends FormRequest
          'contentId' => ['required', 'integer', 'exists:contacts,id'],
       ];
    }
+
+   /**
+    * バリデーションエラーメッセージを定義するメソッド。
+    * @return string[]
+    */
+   public function messages(): array
+   {
+      return [
+         'contentId.required' => '問い合わせIDは必須です。',
+         'contentId.integer' => '問い合わせIDは整数で指定してください。',
+         'contentId.exists' => '指定された問い合わせIDは存在しません。',
+      ];
+   }
 }

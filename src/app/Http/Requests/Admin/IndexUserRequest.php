@@ -25,4 +25,16 @@ class IndexUserRequest extends FormRequest
          'keyword' => ['nullable', 'string', 'max:100'],
       ];
    }
+
+   /**
+    * バリデーションエラーメッセージを定義するメソッド。
+    * @return string[]
+    */
+   public function messages(): array
+   {
+      return [
+         'keyword.string' => 'キーワードは、文字列で指定してください。',
+         'keyword.max' => 'キーワードは、100文字以内で入力してください。',
+      ];
+   }
 }
