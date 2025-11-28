@@ -34,16 +34,16 @@
             </div>
             {{-- ログインエリア --}}
             <div class="flex justify-around text-center">
-               {{-- ユーザーログイン --}}
-               @if (Route::has('login'))
-                  <a href="{{ route('login') }}"
+               {{-- ユーザーログイン（未ログイン時はミドルウェア側でログインページへ） --}}
+               @if (Route::has('user.index'))
+                  <a href="{{ route('user.index') }}"
                      class="btn w-44 py-2 mr-2 font-semibold rounded-lg bg-sky-900 hover:bg-sky-800">
                      ユーザーログイン
                   </a>
                @endif
-               {{-- 管理者ログイン --}}
-               @if (Route::has('admin.login'))
-                  <a href="{{ route('admin.login') }}"
+               {{-- 管理者ログイン（未ログイン時はミドルウェア側でログインページへ） --}}
+               @if (Route::has('admin.index'))
+                  <a href="{{ route('admin.index') }}"
                      class="btn w-44 py-2 font-semibold rounded-lg bg-rose-900 hover:bg-rose-800">
                      管理者ログイン
                   </a>

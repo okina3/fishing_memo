@@ -45,7 +45,7 @@ class BaitController extends Controller
          Log::error($e);
          return response()->json([
             'message' => 'エサの登録に失敗しました。',
-            'status' => 'alert'
+            'status' => 'error',
          ], 500);
       }
    }
@@ -75,12 +75,12 @@ class BaitController extends Controller
       try {
          // エサを更新
          BaitService::updateBait((int) $request->baitId, (string) $request->input('bait_name'));
-         
+
          return to_route('user.masters.index', ['tab' => 'baits'])
-            ->with(['message' => 'エサ名を更新しました。', 'status' => 'info']);
+            ->with(['message' => 'エサ名を更新しました。', 'status' => 'success']);
       } catch (Throwable $e) {
          Log::error($e);
-         return back()->with(['message' => 'エサ名の更新に失敗しました。', 'status' => 'alert']);
+         return back()->with(['message' => 'エサ名の更新に失敗しました。', 'status' => 'error']);
       }
    }
 
@@ -96,14 +96,14 @@ class BaitController extends Controller
          $bait = Bait::availableSelectBait($request->baitId)->first();
          // 関連がある場合は削除不可
          if ($bait->memos()->exists()) {
-            return redirect()->back()->with(['message' => '関連データのため削除できません。', 'status' => 'alert']);
+            return redirect()->back()->with(['message' => '関連データのため削除できません。', 'status' => 'error']);
          }
          // 選択したエサを削除
          $bait->delete();
-         return redirect()->back()->with(['message' => '正常にエサを削除しました。', 'status' => 'info']);
+         return redirect()->back()->with(['message' => '正常にエサを削除しました。', 'status' => 'success']);
       } catch (Throwable $e) {
          Log::error($e);
-         return redirect()->back()->with(['message' => 'エサの削除に失敗しました。', 'status' => 'alert']);
+         return redirect()->back()->with(['message' => 'エサの削除に失敗しました。', 'status' => 'error']);
       }
    }
 }

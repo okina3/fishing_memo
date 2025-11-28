@@ -32,7 +32,7 @@
             <label class="mb-1 block text-sm text-gray-700">釣り場</label>
             <select name="fishing_spot" id="fishing_spot_select" class="w-60 rounded">
                <option value="" @selected(old('fishing_spot', '') == '')>
-                  釣り場を選択してください
+                  場所を選択してください
                </option>
                @foreach ($all_spots as $spot)
                   <option value="{{ $spot->id }}" @selected(old('fishing_spot') == $spot->id)>

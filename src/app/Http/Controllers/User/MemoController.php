@@ -104,10 +104,10 @@ class MemoController extends Controller
                 MemoService::attachExistingImages($request, $memo->id);
             }, 10);
 
-            return to_route('user.index')->with(['message' => 'メモを登録しました。', 'status' => 'info']);
+            return to_route('user.index')->with(['message' => 'メモを登録しました。', 'status' => 'success']);
         } catch (Throwable $e) {
             Log::error($e);
-            return back()->with(['message' => 'メモの登録に失敗しました。', 'status' => 'alert']);
+            return back()->with(['message' => 'メモの登録に失敗しました。', 'status' => 'error']);
         }
     }
 
@@ -206,10 +206,10 @@ class MemoController extends Controller
                 MemoService::attachExistingImages($request, $memo->id);
             }, 10);
 
-            return to_route('user.index')->with(['message' => 'メモを更新しました。', 'status' => 'info']);
+            return to_route('user.index')->with(['message' => 'メモを更新しました。', 'status' => 'success']);
         } catch (Throwable $e) {
             Log::error($e);
-            return back()->with(['message' => 'メモの更新に失敗しました。', 'status' => 'alert']);
+            return back()->with(['message' => 'メモの更新に失敗しました。', 'status' => 'error']);
         }
     }
 
@@ -229,10 +229,10 @@ class MemoController extends Controller
                 ShareSettingService::deleteShareSettingAll($request->memoId);
             }, 10);
 
-            return to_route('user.index')->with(['message' => 'メモをゴミ箱に移動しました。', 'status' => 'info']);
+            return to_route('user.index')->with(['message' => 'メモをゴミ箱に移動しました。', 'status' => 'success']);
         } catch (Throwable $e) {
             Log::error($e);
-            return back()->with(['message' => 'メモの削除に失敗しました。', 'status' => 'alert']);
+            return back()->with(['message' => 'メモの削除に失敗しました。', 'status' => 'error']);
         }
     }
 }

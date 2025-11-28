@@ -45,7 +45,7 @@ class FishNameController extends Controller
          Log::error($e);
          return response()->json([
             'message' => '魚名の登録に失敗しました。',
-            'status' => 'alert'
+            'status' => 'error'
          ], 500);
       }
    }
@@ -77,10 +77,10 @@ class FishNameController extends Controller
          FishNameService::updateFishName((int) $request->fishNameId, (string) $request->input('fish_name'));
 
          return to_route('user.masters.index', ['tab' => 'fishNames'])
-            ->with(['message' => '魚名を更新しました。', 'status' => 'info']);
+            ->with(['message' => '魚名を更新しました。', 'status' => 'success']);
       } catch (Throwable $e) {
          Log::error($e);
-         return back()->with(['message' => '魚名の更新に失敗しました。', 'status' => 'alert']);
+         return back()->with(['message' => '魚名の更新に失敗しました。', 'status' => 'error']);
       }
    }
 
@@ -96,14 +96,14 @@ class FishNameController extends Controller
          $fish_name = FishName::availableSelectFishName($request->fishNameId)->first();
          // 関連がある場合は削除不可
          if ($fish_name->memos()->exists()) {
-            return redirect()->back()->with(['message' => '関連データのため削除できません。', 'status' => 'alert']);
+            return redirect()->back()->with(['message' => '関連データのため削除できません。', 'status' => 'error']);
          }
          // 選択した魚名を削除
          $fish_name->delete();
-         return redirect()->back()->with(['message' => '正常に魚名を削除しました。', 'status' => 'info']);
+         return redirect()->back()->with(['message' => '正常に魚名を削除しました。', 'status' => 'success']);
       } catch (Throwable $e) {
          Log::error($e);
-         return redirect()->back()->with(['message' => '魚名の削除に失敗しました。', 'status' => 'alert']);
+         return redirect()->back()->with(['message' => '魚名の削除に失敗しました。', 'status' => 'error']);
       }
    }
 }

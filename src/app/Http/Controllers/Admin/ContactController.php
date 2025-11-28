@@ -48,6 +48,6 @@ class ContactController extends Controller
         // 選択した問い合わせ情報を削除する
         Contact::availableSelectContact($request->contentId)->delete();
 
-        return to_route('admin.contact.index')->with(['message' => 'ユーザーの問い合わせをゴミ箱に移動しました。', 'status' => 'alert']);
+        return to_route('admin.contact.index')->with(['message' => 'ユーザーの問い合わせをゴミ箱に移動しました。', 'status' => 'success']);
     }
 }

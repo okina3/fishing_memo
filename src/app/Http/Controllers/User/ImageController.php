@@ -79,10 +79,10 @@ class ImageController extends Controller
                 }
             }, 10);
 
-            return to_route('user.image.index')->with(['message' => '画像を登録しました。', 'status' => 'info']);
+            return to_route('user.image.index')->with(['message' => '画像を登録しました。', 'status' => 'success']);
         } catch (Throwable $e) {
             Log::error($e);
-            return back()->with(['message' => '画像の登録に失敗しました。', 'status' => 'alert']);
+            return back()->with(['message' => '画像の登録に失敗しました。', 'status' => 'error']);
         }
     }
 
@@ -117,10 +117,10 @@ class ImageController extends Controller
                 Image::availableSelectImage($request->imageId)->delete();
             }, 10);
 
-            return to_route('user.image.index')->with(['message' => '正常に画像を削除しました。', 'status' => 'info']);
+            return to_route('user.image.index')->with(['message' => '正常に画像を削除しました。', 'status' => 'success']);
         } catch (Throwable $e) {
             Log::error($e);
-            return back()->with(['message' => '画像の削除に失敗しました。', 'status' => 'alert']);
+            return back()->with(['message' => '画像の削除に失敗しました。', 'status' => 'error']);
         }
     }
 }
