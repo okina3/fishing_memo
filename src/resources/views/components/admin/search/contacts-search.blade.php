@@ -12,4 +12,6 @@
    </form>
    {{-- コメント --}}
    <p class="text-sm mt-2">※ キーワードは、件名、問い合わせ内容の、両方から検索します。</p>
+   {{-- エラーメッセージ（検索エリア） --}}
+   <x-input-error class="mt-2 bg-white" :messages="$errors->get('keyword')" />
 </section>

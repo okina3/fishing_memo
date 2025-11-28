@@ -10,4 +10,6 @@
          <button class="ml-2 btn btn-bk bg-yellow-500 hover:bg-yellow-400">検索する</button>
       </div>
    </form>
+   {{-- エラーメッセージ（検索エリア） --}}
+   <x-input-error class="mt-2 bg-white" :messages="$errors->get('keyword')" />
 </section>
