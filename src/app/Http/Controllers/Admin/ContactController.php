@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DeleteContactRequest;
-use App\Http\Requests\Admin\IndexUserRequest;
+use App\Http\Requests\Admin\SearchKeywordRequest;
 use App\Models\Contact;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,10 +14,10 @@ class ContactController extends Controller
 {
     /**
      * ユーザーの問い合わせ一覧を表示するメソッド。
-     * @param IndexUserRequest $request
+     * @param SearchKeywordRequest $request
      * @return View
      */
-    public function index(IndexUserRequest $request): View
+    public function index(SearchKeywordRequest $request): View
     {
         // 全ての問い合わせ情報を取得する
         $all_contact = Contact::with(['user' => function ($q) {

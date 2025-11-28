@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DeleteUserRequest;
-use App\Http\Requests\Admin\IndexUserRequest;
+use App\Http\Requests\Admin\SearchKeywordRequest;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
@@ -18,10 +18,10 @@ class UsersController extends Controller
 {
     /**
      * 全ユーザー、また、検索したユーザーを表示するメソッド。
-     * @param IndexUserRequest $request
+     * @param SearchKeywordRequest $request
      * @return View
      */
-    public function index(IndexUserRequest $request): View
+    public function index(SearchKeywordRequest $request): View
     {
         // 全ユーザー、また、検索したユーザーを取得
         $all_users = User::availableAllUsers()->searchKeyword($request->keyword)->get();

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DeleteUserRequest;
-use App\Http\Requests\Admin\IndexUserRequest;
+use App\Http\Requests\Admin\SearchKeywordRequest;
 use App\Models\User;
 use App\Services\WarningUsersService;
 use Illuminate\Http\RedirectResponse;
@@ -17,10 +17,10 @@ class WarningUsersController extends Controller
 {
     /**
      * 警告したユーザー一覧を表示するメソッド。
-     * @param IndexUserRequest $request
+     * @param SearchKeywordRequest $request
      * @return View
      */
-    public function index(IndexUserRequest $request): View
+    public function index(SearchKeywordRequest $request): View
     {
         // 警告したユーザーを取得する
         $all_warning_users = User::onlyTrashed()->searchKeyword($request->keyword)->availableAllUsers()->get();
