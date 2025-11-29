@@ -9,9 +9,9 @@
         <testsuite name="AdminUnit">
             <directory suffix="Test.php">tests/Admin/Unit</directory>
         </testsuite>
-        <!-- <testsuite name="AdminFeature">
+        <testsuite name="AdminFeature">
             <directory suffix="Test.php">tests/Admin/Feature</directory>
-        </testsuite> -->
+        </testsuite>
         <!-- ユーザー用 -->
         <testsuite name="UserUnit">
             <directory suffix="Test.php">tests/User/Unit</directory>

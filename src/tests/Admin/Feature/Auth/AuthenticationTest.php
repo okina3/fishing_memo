@@ -1,54 +1,58 @@
 <?php
 
-namespace Tests\Feature\Auth;
+namespace Tests\Admin\Feature\Auth;
 
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use Tests\Admin\TestCase;
 
 class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
+    // ログイン画面が正常に表示されるかテスト。
     public function test_login_screen_can_be_rendered(): void
     {
-        $response = $this->get('/login');
+        $response = $this->get('/admin/login');
 
         $response->assertStatus(200);
     }
 
+    // 管理者がログイン画面を使用して認証できることを確認。
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
-        $user = User::factory()->create();
+        $user = Admin::factory()->create();
 
-        $response = $this->post('/login', [
+        $response = $this->post('/admin/login', [
             'email' => $user->email,
             'password' => 'password',
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        $this->assertAuthenticated('admin');
+        $response->assertRedirect(route('admin.index', absolute: false));
     }
 
+    // 無効なパスワードで管理者が認証できないことをテスト。
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
-        $user = User::factory()->create();
+        $user = Admin::factory()->create();
 
-        $this->post('/login', [
+        $this->post('/admin/login', [
             'email' => $user->email,
             'password' => 'wrong-password',
         ]);
 
-        $this->assertGuest();
+        $this->assertGuest('admin');
     }
 
+    // 管理者がログアウトできることをテスト。
     public function test_users_can_logout(): void
     {
-        $user = User::factory()->create();
+        $user = Admin::factory()->create();
 
-        $response = $this->actingAs($user)->post('/logout');
+        $response = $this->actingAs($user, 'admin')->post('/admin/logout');
 
-        $this->assertGuest();
-        $response->assertRedirect('/');
+        $this->assertGuest('admin');
+        $response->assertRedirect('/admin/login');
     }
 }
