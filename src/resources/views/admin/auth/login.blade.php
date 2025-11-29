@@ -34,14 +34,24 @@
          </label>
       </div>
 
-      <div class="flex items-center justify-end mt-4">
-         @if (Route::has('password.request'))
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-               href="{{ route('admin.password.request') }}">
-               {{ __('Forgot your password?') }}
-            </a>
-         @endif
+      <div class="flex justify-between items-center">
+         {{-- 新規管理者登録画面の追加 --}}
+         <div class="mt-4">
+            {{-- 新規登録リンクの表示（管理者が一人もいない場合のみ表示） --}}
+            @if (Route::has('admin.register') && \App\Models\Admin::count() === 0)
+               <a href="{{ route('admin.register') }}"
+                  class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">新規登録する</a>
+            @endif
+         </div>
 
+         <div class="flex items-center justify-end mt-4">
+            @if (Route::has('password.request'))
+               <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  href="{{ route('admin.password.request') }}">
+                  {{ __('Forgot your password?') }}
+               </a>
+            @endif
+         </div>
          <x-primary-button class="ms-3">
             {{ __('Log in') }}
          </x-primary-button>
