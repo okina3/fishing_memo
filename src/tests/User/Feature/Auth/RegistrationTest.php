@@ -27,7 +27,7 @@ class RegistrationTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        $this->assertAuthenticated();
+        $this->assertAuthenticated('users');
         $response->assertRedirect(route('user.dashboard', absolute: false));
     }
 }

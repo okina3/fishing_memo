@@ -34,5 +34,16 @@ RUN apt update \
 # Composerをグローバルにインストール
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# Xdebugをインストールして設定
+RUN pecl install xdebug \
+   && docker-php-ext-enable xdebug \
+   && echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+   && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+   && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+   && echo "xdebug.client_port=9003" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+# PHPのカスタム設定ファイルをコピー
+COPY php.ini /usr/local/etc/php/php.ini
+
 # ワークディレクトリを/var/www/fishing_memoに設定
 WORKDIR /var/www/fishing_memo
