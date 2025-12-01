@@ -52,7 +52,7 @@ class ResetPasswordNotification extends Notification
         return (new MailMessage)
             // ->subject(config('app.name') . ' パスワードリセットURLの送付')
             ->subject('管理者様' . ' パスワードリセットURLの送付')
-            ->greeting('いつもご利用頂きありがとうございます')
+            ->greeting('いつもご利用いただきありがとうございます')
             ->line('以下のボタンから、パスワードの再設定を行ってください。')
             ->action('パスワードをリセット', $url)
             ->line('このメールに心当たりがない場合は、破棄してください。');
