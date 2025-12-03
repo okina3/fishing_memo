@@ -15,7 +15,6 @@ class TagServiceTest extends TestCase
    use RefreshDatabase;
 
    private User $user;
-   private User $secondaryUser;
 
    // テスト前の初期設定（各テストメソッドの実行前に毎回呼び出される）
    protected function setUp(): void
@@ -24,8 +23,6 @@ class TagServiceTest extends TestCase
       parent::setUp();
       // ユーザーを作成
       $this->user = User::factory()->create();
-      // 2人目の別のユーザーを作成
-      $this->secondaryUser = User::factory()->create();
 
       // 認証済みのユーザーを返す
       $this->actingAs($this->user, 'users');
@@ -36,13 +33,6 @@ class TagServiceTest extends TestCase
    {
       // 指定された数のメモを、現在のユーザーに関連付けて作成する
       return Memo::factory()->count($count)->create(['user_id' => $this->user->id]);
-   }
-
-   // タグを作成するヘルパーメソッド
-   private function createTags(int $count): Collection
-   {
-      // 指定された数のタグを、現在のユーザーに関連付けて作成する
-      return Tag::factory()->count($count)->create(['user_id' => $this->user->id]);
    }
 
    // メモにタグを関連付けるヘルパーメソッド
@@ -118,7 +108,7 @@ class TagServiceTest extends TestCase
    public function testDeleteTags()
    {
       // 3件のタグを作成
-      $tags = $this->createTags(3);
+      $tags = Tag::factory()->count(3)->create(['user_id' => $this->user->id]);
       // 削除するタグのID配列を作成
       $tagIdsToDelete = $tags->pluck('id')->toArray();
       // タグを一括削除するサービスメソッドを実行
