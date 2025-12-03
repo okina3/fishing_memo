@@ -40,7 +40,7 @@ class StoreImageRequestTest extends TestCase
         // StoreImageRequestのインスタンスを初期化
         $request = $this->StoreImageRequest();
 
-        // FormRequest の user() が認証ユーザーを返すように UserResolver を設定
+        // user() が認証ユーザーを返すように UserResolver を設定
         $request->setUserResolver(function () {
             return $this->user ?? null;
         });

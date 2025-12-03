@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1764752137">
-  <project timestamp="1764752137" name="Clover Coverage">
+<coverage generated="1764752448">
+  <project timestamp="1764752448" name="Clover Coverage">
     <package name="App\Http\Controllers\Admin\Auth">
       <file name="/var/www/fishing_memo/app/Http/Controllers/Admin/Auth/AuthenticatedSessionController.php">
         <class name="App\Http\Controllers\Admin\Auth\AuthenticatedSessionController" namespace="App\Http\Controllers\Admin\Auth">
