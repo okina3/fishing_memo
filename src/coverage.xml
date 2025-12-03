@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1764747827">
-  <project timestamp="1764747827" name="Clover Coverage">
+<coverage generated="1764750843">
+  <project timestamp="1764750843" name="Clover Coverage">
     <package name="App\Http\Controllers\Admin\Auth">
       <file name="/var/www/fishing_memo/app/Http/Controllers/Admin/Auth/AuthenticatedSessionController.php">
         <class name="App\Http\Controllers\Admin\Auth\AuthenticatedSessionController" namespace="App\Http\Controllers\Admin\Auth">
@@ -1038,23 +1038,23 @@
     <package name="App\Http\Requests\User">
       <file name="/var/www/fishing_memo/app/Http/Requests/User/ContactRequest.php">
         <class name="App\Http\Requests\User\ContactRequest" namespace="App\Http\Requests\User">
-          <metrics complexity="3" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="0" elements="14" coveredelements="0"/>
+          <metrics complexity="3" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="11" elements="14" coveredelements="14"/>
         </class>
-        <line num="12" type="method" name="authorize" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="15" type="stmt" count="0"/>
-        <line num="22" type="method" name="rules" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="24" type="stmt" count="0"/>
-        <line num="25" type="stmt" count="0"/>
-        <line num="26" type="stmt" count="0"/>
-        <line num="27" type="stmt" count="0"/>
-        <line num="34" type="method" name="messages" visibility="public" complexity="1" crap="2" count="0"/>
-        <line num="36" type="stmt" count="0"/>
-        <line num="37" type="stmt" count="0"/>
-        <line num="38" type="stmt" count="0"/>
-        <line num="39" type="stmt" count="0"/>
-        <line num="40" type="stmt" count="0"/>
-        <line num="41" type="stmt" count="0"/>
-        <metrics loc="44" ncloc="32" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="0" elements="14" coveredelements="0"/>
+        <line num="12" type="method" name="authorize" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="15" type="stmt" count="1"/>
+        <line num="22" type="method" name="rules" visibility="public" complexity="1" crap="1" count="2"/>
+        <line num="24" type="stmt" count="2"/>
+        <line num="25" type="stmt" count="2"/>
+        <line num="26" type="stmt" count="2"/>
+        <line num="27" type="stmt" count="2"/>
+        <line num="34" type="method" name="messages" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="36" type="stmt" count="1"/>
+        <line num="37" type="stmt" count="1"/>
+        <line num="38" type="stmt" count="1"/>
+        <line num="39" type="stmt" count="1"/>
+        <line num="40" type="stmt" count="1"/>
+        <line num="41" type="stmt" count="1"/>
+        <metrics loc="44" ncloc="32" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="11" coveredstatements="11" elements="14" coveredelements="14"/>
       </file>
       <file name="/var/www/fishing_memo/app/Http/Requests/User/DeleteTagRequest.php">
         <class name="App\Http\Requests\User\DeleteTagRequest" namespace="App\Http\Requests\User">
@@ -1335,27 +1335,27 @@
       </file>
       <file name="/var/www/fishing_memo/app/Http/Requests/User/StoreTagRequest.php">
         <class name="App\Http\Requests\User\StoreTagRequest" namespace="App\Http\Requests\User">
-          <metrics complexity="3" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="15" elements="18" coveredelements="18"/>
+          <metrics complexity="3" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="0" elements="18" coveredelements="0"/>
         </class>
-        <line num="13" type="method" name="authorize" visibility="public" complexity="1" crap="1" count="1"/>
-        <line num="16" type="stmt" count="1"/>
-        <line num="23" type="method" name="rules" visibility="public" complexity="1" crap="1" count="2"/>
-        <line num="25" type="stmt" count="2"/>
-        <line num="26" type="stmt" count="2"/>
-        <line num="27" type="stmt" count="2"/>
-        <line num="28" type="stmt" count="2"/>
-        <line num="29" type="stmt" count="2"/>
-        <line num="30" type="stmt" count="1"/>
-        <line num="31" type="stmt" count="2"/>
-        <line num="32" type="stmt" count="2"/>
-        <line num="33" type="stmt" count="2"/>
-        <line num="40" type="method" name="messages" visibility="public" complexity="1" crap="1" count="1"/>
-        <line num="42" type="stmt" count="1"/>
-        <line num="43" type="stmt" count="1"/>
-        <line num="44" type="stmt" count="1"/>
-        <line num="45" type="stmt" count="1"/>
-        <line num="46" type="stmt" count="1"/>
-        <metrics loc="49" ncloc="37" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="15" elements="18" coveredelements="18"/>
+        <line num="13" type="method" name="authorize" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="16" type="stmt" count="0"/>
+        <line num="23" type="method" name="rules" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <line num="26" type="stmt" count="0"/>
+        <line num="27" type="stmt" count="0"/>
+        <line num="28" type="stmt" count="0"/>
+        <line num="29" type="stmt" count="0"/>
+        <line num="30" type="stmt" count="0"/>
+        <line num="31" type="stmt" count="0"/>
+        <line num="32" type="stmt" count="0"/>
+        <line num="33" type="stmt" count="0"/>
+        <line num="40" type="method" name="messages" visibility="public" complexity="1" crap="2" count="0"/>
+        <line num="42" type="stmt" count="0"/>
+        <line num="43" type="stmt" count="0"/>
+        <line num="44" type="stmt" count="0"/>
+        <line num="45" type="stmt" count="0"/>
+        <line num="46" type="stmt" count="0"/>
+        <metrics loc="49" ncloc="37" classes="1" methods="3" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="0" elements="18" coveredelements="0"/>
       </file>
       <file name="/var/www/fishing_memo/app/Http/Requests/User/UpdateSharedMemoRequest.php">
         <class name="App\Http\Requests\User\UpdateSharedMemoRequest" namespace="App\Http\Requests\User">
@@ -2108,6 +2108,6 @@
         <metrics loc="18" ncloc="15" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="0" elements="2" coveredelements="0"/>
       </file>
     </package>
-    <metrics files="87" loc="5383" ncloc="3910" classes="82" methods="261" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="1290" coveredstatements="25" elements="1551" coveredelements="31"/>
+    <metrics files="87" loc="5383" ncloc="3910" classes="82" methods="261" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="1290" coveredstatements="21" elements="1551" coveredelements="27"/>
   </project>
 </coverage>
