@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\DB;
 class WarningUsersService
 {
    /**
-    * 選択したユーザー、関連データを完全削除する。
-    *
+    * 選択したユーザー、関連データを完全削除するメソッド。
     * @param int $userId
     * @return void
     */
