@@ -91,7 +91,6 @@ class ShareEndRequestTest extends TestCase
     {
         // ShareEndRequestのインスタンスを初期化
         $request = $this->createShareEndRequest();
-
         // リクエストから、バリデーションメッセージを取得
         $messages = $request->messages();
 

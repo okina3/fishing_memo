@@ -88,9 +88,9 @@ class ContactRequestTest extends TestCase
    {
       // ContactRequestのインスタンスを初期化
       $request = $this->createContactRequest();
-
       // リクエストから、バリデーションメッセージを取得
       $messages = $request->messages();
+      
       // 期待されるバリデーションメッセージを定義
       $expectedMessages = [
          'subject.string' => '件名が、入力されていません。また、文字列で指定してください。',

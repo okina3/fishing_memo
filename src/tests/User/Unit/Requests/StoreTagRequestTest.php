@@ -86,9 +86,9 @@ class StoreTagRequestTest extends TestCase
     {
         // storeTagRequestのインスタンスを初期化
         $request = $this->storeTagRequest();
-
         // リクエストから、バリデーションメッセージを取得
         $messages = $request->messages();
+        
         // 期待されるバリデーションメッセージを定義
         $expectedMessages = [
             'new_tag.string' => 'タグが、入力されていません。また、文字列で指定してください。',

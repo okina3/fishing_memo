@@ -88,9 +88,9 @@ class StoreImageRequestTest extends TestCase
     {
         // StoreImageRequestのインスタンスを初期化
         $request = $this->StoreImageRequest();
-
         // リクエストから、バリデーションメッセージを取得
         $messages = $request->messages();
+        
         // 期待されるバリデーションメッセージを定義
         $expectedMessages = [
             'images.required' => '画像が指定されていません。',

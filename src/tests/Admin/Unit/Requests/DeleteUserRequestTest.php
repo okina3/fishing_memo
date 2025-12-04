@@ -33,7 +33,7 @@ class DeleteUserRequestTest extends TestCase
         return new DeleteUserRequest();
     }
 
-    // authorize() が true を返すことを検証するテスト
+    // authorizeメソッドが、常にtrueを返すことを検証するテスト
     public function testAuthorizeReturnsTrue()
     {
         // DeleteUserRequestのインスタンスを初期化

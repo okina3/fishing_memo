@@ -26,7 +26,7 @@ class SearchKeywordRequestTest extends TestCase
       $this->actingAs($this->admin, 'admin');
    }
 
-   // SearchKeywordRequest のインスタンスを返すヘルパーメソッド
+   // SearchKeywordRequest のインスタンスを作成するヘルパーメソッド
    private function searchKeywordRequest(): SearchKeywordRequest
    {
       // SearchKeywordRequestのインスタンスを返す

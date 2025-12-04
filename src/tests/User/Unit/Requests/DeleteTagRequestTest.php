@@ -32,7 +32,7 @@ class DeleteTagRequestTest extends TestCase
         return new DeleteTagRequest();
     }
 
-    // authorize() が true を返すことを確認するテスト
+    // authorizeメソッドが、常にtrueを返すことを検証するテスト
     public function testAuthorizeReturnsTrue()
     {
         // DeleteTagRequestのインスタンスを初期化
@@ -67,7 +67,6 @@ class DeleteTagRequestTest extends TestCase
     {
         // DeleteTagRequestのインスタンスを初期化
         $request = $this->deleteTagRequest();
-
         // リクエストから、バリデーションメッセージを取得
         $messages = $request->messages();
 

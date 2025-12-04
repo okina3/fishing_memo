@@ -33,7 +33,7 @@ class DeleteContactRequestTest extends TestCase
       return new DeleteContactRequest();
    }
 
-   // authorize() が true を返すことを確認するテスト
+   // authorizeメソッドが、常にtrueを返すことを検証するテスト
    public function testAuthorizeReturnsTrue()
    {
       // DeleteContactRequestのインスタンスを初期化

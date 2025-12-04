@@ -94,9 +94,9 @@ class ShareStartRequestTest extends TestCase
     {
         // ShareStartRequestのインスタンスを初期化
         $request = $this->createShareStartRequest();
-
         // リクエストから、バリデーションメッセージを取得
         $messages = $request->messages();
+        
         // 期待されるバリデーションメッセージを定義
         $expectedMessages = [
             'share_user_start.required' => 'メールアドレスが、入力されていません。共有できません。',
