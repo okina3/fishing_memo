@@ -223,10 +223,10 @@ class MemoController extends Controller
     {
         try {
             DB::transaction(function () use ($request) {
-                // 選択したメモを削除
-                Memo::availableSelectMemo($request->memoId)->delete();
                 // 選択したメモの全ての共有設定を解除
                 ShareSettingService::deleteShareSettingAll($request->memoId);
+                // 選択したメモを削除
+                Memo::availableSelectMemo($request->memoId)->delete();
             }, 10);
 
             return to_route('user.index')->with(['message' => 'メモをゴミ箱に移動しました。', 'status' => 'success']);
