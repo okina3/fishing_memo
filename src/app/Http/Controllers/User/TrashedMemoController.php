@@ -51,10 +51,10 @@ class TrashedMemoController extends Controller
     {
         try {
             DB::transaction(function () use ($request) {
+                // 中間テーブルのデータを削除
+                TrashedMemoService::deleteRelatedRecords((int) $request->memoId);
                 // メモを完全削除
                 Memo::availableSelectTrashedMemo($request->memoId)->forceDelete();
-                // 中間テーブルのデータも削除
-                TrashedMemoService::deleteRelatedRecords((int) $request->memoId);
             }, 10);
 
             return to_route('user.trashed-memo.index')->with(['message' => 'メモを完全に削除しました。', 'status' => 'success']);
