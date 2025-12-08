@@ -56,4 +56,6 @@
 {{-- 固有の JavaScript の読み込み --}}
 {{-- new-bait-add.js: エサ追加ボタンの AJAX 処理と UI 表示 --}}
 {{-- bait-area-add.js: エサ入力エリアの追加/削除などの UI 制御 --}}
-@vite(['resources/js/user/memos/new-bait-add.js', 'resources/js/user/memos/bait-area-add.js'])
+@unless (app()->environment('testing'))
+   @vite(['resources/js/user/memos/new-bait-add.js', 'resources/js/user/memos/bait-area-add.js'])
+@endunless

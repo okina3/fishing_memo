@@ -77,4 +77,6 @@
 {{-- 固有の JavaScript の読み込み --}}
 {{-- new-fish-name-add.js: 魚名追加ボタンの AJAX 処理と UI 表示 --}}
 {{-- fishing-result-add.js: 釣果入力エリアの追加/削除などの UI 制御 --}}
-@vite(['resources/js/user/memos/new-fish-name-add.js', 'resources/js/user/memos/fishing-result-add.js'])
+@unless (app()->environment('testing'))
+   @vite(['resources/js/user/memos/new-fish-name-add.js', 'resources/js/user/memos/fishing-result-add.js'])
+@endunless
