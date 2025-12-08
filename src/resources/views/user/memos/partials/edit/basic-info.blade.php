@@ -67,4 +67,6 @@
 </div>
 {{-- 固有の JavaScript の読み込み --}}
 {{-- new-spot-add.js: 釣り場を追加ボタンの AJAX 処理と UI 表示 --}}
-@vite(['resources/js/user/memos/new-spot-add.js'])
+@unless (app()->environment('testing'))
+   @vite(['resources/js/user/memos/new-spot-add.js'])
+@endunless
