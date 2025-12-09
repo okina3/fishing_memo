@@ -98,7 +98,7 @@ class SpotControllerTest extends TestCase
       // 自分の釣り場を1件作成
       $spot = Spot::factory()->create(['user_id' => $this->user->id, 'name' => '編集対象スポット']);
 
-      // 編集画面へアクセスする為に、リクエストを送信
+      // 釣り場編集画面を表示する為に、リクエスト送信
       $response = $this->get(route('user.spot.edit', ['spot' => $spot->id]));
 
       // ステータスコード200（OK）であることを検証
@@ -226,7 +226,7 @@ class SpotControllerTest extends TestCase
       // Log::errorメソッドが呼び出されるときに、例外がログに記録されることを確認
       Log::shouldReceive('error')->once()->withAnyArgs();
 
-      // 実データを作らず、取得時に例外が発生する想定
+      // 実データを作らず、取得時に例外が発生する想定で、釣り場削除のリクエストを送信
       $response = $this->delete(route('user.spot.destroy'), ['spotId' => 9999]);
 
       // リダイレクトでエラーがフラッシュされていることを検証
