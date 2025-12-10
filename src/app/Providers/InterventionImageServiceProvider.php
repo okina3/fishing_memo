@@ -26,8 +26,8 @@ class InterventionImageServiceProvider extends ServiceProvider
    public function boot(): void
    {
       if (! class_exists('InterventionImage')) {
-         if (class_exists('Intervention\\Image\\Facades\\Image', false)) {
-            class_alias('Intervention\\Image\\Facades\\Image', 'InterventionImage');
+         if (class_exists('Intervention\\Image\\Laravel\\Facades\\Image', false)) {
+            class_alias('Intervention\\Image\\Laravel\\Facades\\Image', 'InterventionImage');
          }
       }
    }
