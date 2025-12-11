@@ -33,6 +33,9 @@
             <!-- カスタムパスワードリセットを使用の為、未使用 -->
             <file>./app/Http/Controllers/Admin/Auth/EmailVerificationNotificationController.php</file>
             <file>./app/Http/Controllers/User/Auth/EmailVerificationNotificationController.php</file>
+            <!-- プロフィール機能未実装の為、未使用 -->
+            <file>./app/Http/Controllers/ProfileController.php</file>
+            <file>./app/Http/Requests/ProfileUpdateRequest.php</file>
         </exclude>
     </source>
     <php>
