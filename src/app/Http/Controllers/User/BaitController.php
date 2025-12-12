@@ -8,7 +8,6 @@ use App\Models\Bait;
 use App\Services\BaitService;
 use App\Services\SessionService;
 use Closure;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -24,30 +23,6 @@ class BaitController extends Controller
          BaitService::checkUserBait($request);
          return $next($request);
       });
-   }
-
-   /**
-    * 新規メモ作成から新規エサを保存するメソッド。
-    * @param StoreBaitRequest $request
-    * @return JsonResponse
-    * @throws Throwable
-    */
-   public function store(StoreBaitRequest $request): JsonResponse
-   {
-      try {
-         $bait = BaitService::createBait($request->input('bait_name'));
-
-         return response()->json([
-            'id' => $bait->id,
-            'name' => $bait->name,
-         ], 201);
-      } catch (Throwable $e) {
-         Log::error($e);
-         return response()->json([
-            'message' => 'エサの登録に失敗しました。',
-            'status' => 'error',
-         ], 500);
-      }
    }
 
    /**
