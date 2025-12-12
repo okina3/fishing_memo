@@ -20,6 +20,19 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            // 流れの有無
+            $table->string('river_flow', 20)
+                ->nullable();
+            // 濁度
+            $table->string('turbidity')
+                ->nullable();
+            // 水位
+            $table->decimal('water_level', 4, 1)
+                ->nullable();
+            // 水温
+            $table->integer('water_temp')
+                ->nullable();
+            $table->timestamps();
             $table->primary(['memo_id', 'spot_id']);
         });
     }
