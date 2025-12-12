@@ -122,7 +122,7 @@ class MemoService
         // 既存エサの選択があれば、メモに紐付けて中間テーブルに保存
         if (!empty($request->baits)) {
             $memo = Memo::findOrFail($memo_id);
-            $baitIds = array_map('intval', (array) $request->baits);
+            $baitIds = array_filter(array_map('intval', (array) $request->baits), fn($id) => $id > 0);
             if (!empty($baitIds)) {
                 $memo->baits()->attach($baitIds);
             }
