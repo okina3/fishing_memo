@@ -44,14 +44,12 @@ Route::prefix('/')->as('user.')->group(function () {
         // マスターズ管理画面（釣り場・エサ・魚名）
         Route::controller(MastersController::class)->prefix('masters')->group(function () {
             Route::get('/', 'index')->name('masters.index');
-            Route::post('/spot/store', 'storeSpot')->name('masters.spot.store');
-            Route::post('/bait/store', 'storeBait')->name('masters.bait.store');
-            Route::post('/fish-name/store', 'storeFishName')->name('masters.fish-name.store');
         });
 
         // 釣り場の登録
         Route::controller(SpotController::class)->prefix('spot')
             ->group(function () {
+                Route::post('/store', 'store')->name('spot.store');
                 Route::get('/edit/{spot}', 'edit')->name('spot.edit');
                 Route::patch('/update', 'update')->name('spot.update');
                 Route::delete('/destroy', 'destroy')->name('spot.destroy');
@@ -60,6 +58,7 @@ Route::prefix('/')->as('user.')->group(function () {
         // エサの登録
         Route::controller(BaitController::class)->prefix('bait')
             ->group(function () {
+                Route::post('/store', 'store')->name('bait.store');
                 Route::get('/edit/{bait}', 'edit')->name('bait.edit');
                 Route::patch('/update', 'update')->name('bait.update');
                 Route::delete('/destroy', 'destroy')->name('bait.destroy');
@@ -68,6 +67,7 @@ Route::prefix('/')->as('user.')->group(function () {
         // 魚名の登録
         Route::controller(FishNameController::class)->prefix('fish-name')
             ->group(function () {
+                Route::post('/store', 'store')->name('fish-name.store');
                 Route::get('/edit/{fishName}', 'edit')->name('fish-name.edit');
                 Route::patch('/update', 'update')->name('fish-name.update');
                 Route::delete('/destroy', 'destroy')->name('fish-name.destroy');

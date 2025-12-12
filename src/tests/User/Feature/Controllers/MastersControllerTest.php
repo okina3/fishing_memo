@@ -57,7 +57,7 @@ class MastersControllerTest extends TestCase
         $payload = ['spot_name' => 'マスター追加スポット'];
 
         // 釣り場を保存するの為に、リクエスト送信
-        $response = $this->post(route('user.masters.spot.store'), $payload);
+        $response = $this->post(route('user.spot.store'), $payload);
 
         // リダイレクトで成功メッセージがフラッシュされていることを検証
         $response->assertRedirect(route('user.masters.index', ['tab' => 'spots']));
@@ -87,7 +87,7 @@ class MastersControllerTest extends TestCase
 
         // 釣り場を保存するの為に、リクエスト送信
         $response = $this->from(route('user.masters.index', ['tab' => 'spots']))
-            ->post(route('user.masters.spot.store'), $payload);
+            ->post(route('user.spot.store'), $payload);
 
         // リダイレクトでエラーメッセージがフラッシュされていることを検証
         $response->assertRedirect(route('user.masters.index', ['tab' => 'spots']));

@@ -26,6 +26,24 @@ class BaitController extends Controller
    }
 
    /**
+    * エサを保存するメソッド。
+    * @param StoreBaitRequest $request
+    * @return RedirectResponse
+    */
+   public function store(StoreBaitRequest $request): RedirectResponse
+   {
+      try {
+         BaitService::createBait($request->input('bait_name'));
+
+         return to_route('user.masters.index', ['tab' => 'baits'])
+            ->with(['message' => 'エサを追加しました。', 'status' => 'success']);
+      } catch (Throwable $e) {
+         Log::error($e);
+         return back()->with(['message' => 'エサの追加に失敗しました', 'status' => 'error']);
+      }
+   }
+
+   /**
     * エサの編集画面を表示するメソッド。
     * @param int $id
     * @return View

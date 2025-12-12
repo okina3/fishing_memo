@@ -2,7 +2,7 @@
 <div class="mb-5 flex flex-wrap items-start">
    {{-- 新規釣り場の登録 --}}
    <div class="mb-5 sm:mr-10">
-      <form action="{{ route('user.masters.spot.store') }}" method="POST">
+      <form action="{{ route('user.spot.store') }}" method="POST">
          @csrf
          <h2 class="sub_heading mb-1">新規釣り場の登録</h2>
          <div class="flex gap-2 items-center">
@@ -16,7 +16,7 @@
    </div>
    {{-- 新規エサの登録 --}}
    <div class="mb-5 sm:mr-10">
-      <form action="{{ route('user.masters.bait.store') }}" method="POST">
+      <form action="{{ route('user.bait.store') }}" method="POST">
          @csrf
          <h2 class="sub_heading mb-1">新規エサの登録</h2>
          <div class="flex gap-2 items-center">
@@ -30,7 +30,7 @@
    </div>
    {{-- 新規魚名の登録 --}}
    <div class="mb-5">
-      <form action="{{ route('user.masters.fish-name.store') }}" method="POST">
+      <form action="{{ route('user.fish-name.store') }}" method="POST">
          @csrf
          <h2 class="sub_heading mb-1">新規魚名の登録</h2>
          <div class="flex gap-2 items-center">

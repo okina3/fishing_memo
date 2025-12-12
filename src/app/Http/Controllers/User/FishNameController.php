@@ -26,6 +26,24 @@ class FishNameController extends Controller
    }
 
    /**
+    * 魚名を保存するメソッド。
+    * @param StoreFishRequest $request
+    * @return RedirectResponse
+    */
+   public function store(StoreFishRequest $request): RedirectResponse
+   {
+      try {
+         FishNameService::createFishName($request->input('fish_name'));
+
+         return to_route('user.masters.index', ['tab' => 'fishNames'])
+            ->with(['message' => '魚名を追加しました。', 'status' => 'success']);
+      } catch (Throwable $e) {
+         Log::error($e);
+         return back()->with(['message' => '魚名の追加に失敗しました', 'status' => 'error']);
+      }
+   }
+
+   /**
     * 魚名の編集画面を表示するメソッド。
     * @param int $id
     * @return View
