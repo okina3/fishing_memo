@@ -26,6 +26,24 @@ class SpotController extends Controller
     }
 
     /**
+     * 釣り場を保存するメソッド。
+     * @param StoreSpotRequest $request
+     * @return RedirectResponse
+     */
+    public function store(StoreSpotRequest $request): RedirectResponse
+    {
+        try {
+            SpotService::createSpot($request->input('spot_name'));
+
+            return to_route('user.masters.index', ['tab' => 'spots'])
+                ->with(['message' => '釣り場を追加しました。', 'status' => 'success']);
+        } catch (Throwable $e) {
+            Log::error($e);
+            return back()->with(['message' => '釣り場の追加に失敗しました', 'status' => 'error']);
+        }
+    }
+
+    /**
      * 釣り場の編集画面を表示するメソッド。
      * @param int $id
      * @return View
