@@ -15,7 +15,6 @@ class MemoSeeder extends Seeder
         DB::table('memos')->insert([
             //ユーザー１のダミーデータ
             [
-                'spot_id' => 1,
                 'fishing_date' => '2025-01-01',
                 'start_time' => '09:00:00',
                 'end_time' => '12:30:00',
@@ -34,7 +33,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/01/01 11:11:11'
             ],
             [
-                'spot_id' => 2,
                 'fishing_date' => '2025-01-02',
                 'start_time' => '10:00:00',
                 'end_time' => '15:00:00',
@@ -53,7 +51,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/01/01 11:11:11'
             ],
             [
-                'spot_id' => 1,
                 'fishing_date' => '2025-01-03',
                 'start_time' => '11:00:00',
                 'end_time' => '15:00:00',
@@ -72,7 +69,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/01/01 11:11:11'
             ],
             [
-                'spot_id' => 3,
                 'fishing_date' => '2025-01-04',
                 'start_time' => '12:00:00',
                 'end_time' => '15:00:00',
@@ -91,7 +87,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/01/01 11:11:11'
             ],
             [
-                'spot_id' => 2,
                 'fishing_date' => '2025-01-05',
                 'start_time' => '12:00:00',
                 'end_time' => '16:00:00',
@@ -110,7 +105,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/01/01 11:11:11'
             ],
             [
-                'spot_id' => 1,
                 'fishing_date' => '2025-01-06',
                 'start_time' => '09:00:00',
                 'end_time' => '13:00:00',
@@ -129,7 +123,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/01/01 11:11:11'
             ],
             [
-                'spot_id' => 1,
                 'fishing_date' => '2025-01-07',
                 'start_time' => '09:00:00',
                 'end_time' => '12:00:00',
@@ -149,7 +142,6 @@ class MemoSeeder extends Seeder
             ],
 
             [
-                'spot_id' => 2,
                 'fishing_date' => '2025-01-08',
                 'start_time' => '12:00:00',
                 'end_time' => '17:00:00',
@@ -168,7 +160,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/01/01 11:11:11'
             ],
             [
-                'spot_id' => 1,
                 'fishing_date' => '2025-01-09',
                 'start_time' => '13:00:00',
                 'end_time' => '17:00:00',
@@ -187,7 +178,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/01/01 11:11:11'
             ],
             [
-                'spot_id' => 3,
                 'fishing_date' => '2025-01-10',
                 'start_time' => '12:00:00',
                 'end_time' => '14:00:00',
@@ -208,7 +198,6 @@ class MemoSeeder extends Seeder
 
             //ユーザー２のダミーデータ
             [
-                'spot_id' => 4,
                 'fishing_date' => '2024-01-01',
                 'start_time' => '09:00:00',
                 'end_time' => '12:00:00',
@@ -227,7 +216,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/02 11:11:11'
             ],
             [
-                'spot_id' => 6,
                 'fishing_date' => '2024-01-02',
                 'start_time' => '10:00:00',
                 'end_time' => '13:30:00',
@@ -246,7 +234,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/02 11:11:11'
             ],
             [
-                'spot_id' => 5,
                 'fishing_date' => '2024-01-03',
                 'start_time' => '11:00:00',
                 'end_time' => '15:00:00',
@@ -265,7 +252,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/02 11:11:11'
             ],
             [
-                'spot_id' => 5,
                 'fishing_date' => '2024-01-04',
                 'start_time' => '08:30:00',
                 'end_time' => '12:00:00',
@@ -284,7 +270,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/02 11:11:11'
             ],
             [
-                'spot_id' => 4,
                 'fishing_date' => '2024-01-05',
                 'start_time' => '13:00:00',
                 'end_time' => '17:00:00',
@@ -305,7 +290,6 @@ class MemoSeeder extends Seeder
 
             // ユーザー３のダミーデータ
             [
-                'spot_id' => 7,
                 'fishing_date' => '2023-01-01',
                 'start_time' => '07:30:00',
                 'end_time' => '11:00:00',
@@ -324,7 +308,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/03 11:11:11'
             ],
             [
-                'spot_id' => 9,
                 'fishing_date' => '2023-01-02',
                 'start_time' => '08:00:00',
                 'end_time' => '12:00:00',
@@ -343,7 +326,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/03 11:11:11'
             ],
             [
-                'spot_id' => 8,
                 'fishing_date' => '2023-01-03',
                 'start_time' => '09:00:00',
                 'end_time' => '13:30:00',
@@ -362,7 +344,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/03 11:11:11'
             ],
             [
-                'spot_id' => 7,
                 'fishing_date' => '2023-01-04',
                 'start_time' => '10:00:00',
                 'end_time' => '14:00:00',
@@ -381,7 +362,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/03 11:11:11'
             ],
             [
-                'spot_id' => 8,
                 'fishing_date' => '2023-01-05',
                 'start_time' => '11:00:00',
                 'end_time' => '15:00:00',
@@ -401,7 +381,6 @@ class MemoSeeder extends Seeder
             ],
             //ユーザー４のダミーデータ
             [
-                'spot_id' => 10,
                 'fishing_date' => '2022-01-01',
                 'start_time' => '07:00:00',
                 'end_time' => '10:00:00',
@@ -420,7 +399,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/04 11:11:11'
             ],
             [
-                'spot_id' => 12,
                 'fishing_date' => '2022-01-02',
                 'start_time' => '08:30:00',
                 'end_time' => '12:30:00',
@@ -439,7 +417,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/04 11:11:11'
             ],
             [
-                'spot_id' => 11,
                 'fishing_date' => '2022-01-03',
                 'start_time' => '09:00:00',
                 'end_time' => '13:00:00',
@@ -458,7 +435,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/04 11:11:11'
             ],
             [
-                'spot_id' => 10,
                 'fishing_date' => '2022-01-04',
                 'start_time' => '13:00:00',
                 'end_time' => '16:00:00',
@@ -477,7 +453,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/04 11:11:11'
             ],
             [
-                'spot_id' => 12,
                 'fishing_date' => '2022-01-05',
                 'start_time' => '14:00:00',
                 'end_time' => '17:00:00',
@@ -497,7 +472,6 @@ class MemoSeeder extends Seeder
             ],
             //ユーザー５のダミーデータ
             [
-                'spot_id' => 13,
                 'fishing_date' => '2021-01-01',
                 'start_time' => '07:30:00',
                 'end_time' => '11:30:00',
@@ -516,7 +490,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/05 11:11:11'
             ],
             [
-                'spot_id' => 15,
                 'fishing_date' => '2021-01-02',
                 'start_time' => '10:00:00',
                 'end_time' => '14:00:00',
@@ -535,7 +508,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/05 11:11:11'
             ],
             [
-                'spot_id' => 15,
                 'fishing_date' => '2021-01-03',
                 'start_time' => '11:30:00',
                 'end_time' => '15:30:00',
@@ -554,7 +526,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/05 11:11:11'
             ],
             [
-                'spot_id' => 14,
                 'fishing_date' => '2021-01-04',
                 'start_time' => '12:00:00',
                 'end_time' => '16:00:00',
@@ -573,7 +544,6 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/05 11:11:11'
             ],
             [
-                'spot_id' => 14,
                 'fishing_date' => '2021-01-05',
                 'start_time' => '13:30:00',
                 'end_time' => '17:30:00',

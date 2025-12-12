@@ -30,7 +30,6 @@ class MemoFactory extends Factory
 
       return [
          'user_id' => User::factory(),
-         'spot_id' => Spot::factory(),
          'fishing_date' => $this->faker->date(),
          'start_time' => $start,
          'end_time' => $end,

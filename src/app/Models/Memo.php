@@ -44,12 +44,12 @@ class Memo extends Model
     ];
 
     /**
-     * Spotモデルへのリレーションを返す（一対多）。
-     * @return BelongsTo
+     * Spotモデルとの多対多のリレーションを定義。
+     * @return BelongsToMany
      */
-    public function spot(): BelongsTo
+    public function spots(): BelongsToMany
     {
-        return $this->belongsTo(Spot::class);
+        return $this->belongsToMany(Spot::class, 'memo_spots');
     }
 
     /**

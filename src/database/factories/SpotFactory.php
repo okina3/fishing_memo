@@ -25,7 +25,7 @@ class SpotFactory extends Factory
    {
       return [
          'user_id' => User::factory(),
-         'name' => $this->faker->words(2, true),
+         'name' => $this->faker->unique()->word(),
       ];
    }
 }

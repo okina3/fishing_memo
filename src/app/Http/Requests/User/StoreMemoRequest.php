@@ -41,7 +41,7 @@ class StoreMemoRequest extends FormRequest
             'water_level' => 'nullable|numeric|min:0|max:999.9',
             'water_temp' => 'nullable|integer|min:0|max:99',
             // エサ
-            // 'baits' => 'array',
+            'baits' => 'array',
             'baits.*' => 'nullable|integer|distinct|exists:baits,id',
             // 釣果入力（配列）
             'fishing_results' => 'array',
