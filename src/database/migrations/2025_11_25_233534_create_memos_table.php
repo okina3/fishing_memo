@@ -17,10 +17,6 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('spot_id')
-                ->nullable()
-                ->constrained('spots')
-                ->nullOnDelete();
 
             // 釣行日時
             $table->date('fishing_date');

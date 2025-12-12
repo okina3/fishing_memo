@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Spot;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class SpotService
@@ -52,5 +53,15 @@ class SpotService
       $spot->save();
 
       return $spot;
+   }
+
+   /**
+    * 選択したメモに紐づいた、釣り場のNameを、配列で取得するメソッド。
+    * @param Collection $select_memo_spots
+    * @return array
+    */
+   public static function getMemoSpotsName(Collection $select_memo_spots): array
+   {
+      return $select_memo_spots->pluck('name')->toArray();
    }
 }

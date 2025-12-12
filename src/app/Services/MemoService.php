@@ -67,7 +67,6 @@ class MemoService
             'fishing_date' => $request->input('fishing_date'),
             'start_time' => $request->input('start_time'),
             'end_time' => $request->input('end_time'),
-            'spot_id' => $request->input('fishing_spot'),
             'weather' => $request->input('weather'),
             'air_temp' => $request->input('air_temp'),
             'max_wind' => $request->input('max_wind'),
@@ -94,7 +93,6 @@ class MemoService
         $memo->fishing_date = $request->input('fishing_date');
         $memo->start_time = $request->input('start_time');
         $memo->end_time = $request->input('end_time');
-        $memo->spot_id = $request->input('fishing_spot');
         $memo->weather = $request->input('weather');
         $memo->air_temp = $request->input('air_temp');
         $memo->max_wind = $request->input('max_wind');
@@ -109,6 +107,24 @@ class MemoService
         $memo->save();
 
         return $memo;
+    }
+
+    /**
+     * メモに紐づいた釣り場を、中間テーブルに保存するメソッド
+     * @param $request
+     * @param int $memo_id
+     * @return void
+     */
+    public static function attachExistingSpots($request, int $memo_id): void
+    {
+        // 既存釣り場の選択があれば、メモに紐付けて中間テーブルに保存
+        if (!empty($request->spots)) {
+            $memo = Memo::findOrFail($memo_id);
+            $spotIds = array_filter(array_map('intval', (array) $request->spots), fn($id) => $id > 0);
+            if (!empty($spotIds)) {
+                $memo->spots()->attach($spotIds);
+            }
+        }
     }
 
     /**

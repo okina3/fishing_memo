@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Auth;
 
 class Spot extends Model
@@ -19,12 +19,12 @@ class Spot extends Model
     ];
 
     /**
-     * Memoモデルとの一対多のリレーションを定義。
-     * @return HasMany
+     * Memoモデルとの多対多のリレーションを定義。
+     * @return BelongsToMany
      */
-    public function memos(): HasMany
+    public function memos(): BelongsToMany
     {
-        return $this->hasMany(Memo::class);
+        return $this->belongsToMany(Memo::class, 'memo_spots');
     }
 
     /**
