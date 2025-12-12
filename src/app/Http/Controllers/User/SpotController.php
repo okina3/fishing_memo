@@ -8,7 +8,6 @@ use App\Models\Spot;
 use App\Services\SessionService;
 use App\Services\SpotService;
 use Closure;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -24,30 +23,6 @@ class SpotController extends Controller
             SpotService::checkUserSpot($request);
             return $next($request);
         });
-    }
-
-    /**
-     * 新規メモ作成から釣り場を保存するメソッド。
-     * @param StoreSpotRequest $request
-     * @return JsonResponse
-     * @throws Throwable
-     */
-    public function store(StoreSpotRequest $request): JsonResponse
-    {
-        try {
-            $spot = SpotService::createSpot($request->input('spot_name'));
-
-            return response()->json([
-                'id' => $spot->id,
-                'name' => $spot->name,
-            ], 201);
-        } catch (Throwable $e) {
-            Log::error($e);
-            return response()->json([
-                'message' => '釣り場の登録に失敗しました。',
-                'status' => 'error'
-            ], 500);
-        }
     }
 
     /**

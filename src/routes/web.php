@@ -11,7 +11,6 @@ use App\Http\Controllers\User\ShareSettingController;
 use App\Http\Controllers\User\SpotController;
 use App\Http\Controllers\User\TagController;
 use App\Http\Controllers\User\TrashedMemoController;
-use App\Http\Middleware\KeepBackFlashForAjax;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -53,7 +52,6 @@ Route::prefix('/')->as('user.')->group(function () {
         // 釣り場の登録
         Route::controller(SpotController::class)->prefix('spot')
             ->group(function () {
-                Route::post('/store', 'store')->name('spot.store')->middleware(KeepBackFlashForAjax::class);
                 Route::get('/edit/{spot}', 'edit')->name('spot.edit');
                 Route::patch('/update', 'update')->name('spot.update');
                 Route::delete('/destroy', 'destroy')->name('spot.destroy');
@@ -62,7 +60,6 @@ Route::prefix('/')->as('user.')->group(function () {
         // エサの登録
         Route::controller(BaitController::class)->prefix('bait')
             ->group(function () {
-                Route::post('/store', 'store')->name('bait.store')->middleware(KeepBackFlashForAjax::class);
                 Route::get('/edit/{bait}', 'edit')->name('bait.edit');
                 Route::patch('/update', 'update')->name('bait.update');
                 Route::delete('/destroy', 'destroy')->name('bait.destroy');
@@ -71,7 +68,6 @@ Route::prefix('/')->as('user.')->group(function () {
         // 魚名の登録
         Route::controller(FishNameController::class)->prefix('fish-name')
             ->group(function () {
-                Route::post('/store', 'store')->name('fish-name.store')->middleware(KeepBackFlashForAjax::class);
                 Route::get('/edit/{fishName}', 'edit')->name('fish-name.edit');
                 Route::patch('/update', 'update')->name('fish-name.update');
                 Route::delete('/destroy', 'destroy')->name('fish-name.destroy');
