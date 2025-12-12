@@ -28,7 +28,7 @@ class StoreMemoRequest extends FormRequest
             'fishing_date' => 'required|date|before_or_equal:today',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after_or_equal:start_time',
-            'fishing_spot' => 'required|integer|exists:spots,id',
+            'fishing_spot' => 'nullable|integer|exists:spots,id',
             // 気象状態
             'weather'      => 'required|string|in:晴れ,曇り,雨,その他',
             'air_temp'     => 'nullable|integer|min:0|max:60',
@@ -41,8 +41,8 @@ class StoreMemoRequest extends FormRequest
             'water_level' => 'nullable|numeric|min:0|max:999.9',
             'water_temp' => 'nullable|integer|min:0|max:99',
             // エサ
-            'baits' => 'array',
-            'baits.*' => 'required|integer|distinct|exists:baits,id',
+            // 'baits' => 'array',
+            'baits.*' => 'nullable|integer|distinct|exists:baits,id',
             // 釣果入力（配列）
             'fishing_results' => 'array',
             'fishing_results.*.fish_name' => 'nullable|integer|exists:fish_names,id',
@@ -77,7 +77,6 @@ class StoreMemoRequest extends FormRequest
             'end_time.required' => '終了時間を指定してください。',
             'end_time.date_format' => '終了時間の形式は HH:MM で指定してください。',
             'end_time.after_or_equal' => '終了時間は開始時間以降を指定してください。',
-            'fishing_spot.required' => '釣り場を選択してください。',
             'fishing_spot.integer' => '釣り場は整数で指定してください。',
             'fishing_spot.exists' => '選択された釣り場は存在しません。',
             // 気象状態
@@ -105,7 +104,6 @@ class StoreMemoRequest extends FormRequest
             'water_temp.max' => '水温は 99 以下で指定してください。',
             // エサ
             'baits.array' => 'エサの形式が不正です。',
-            'baits.*.required' => 'エサを選択してください。',
             'baits.*.integer' => 'エサの選択値が不正です。',
             'baits.*.distinct' => '同じエサが複数選択されています。',
             'baits.*.exists' => '選択されたエサは存在しません。',

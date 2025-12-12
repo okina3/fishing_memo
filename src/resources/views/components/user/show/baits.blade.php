@@ -6,11 +6,13 @@
          <div>
             <div id="baits-container" class="space-y-2">
                <div class="flex items-center gap-3 bait-row">
-                  @foreach ($getMemoBaitsName as $bait_name)
+                  @forelse(($getMemoBaitsName) as $bait_name)
                      <div class="p-2 w-60 border border-gray-500 rounded">
                         {{ $bait_name }}
                      </div>
-                  @endforeach
+                  @empty
+                     <div class="text-gray-600">エサは登録されていません。</div>
+                  @endforelse
                </div>
             </div>
          </div>
