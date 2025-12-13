@@ -139,8 +139,8 @@ class StoreMemoRequestTest extends TestCase
             'baits.*.exists' => '選択されたエサは存在しません。',
             // 釣果入力（配列）
             'fishing_results.array' => '釣果データの形式が不正です。',
-            'fishing_results.*.fish_name.integer' => '魚名の値が不正です。',
-            'fishing_results.*.fish_name.exists' => '選択された魚名は存在しません。',
+            'fishing_results.*.fish_name_id.integer' => '魚名の値が不正です。',
+            'fishing_results.*.fish_name_id.exists' => '選択された魚名は存在しません。',
             'fishing_results.*.count.required_with' => '匹数も入力してください。',
             'fishing_results.*.count.integer' => '匹数は整数で指定してください。',
             'fishing_results.*.count.min' => '匹数は 0 以上で指定してください。',

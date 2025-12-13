@@ -162,7 +162,7 @@ class MemoService
         // ピボット属性付きで中間テーブルに保存するための配列を作成
         $attachData = [];
         foreach ($fishing_results as $fishing_result) {
-            $fishNameId = (int) ($fishing_result['fish_name'] ?? 0);
+            $fishNameId = (int) ($fishing_result['fish_name_id'] ?? 0);
             if ($fishNameId <= 0) {
                 // 無効値はスキップ
                 continue;

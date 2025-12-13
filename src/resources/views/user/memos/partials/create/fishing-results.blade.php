@@ -7,22 +7,22 @@
       $initialRows = max(1, min(count(old('fishing_results', [])), 5));
    @endphp
 
-   <div id="catches-container" class="space-y-2 flex-1">
+   <div id="catches-container" class="space-y-2">
       @for ($i = 0; $i < $initialRows; $i++)
          @php
             $entry = old('fishing_results', [])[$i] ?? [
-                'fish_name' => '',
+               'fish_name_id' => '',
                 'count' => '',
                 'length' => '',
             ];
          @endphp
-         <div class="lg:gap-6 flex flex-wrap items-center gap-3 catch-row">
+         <div class="flex flex-wrap items-center gap-10 catch-row">
             {{-- 魚名の選択 --}}
             <div class="md:w-auto w-full">
-               <select class="w-60 rounded" name="fishing_results[{{ $i }}][fish_name]">
+               <select class="w-60 rounded" name="fishing_results[{{ $i }}][fish_name_id]">
                   <option value="">魚名を選択してください</option>
                   @foreach ($all_fish_names as $fish)
-                     <option value="{{ $fish->id }}" @selected(($entry['fish_name'] ?? '') == $fish->id)>{{ $fish->name }}
+                     <option value="{{ $fish->id }}" @selected(($entry['fish_name_id'] ?? '') == $fish->id)>{{ $fish->name }}
                      </option>
                   @endforeach
                </select>
@@ -54,7 +54,7 @@
    </div>
 
    {{-- エラーメッセージ（釣果の内訳） --}}
-   <x-input-error class="mt-2" :messages="$errors->get('fishing_results.*.fish_name')" />
+   <x-input-error class="mt-2" :messages="$errors->get('fishing_results.*.fish_name_id')" />
    <x-input-error class="mt-2" :messages="$errors->get('fishing_results.*.count')" />
    <x-input-error class="mt-2" :messages="$errors->get('fishing_results.*.length')" />
    <div class="mt-2">

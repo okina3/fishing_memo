@@ -11,15 +11,15 @@
                 $existingResults = $oldResults;
             } else {
                 $existingResults = [];
-                if (isset($select_memo) && $select_memo->fish_names->isNotEmpty()) {
-                    foreach ($select_memo->fish_names as $fn) {
-                        $existingResults[] = [
-                            'fish_name' => $fn->id,
-                            'count' => $fn->pivot->count ?? '',
-                            'length' => $fn->pivot->length ?? '',
-                        ];
-                    }
-                }
+               if (isset($select_memo) && $select_memo->fish_names->isNotEmpty()) {
+                  foreach ($select_memo->fish_names as $fn) {
+                     $existingResults[] = [
+                        'fish_name_id' => $fn->id,
+                        'count' => $fn->pivot->count ?? '',
+                        'length' => $fn->pivot->length ?? '',
+                     ];
+                  }
+               }
             }
             $initialRows = max(1, min(count($existingResults), 5));
          @endphp
@@ -27,15 +27,15 @@
             <div id="catches-container" class="space-y-2 flex-1">
                @for ($i = 0; $i < $initialRows; $i++)
                   @php
-                     $entry = $existingResults[$i] ?? ['fish_name' => '', 'count' => '', 'length' => ''];
+                     $entry = $existingResults[$i] ?? ['fish_name_id' => '', 'count' => '', 'length' => ''];
                   @endphp
                   <div class="lg:gap-6 flex flex-wrap items-center gap-3 catch-row">
                      {{-- 魚名の選択 --}}
                      <div class="md:w-auto w-full">
-                        <select class="w-60 rounded" name="fishing_results[{{ $i }}][fish_name]">
+                        <select class="w-60 rounded" name="fishing_results[{{ $i }}][fish_name_id]">
                            <option value="">魚名を選択してください</option>
                            @foreach ($all_fish_names as $fish)
-                              <option value="{{ $fish->id }}" @selected(($entry['fish_name'] ?? '') == $fish->id)>{{ $fish->name }}
+                              <option value="{{ $fish->id }}" @selected(($entry['fish_name_id'] ?? '') == $fish->id)>{{ $fish->name }}
                               </option>
                            @endforeach
                         </select>
@@ -63,7 +63,7 @@
             </div>
          </div>
          {{-- エラーメッセージ（釣果の内訳） --}}
-         <x-input-error class="mt-2" :messages="$errors->get('fishing_results.*.fish_name')" />
+         <x-input-error class="mt-2" :messages="$errors->get('fishing_results.*.fish_name_id')" />
          <x-input-error class="mt-2" :messages="$errors->get('fishing_results.*.count')" />
          <x-input-error class="mt-2" :messages="$errors->get('fishing_results.*.length')" />
          <div class="mt-2">
