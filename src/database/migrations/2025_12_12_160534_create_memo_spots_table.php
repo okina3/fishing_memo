@@ -28,10 +28,12 @@ return new class extends Migration
                 ->nullable();
             // 水位
             $table->decimal('water_level', 4, 1)
-                ->nullable();
+                ->nullable()
+                ->comment('m');
             // 水温
             $table->integer('water_temp')
-                ->nullable();
+                ->nullable()
+                ->comment('℃');
             $table->timestamps();
             $table->primary(['memo_id', 'spot_id']);
         });

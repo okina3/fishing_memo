@@ -7,7 +7,7 @@
       $initialRows = max(1, min(count(old('spot_areas', [])), 3));
    @endphp
 
-   <div id="spot-areas-container" class="space-y-4">
+   <div id="spot-areas-container" class="space-y-2">
       @for ($i = 0; $i < $initialRows; $i++)
          @php
             $entry = old('spot_areas', [])[$i] ?? [
