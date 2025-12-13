@@ -4,13 +4,31 @@
 
    @php
       // 初期表示行数（最低1、最大3）
-      $initialRows = max(1, min(count(old('spot_areas', [])), 3));
+      $oldAreas = old('spot_areas');
+      if (is_array($oldAreas)) {
+          $existingAreas = $oldAreas;
+      } else {
+          $existingAreas = [];
+          if (isset($select_memo) && $select_memo->spots->isNotEmpty()) {
+              foreach ($select_memo->spots as $fn) {
+                  $existingAreas[] = [
+                      'spot_id' => $fn->id ?? '',
+                      'river_flow' => $fn->pivot->river_flow ?? '',
+                      'turbidity' => $fn->pivot->turbidity ?? '',
+                      'water_level' => $fn->pivot->water_level ?? '',
+                      'water_temp' => $fn->pivot->water_temp ?? '',
+                  ];
+              }
+          }
+      }
+      // 初期表示行数（最低1、最大3）
+      $initialRows = max(1, min(count($existingAreas), 3));
    @endphp
 
    <div id="spot-areas-container" class="space-y-2">
       @for ($i = 0; $i < $initialRows; $i++)
          @php
-            $entry = old('spot_areas', [])[$i] ?? [
+            $entry = $existingAreas[$i] ?? [
                 'spot_id' => '',
                 'river_flow' => '',
                 'turbidity' => '',
@@ -22,7 +40,7 @@
             {{-- 釣り場選択 --}}
             <div>
                <label class="mb-1 block text-sm text-gray-700">釣り場</label>
-               <select name="spot_areas[{{ $i }}][spot_id]" class="w-60 rounded">
+               <select class="w-60 rounded" name="spot_areas[{{ $i }}][spot_id]">
                   <option value="">場所を選択してください</option>
                   @foreach ($all_spots as $spot)
                      <option value="{{ $spot->id }}" @selected(($entry['spot_id'] ?? '') == $spot->id)>{{ $spot->name }}</option>

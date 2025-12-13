@@ -56,12 +56,20 @@ class SpotService
    }
 
    /**
-    * 選択したメモに紐づいた、釣り場のNameを、配列で取得するメソッド。
+    * 選択したメモに紐づいた、場所のデータ（釣り場、流れ、濁り、水位、水温）を、配列で取得するメソッド。
     * @param Collection $select_memo_spots
     * @return array
     */
-   public static function getMemoSpotsName(Collection $select_memo_spots): array
+   public static function getMemoSpotsResults(Collection $select_memo_spots): array
    {
-      return $select_memo_spots->pluck('name')->toArray();
+      return $select_memo_spots->map(function ($spot) {
+         return [
+            'name' => $spot->name,
+            'river_flow' => $spot->pivot->river_flow ?? null,
+            'turbidity' => $spot->pivot->turbidity ?? null,
+            'water_level' => $spot->pivot->water_level ?? null,
+            'water_temp' => $spot->pivot->water_temp ?? null,
+         ];
+      })->toArray();
    }
 }

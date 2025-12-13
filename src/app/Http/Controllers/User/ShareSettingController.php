@@ -14,6 +14,7 @@ use App\Services\FishNameService;
 use App\Services\ImageService;
 use App\Services\SessionService;
 use App\Services\ShareSettingService;
+use App\Services\SpotService;
 use App\Services\TagService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -78,6 +79,8 @@ class ShareSettingController extends Controller
         ShareSettingService::checkSharedMemoShow($id);
         // 選択した共有メモを、一件取得
         $select_memo = Memo::with('tags.user')->where('id', $id)->first();
+        // 選択したメモに紐づいた釣り場の名前を取得
+        $get_memo_spots_name = SpotService::getMemoSpotsResults($select_memo->spots);
         // 選択したメモに紐づいたエサの名前を取得
         $get_memo_baits_name = BaitService::getMemoBaitsName($select_memo->baits);
         // 選択したメモに紐づいた釣果のデータを取得（名前・匹数・長さ）
@@ -91,7 +94,7 @@ class ShareSettingController extends Controller
 
         return view(
             'user.shareSettings.show',
-            compact('select_memo', 'get_memo_baits_name', 'get_memo_fish_results', 'get_memo_tags_name', 'get_memo_images', 'select_user')
+            compact('select_memo', 'get_memo_spots_name', 'get_memo_baits_name', 'get_memo_fish_results', 'get_memo_tags_name', 'get_memo_images', 'select_user')
         );
     }
 
@@ -106,6 +109,8 @@ class ShareSettingController extends Controller
         ShareSettingService::checkSharedMemoEdit($id);
         // 選択した共有メモを、一件取得
         $select_memo = Memo::with('tags.user')->where('id', $id)->first();
+        // 選択したメモに紐づいた釣り場の名前を取得
+        $get_memo_spots_name = SpotService::getMemoSpotsResults($select_memo->spots);
         // 選択したメモに紐づいたエサの名前を取得
         $get_memo_baits_name = BaitService::getMemoBaitsName($select_memo->baits);
         // 選択したメモに紐づいた釣果のデータを取得（名前・匹数・長さ）
@@ -119,7 +124,7 @@ class ShareSettingController extends Controller
 
         return view(
             'user.shareSettings.edit',
-            compact('select_memo', 'get_memo_baits_name', 'get_memo_fish_results', 'get_memo_tags_name', 'get_memo_images', 'select_user')
+            compact('select_memo', 'get_memo_spots_name', 'get_memo_baits_name', 'get_memo_fish_results', 'get_memo_tags_name', 'get_memo_images', 'select_user')
         );
     }
 

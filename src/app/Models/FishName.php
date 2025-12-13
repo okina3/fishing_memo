@@ -26,8 +26,7 @@ class FishName extends Model
     public function memos(): BelongsToMany
     {
         return $this->belongsToMany(Memo::class, 'memo_fish_names')
-            ->withPivot(['count', 'length'])
-            ->withTimestamps();
+            ->withPivot(['count', 'length']);
     }
 
     /**

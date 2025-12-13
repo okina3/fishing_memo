@@ -69,13 +69,7 @@ class MemoService
             'end_time' => $request->input('end_time'),
             'weather' => $request->input('weather'),
             'air_temp' => $request->input('air_temp'),
-            'max_wind' => $request->input('max_wind'),
             'wind_dir' => $request->input('wind_dir'),
-            'river_flow' => $request->input('river_flow'),
-            'turbidity' => $request->input('turbidity'),
-            'debris' => $request->input('debris'),
-            'water_level' => $request->input('water_level'),
-            'water_temp' => $request->input('water_temp'),
             'content' => $request->input('content'),
             'user_id' => Auth::id(),
         ]);
@@ -95,13 +89,7 @@ class MemoService
         $memo->end_time = $request->input('end_time');
         $memo->weather = $request->input('weather');
         $memo->air_temp = $request->input('air_temp');
-        $memo->max_wind = $request->input('max_wind');
         $memo->wind_dir = $request->input('wind_dir');
-        $memo->river_flow = $request->input('river_flow');
-        $memo->turbidity = $request->input('turbidity');
-        $memo->debris = $request->input('debris');
-        $memo->water_level = $request->input('water_level');
-        $memo->water_temp = $request->input('water_temp');
         $memo->content = $request->input('content');
 
         $memo->save();
@@ -117,13 +105,36 @@ class MemoService
      */
     public static function attachExistingSpots($request, int $memo_id): void
     {
-        // 既存釣り場の選択があれば、メモに紐付けて中間テーブルに保存
-        if (!empty($request->spots)) {
-            $memo = Memo::findOrFail($memo_id);
-            $spotIds = array_filter(array_map('intval', (array) $request->spots), fn($id) => $id > 0);
-            if (!empty($spotIds)) {
-                $memo->spots()->attach($spotIds);
+        // 場所入力があれば処理を進める
+        $spot_areas = $request->input('spot_areas', []);
+        if (!is_array($spot_areas) || count($spot_areas) === 0) {
+            return;
+        }
+
+        // ピボット属性付きで中間テーブルに保存するための配列を作成
+        $attachData = [];
+        foreach ($spot_areas as $spot_area) {
+            $spotId = (int) ($spot_area['spot_id'] ?? 0);
+            if ($spotId <= 0) {
+                // 無効値はスキップ
+                continue;
             }
+            $river_flow = isset($spot_area['river_flow']) ? (string) $spot_area['river_flow'] : '';
+            $turbidity = isset($spot_area['turbidity']) ? (string) $spot_area['turbidity'] : '';
+            $water_level = isset($spot_area['water_level']) ? (float) $spot_area['water_level'] : 0.0;
+            $water_temp = isset($spot_area['water_temp']) ? (int) $spot_area['water_temp'] : 0;
+            $attachData[$spotId] = [
+                'river_flow' => $river_flow,
+                'turbidity' => $turbidity,
+                'water_level' => $water_level,
+                'water_temp' => $water_temp
+            ];
+        }
+
+        // 場所データを、メモに紐付けて中間テーブルに保存
+        if (!empty($attachData)) {
+            $memo = Memo::findOrFail($memo_id);
+            $memo->spots()->attach($attachData);
         }
     }
 

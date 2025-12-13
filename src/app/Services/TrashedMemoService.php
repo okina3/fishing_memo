@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\MemoBait;
 use App\Models\MemoFishName;
 use App\Models\MemoImage;
+use App\Models\MemoSpot;
 use App\Models\MemoTag;
 
 class TrashedMemoService
@@ -17,6 +18,7 @@ class TrashedMemoService
     */
    public static function deleteRelatedRecords(int $memoId): void
    {
+      MemoSpot::where('memo_id', $memoId)->delete();
       MemoBait::where('memo_id', $memoId)->delete();
       MemoFishName::where('memo_id', $memoId)->delete();
       MemoTag::where('memo_id', $memoId)->delete();
