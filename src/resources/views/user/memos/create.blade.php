@@ -4,7 +4,10 @@
          {{-- メモの新規作成ページのタイトル --}}
          <h1 class="heading heading_bg">新規メモ作成</h1>
          {{-- メモを新規作成するエリア --}}
-         <div class="p-3">
+         <div class="px-3 pb-3">
+            <p class="my-2 text-sm">
+               * まず管理画面（マスターズ）で「釣り場」「エサ」「魚名」を登録してください。
+            </p>
             <form action="{{ route('user.store') }}" method="post">
                @csrf
                {{-- 釣行日・釣行時間 --}}

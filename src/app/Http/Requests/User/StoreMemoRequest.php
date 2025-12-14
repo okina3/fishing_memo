@@ -28,7 +28,7 @@ class StoreMemoRequest extends FormRequest
             'fishing_date' => 'required|date|before_or_equal:today',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after_or_equal:start_time',
-            'weather'      => 'required|string|in:晴れ,曇り,雨,その他',
+            'weather'      => 'nullable|string|in:晴れ,曇り,雨,その他',
             'air_temp'     => 'nullable|integer|min:0|max:60',
             'wind_dir'     => 'nullable|string|in:北,北東,東,南東,南,南西,西,北西',
             // 釣り場
@@ -78,7 +78,6 @@ class StoreMemoRequest extends FormRequest
             'spot_areas.array' => '釣り場データの形式が不正です。',
             'spot_areas.*.spot_id.integer' => '釣り場は整数で指定してください。',
             'spot_areas.*.spot_id.exists' => '選択された釣り場は存在しません。',
-            'weather.required' => '天気を指定してください。',
             'weather.in' => '天気の値が不正です。',
             'weather.string' => '天気は文字列で指定してください。',
             'air_temp.integer' => '気温は整数で指定してください。',

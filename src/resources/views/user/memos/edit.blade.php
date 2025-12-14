@@ -4,7 +4,10 @@
          {{-- メモの編集ページのタイトル --}}
          <h1 class="heading heading_bg">メモ編集</h1>
          {{-- 選択したメモを編集するエリア --}}
-         <div class="p-3">
+         <div class="px-3 pb-3">
+            <p class="my-2 text-sm">
+               * 管理画面（マスターズ）で「釣り場」「エサ」「魚名」を登録してください。
+            </p>
             <form action="{{ route('user.update') }}" method="post">
                @csrf
                @method('patch')
