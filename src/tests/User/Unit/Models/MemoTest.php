@@ -34,46 +34,42 @@ class MemoTest extends TestCase
         $this->actingAs($this->user, 'users');
     }
 
-    // メモを作成するヘルパーメソッド
-    private function createMemos(int $count): Collection
-    {
-        // 指定された数のメモを、現在のユーザーに関連付けて作成する
-        return Memo::factory()->count($count)->create(['user_id' => $this->user->id]);
-    }
-
-    // ソフトデリートされたメモを作成するヘルパーメソッド
-    private function createDeletedMemos(int $count): Collection
-    {
-        // 指定された数のメモを、現在のユーザーに関連付けて作成し、deleted_atを設定する
-        return Memo::factory()->count($count)->create(['user_id' => $this->user->id, 'deleted_at' => now(),]);
-    }
-
-    // メモにエサを関連付けるヘルパーメソッド
-    private function attachBaits(Memo $memo, int $baitCount): Collection
-    {
-        // エサを作成し、メモに関連付け
-        $baits = Bait::factory()->count($baitCount)->create();
-        $memo->baits()->attach($baits->pluck('id')->toArray());
-
-        // 作成されたエサのコレクションを返す
-        return $baits;
-    }
-
-    // メモに魚名を関連付けるヘルパーメソッド
+    // ピボット属性付きでメモに魚名を関連付けるヘルパーメソッド
     private function attachFishNames(Memo $memo, int $fishNameCount): Collection
     {
         // 魚名を作成
         $fishNames = FishName::factory()->count($fishNameCount)->create();
-
         // ピボット用データを、メモに関連付け
         $pivotData = [];
         foreach ($fishNames as $fishName) {
-            $pivotData[$fishName->id] = ['count' => 1, 'length' => 10];
+            $pivotData[$fishName->id] = [
+                'count' => 1,
+                'length' => 10
+            ];
         }
         $memo->fish_names()->attach($pivotData);
-
         // 作成された魚名のコレクションを返す
         return $fishNames;
+    }
+
+    // ピボット属性付きでメモに釣り場を関連付けるヘルパーメソッド
+    private function attachSpots(Memo $memo, int $spotCount): Collection
+    {
+        // 釣り場を作成
+        $spots = Spot::factory()->count($spotCount)->create(['user_id' => $this->user->id]);
+        // ピボット用データを、メモに関連付け
+        $pivotData = [];
+        foreach ($spots as $spot) {
+            $pivotData[$spot->id] = [
+                'river_flow' => 'あり',
+                'turbidity' => '濁り',
+                'water_level' => 1.2,
+                'water_temp' => 15,
+            ];
+        }
+        $memo->spots()->attach($pivotData);
+        // 作成された釣り場のコレクションを返す
+        return $spots;
     }
 
     // メモにタグを関連付けるヘルパーメソッド
@@ -87,60 +83,50 @@ class MemoTest extends TestCase
         return $tags;
     }
 
-    // メモに画像を関連付けるヘルパーメソッド
-    private function attachImages(Memo $memo, int $imageCount): Collection
-    {
-        // 画像を作成し、メモに関連付け
-        $images = Image::factory()->count($imageCount)->create();
-        $memo->images()->attach($images->pluck('id')->toArray());
-
-        // 作成された画像のコレクションを返す
-        return $images;
-    }
-
     // 基本的なリレーションが、正しく機能しているかのテスト
     public function testMemoRelations()
     {
         // 1件のメモを作成
-        $memo = $this->createMemos(1)->first();
-        // スポットを作成し、メモに関連付け
-        $spot = Spot::factory()->create(['user_id' => $this->user->id]);
-        $memo->spot()->associate($spot);
-        $memo->save();
+        $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+        // メモに2件の釣り場を関連付け（ピボットデータ付き）
+        $attachedSpots = $this->attachSpots($memo, 2);
+        // メモに2件のエサを関連付け
+        $attachedBaits = Bait::factory()->count(2)->create();
+        $memo->baits()->attach($attachedBaits->pluck('id')->toArray());
+        // メモに2件の魚名を関連付け（ピボットデータ付き）
+        $attachedFishNames = $this->attachFishNames($memo, 2);
         // メモに2件のタグを関連付け
         $attachedTags = $this->attachTags($memo, 2);
         // メモに2件の画像を関連付け
-        $attachedImages = $this->attachImages($memo, 2);
-        // メモに2件のエサを関連付け
-        $attachedBaits = $this->attachBaits($memo, 2);
-        // メモに2件の魚名を関連付け
-        $attachedFishNames = $this->attachFishNames($memo, 2);
+        $attachedImages = Image::factory()->count(2)->create();
+        $memo->images()->attach($attachedImages->pluck('id')->toArray());
+
         // リレーションを最新化しておく（テストの安定化のため）
-        $memo->load(['tags', 'images', 'baits', 'fish_names', 'spot']);
+        $memo->load(['tags', 'images', 'baits', 'fish_names', 'spots']);
 
         // メモと釣り場のリレーションが、正しいインスタンスであることを確認
-        $this->assertInstanceOf(BelongsTo::class, $memo->spot());
-        // 作成した釣り場のIDが、メモに紐づいた釣り場のIDと、一致しているかを確認
-        $this->assertEquals($spot->id, $memo->spot->id);
+        $this->assertInstanceOf(BelongsToMany::class, $memo->spots());
+        // 釣り場のID配列がメモの関連IDと一致するか確認（順序非依存）
+        $this->assertEqualsCanonicalizing($attachedSpots->pluck('id')->toArray(), $memo->spots->pluck('id')->toArray());
 
         // メモとエサのリレーションが、正しいインスタンスであることを確認
         $this->assertInstanceOf(BelongsToMany::class, $memo->baits());
-        // 作成した関連付けられたエサのID配列が、作成したメモに紐づいたエサのID配列と、一致しているかを確認（順序非依存）
+        // エサのID配列がメモの関連IDと一致するか確認（順序非依存）
         $this->assertEqualsCanonicalizing($attachedBaits->pluck('id')->toArray(), $memo->baits->pluck('id')->toArray());
 
         // メモと魚名のリレーションが、正しいインスタンスであることを確認
         $this->assertInstanceOf(BelongsToMany::class, $memo->fish_names());
-        // 作成した関連付けられた魚名のID配列が、作成したメモに紐づいた魚名のID配列と、一致しているかを確認（順序非依存）
+        // 魚名のID配列がメモの関連IDと一致するか確認（順序非依存）
         $this->assertEqualsCanonicalizing($attachedFishNames->pluck('id')->toArray(), $memo->fish_names->pluck('id')->toArray());
 
         // メモとタグのリレーションが、正しいインスタンスであることを確認
         $this->assertInstanceOf(BelongsToMany::class, $memo->tags());
-        // 作成した関連付けられたタグのID配列が、作成したメモに紐づいたタグのID配列と、一致しているかを確認（順序非依存）
+        // タグのID配列がメモの関連IDと一致するか確認（順序非依存）
         $this->assertEqualsCanonicalizing($attachedTags->pluck('id')->toArray(), $memo->tags->pluck('id')->toArray());
 
         // メモと画像のリレーションが、正しいインスタンスであることを確認
         $this->assertInstanceOf(BelongsToMany::class, $memo->images());
-        // 作成した関連付けられた画像のID配列が、作成したメモに紐づいた画像のID配列と、一致しているかを確認（順序非依存）
+        // 画像のID配列がメモの関連IDと一致するか確認（順序非依存）
         $this->assertEqualsCanonicalizing($attachedImages->pluck('id')->toArray(), $memo->images->pluck('id')->toArray());
 
         // 共有設定を作成し、メモに関連付け
@@ -148,7 +134,7 @@ class MemoTest extends TestCase
 
         // メモと共有設定のリレーションが、正しいインスタンスであることを確認
         $this->assertInstanceOf(HasMany::class, $memo->shareSettings());
-        // 作成した共有設定のIDの配列が、メモに紐づいた共有設定のIDの配列と、一致しているかを確認（単一作成のため配列化して比較）
+        // 共有設定のID配列がメモの関連IDと一致するか確認
         $this->assertEqualsCanonicalizing([$shareSetting->id], $memo->shareSettings->pluck('id')->toArray());
 
         // メモとユーザーのリレーションが、正しいインスタンスであることを確認
@@ -161,11 +147,11 @@ class MemoTest extends TestCase
     public function testAvailableAllMemosScope()
     {
         // 3件のメモを作成
-        $memos = $this->createMemos(3);
+        $memos = Memo::factory()->count(3)->create(['user_id' => $this->user->id]);
         // 全てのメモを取得
         $allMemos = Memo::availableAllMemos()->get();
 
-        // 作成したメモのIDの配列が、取得したメモのIDの配列と、一致するか確認（順序非依存）
+        // メモのID配列が取得結果と一致するか確認（順序非依存）
         $this->assertEqualsCanonicalizing($memos->pluck('id')->toArray(), $allMemos->pluck('id')->toArray());
     }
 
@@ -173,11 +159,11 @@ class MemoTest extends TestCase
     public function testAvailableSelectMemoScope()
     {
         // 1件のメモを作成
-        $memo = $this->createMemos(1)->first();
+        $memo = Memo::factory()->create(['user_id' => $this->user->id]);
         // 選択したメモを取得
         $selectedMemo = Memo::availableSelectMemo($memo->id)->first();
 
-        // 作成したメモのIDが、取得したメモのIDと、一致するか確認
+        // 作成したメモIDが取得結果と一致するか確認
         $this->assertEquals($memo->id, $selectedMemo->id);
     }
 
@@ -185,11 +171,11 @@ class MemoTest extends TestCase
     public function testAvailableAllTrashedMemosScope()
     {
         // 3件のソフトデリートしたメモを作成
-        $memos = $this->createDeletedMemos(3);
+        $memos = Memo::factory()->count(3)->create(['user_id' => $this->user->id, 'deleted_at' => now()]);
         // 全てのソフトデリートしたメモを取得
         $trashedMemos = Memo::availableAllTrashedMemos()->get();
 
-        // 作成した削除済みメモのIDの配列が、取得した削除済みメモのIDの配列と、一致するか確認（順序非依存）
+        // 削除済みメモID配列が取得結果と一致するか確認（順序非依存）
         $this->assertEqualsCanonicalizing($memos->pluck('id')->toArray(), $trashedMemos->pluck('id')->toArray());
     }
 
@@ -197,11 +183,11 @@ class MemoTest extends TestCase
     public function testAvailableSelectTrashedMemoScope()
     {
         // 1件のソフトデリートしたメモを作成
-        $memo = $this->createDeletedMemos(1)->first();
+        $memo = Memo::factory()->count(1)->create(['user_id' => $this->user->id, 'deleted_at' => now()])->first();
         // 選択した削除済みのメモを取得
         $selectedTrashedMemo = Memo::availableSelectTrashedMemo($memo->id)->first();
 
-        // 作成した削除済みメモのIDが、取得した削除済みメモのIDと、一致するか確認
+        // 削除済みメモIDが取得結果と一致するか確認
         $this->assertEquals($memo->id, $selectedTrashedMemo->id);
     }
 }

@@ -30,6 +30,58 @@ class FishNameControllerTest extends TestCase
         $this->actingAs($this->user, 'users');
     }
 
+    // 魚名を保存するテスト
+    public function testStoreFishNameController()
+    {
+        // リクエストデータを作成
+        $payload = ['fish_name' => 'マスター追加魚名'];
+
+        // 魚名を保存するの為に、リクエスト送信
+        $response = $this->post(route('user.fish-name.store'), $payload);
+
+        // リダイレクトで成功メッセージがフラッシュされていることを検証
+        $response->assertRedirect(route('user.masters.index', ['tab' => 'fishNames']));
+        $response->assertSessionHas(['message' => '魚名を追加しました。', 'status' => 'success']);
+
+        // 魚名が作成されていることを検証
+        $this->assertDatabaseHas('fish_names', [
+            'user_id' => $this->user->id,
+            'name' => 'マスター追加魚名',
+        ]);
+    }
+
+    // 魚名を保存する時のエラーハンドリングをテスト
+    #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
+    #[\PHPUnit\Framework\Attributes\PreserveGlobalState(false)]
+    public function testErrorStoreFishNameController()
+    {
+        // リクエストデータを作成
+        $payload = ['fish_name' => '失敗魚名'];
+
+        // FishNameService::createFishName が例外を投げるようにエイリアスモック（checkUserFishName は通過）
+        $serviceMock = Mockery::mock('alias:App\\Services\\FishNameService');
+        $serviceMock->shouldReceive('checkUserFishName')->andReturnNull();
+        $serviceMock->shouldReceive('createFishName')
+            ->once()->andThrow(new Exception('DBエラー'));
+
+        // Log::errorメソッドが呼び出されるときに、例外がログに記録されることを確認
+        Log::shouldReceive('error')->once()->withAnyArgs();
+
+        // 魚名を保存するの為に、リクエスト送信
+        $response = $this->from(route('user.masters.index', ['tab' => 'fishNames']))
+            ->post(route('user.fish-name.store'), $payload);
+
+        // リダイレクトでエラーメッセージがフラッシュされていることを検証
+        $response->assertRedirect(route('user.masters.index', ['tab' => 'fishNames']));
+        $response->assertSessionHas(['message' => '魚名の追加に失敗しました', 'status' => 'error']);
+
+        // レコードが保存されていないことを検証
+        $this->assertDatabaseMissing('fish_names', [
+            'user_id' => $this->user->id,
+            'name' => '失敗魚名',
+        ]);
+    }
+
     // 魚名の編集画面が正しく表示されることをテスト
     public function testEditFishNameController()
     {
