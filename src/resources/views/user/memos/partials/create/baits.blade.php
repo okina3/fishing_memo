@@ -1,40 +1,36 @@
-<div class="mb-8">
+<div class="mb-3">
    {{-- エサの入力 --}}
-   <div class="md:flex-row flex flex-col items-start gap-4">
-      <div>
-         <h2 class="sub_heading mb-1">エサ</h2>
-         @php
-            // 初期表示行数（最低1、最大5）
-            $initialRows = max(1, min(count(old('baits', [])), 5));
-         @endphp
-         <div>
-            <div id="baits-container" class="space-y-2">
-               @for ($i = 0; $i < $initialRows; $i++)
-                  <div class="flex items-center gap-3 bait-row">
-                     <select class="rounded w-60" name="baits[]">
-                        <option value="">エサの選択してください</option>
-                        @foreach ($all_baits as $bait)
-                           <option value="{{ $bait->id }}" @selected((old('baits', [])[$i] ?? '') == $bait->id)>
-                              {{ $bait->name }}
-                           </option>
-                        @endforeach
-                     </select>
-                     <button type="button"
-                        class="text-xs text-red-600 hover:underline remove-bait-row {{ $i === 0 ? 'hidden' : '' }}">
-                        削除
-                     </button>
-                  </div>
-               @endfor
-            </div>
-            <div class="mt-2">
-               <button type="button" id="add-bait-row" class="text-sm text-blue-700 hover:underline">
-                  ＋ エサ入力エリアを追加（最大5件）
+   <h2 class="sub_heading mb-1">エサ</h2>
+   @php
+      // 初期表示行数（最低1、最大5）
+      $initialRows = max(1, min(count(old('baits', [])), 5));
+   @endphp
+   <div>
+      <div id="baits-container" class="space-y-1">
+         @for ($i = 0; $i < $initialRows; $i++)
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10 bait-row">
+               <select class="rounded w-60" name="baits[]">
+                  <option value="">エサの選択してください</option>
+                  @foreach ($all_baits as $bait)
+                     <option value="{{ $bait->id }}" @selected((old('baits', [])[$i] ?? '') == $bait->id)>
+                        {{ $bait->name }}
+                     </option>
+                  @endforeach
+               </select>
+               <button type="button"
+                  class="text-xs text-red-600 hover:underline remove-bait-row {{ $i === 0 ? 'hidden' : '' }}">
+                  削除
                </button>
             </div>
-            {{-- エラーメッセージ（エサ配列） --}}
-            <x-input-error class="mt-2" :messages="$errors->get('baits.*')" />
-         </div>
+         @endfor
       </div>
+      <div class="mt-2">
+         <button type="button" id="add-bait-row" class="text-sm text-blue-700 hover:underline">
+            ＋ エサ入力エリアを追加（最大5件）
+         </button>
+      </div>
+      {{-- エラーメッセージ（エサ配列） --}}
+      <x-input-error class="mt-2" :messages="$errors->get('baits.*')" />
    </div>
 </div>
 {{-- 固有の JavaScript の読み込み --}}

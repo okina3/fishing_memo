@@ -13,7 +13,7 @@
                <div class="m-2">
                   <div class="p-2 sm:w-2/3 mx-auto">
                      <div class="mt-2">
-                        <h2 class="sub_heading mb-1">画像</h2>
+                        <h2 class="sub_heading-2 mb-1">画像</h2>
                         <input class="py-1 px-3 w-full border border-gray-300 rounded bg-gray-100" type="file"
                            id="image" name="images" accept="image/png,image/jpeg,image/jpg">
                      </div>

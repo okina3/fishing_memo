@@ -40,7 +40,7 @@
             </form>
             {{-- メモの共有状態を詳しく表示するエリア --}}
             <div class="mb-3 pb-4 border-b border-gray-400">
-                <h2 class="sub_heading mb-1">共有中のユーザー</h2>
+                <h2 class="sub_heading-2 mb-1">共有中のユーザー</h2>
                 {{-- 共有中のユーザーの情報を表示 --}}
                 <div
                     class="p-2 max-h-[25vh] border border-gray-400 rounded bg-white overflow-y-scroll overscroll-none">
@@ -68,7 +68,7 @@
             <form class="mb-3" action="{{ route('user.share-setting.destroy') }}" method="post">
                 @csrf
                 @method('delete')
-                <h2 class="sub_heading mb-1">このメモの共有を停止する</h2>
+                <h2 class="sub_heading-2 mb-1">このメモの共有を停止する</h2>
                 {{-- ユーザーのメールアドレスを入力 --}}
                 <p class="text-sm">共有停止したいユーザーのメールアドレスを入力してください。</p>
                 <input class="mb-2 w-60 rounded" type="text" name="share_user_end"

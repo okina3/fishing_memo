@@ -5,8 +5,8 @@
          <h1 class="heading heading_bg">新規メモ作成</h1>
          {{-- メモを新規作成するエリア --}}
          <div class="px-3 pb-3">
-            <p class="my-2 text-sm">
-               * まず管理画面（マスターズ）で「釣り場」「エサ」「魚名」を登録してください。
+            <p class="my-2 text-sm font-bold">
+               ＊ まず管理画面（マスターズ）で「釣り場」「エサ」「魚名」を登録してください。
             </p>
             <form action="{{ route('user.store') }}" method="post">
                @csrf

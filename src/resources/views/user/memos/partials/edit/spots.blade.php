@@ -1,7 +1,4 @@
-<div class="mb-8">
-   {{-- 釣り場の入力 --}}
-   <h2 class="sub_heading mb-1">場所</h2>
-
+<div class="mb-3">
    @php
       // 初期表示行数（最低1、最大3）
       $oldAreas = old('spot_areas');
@@ -25,7 +22,8 @@
       $initialRows = max(1, min(count($existingAreas), 3));
    @endphp
 
-   <div id="spot-areas-container" class="space-y-2">
+   {{-- 釣り場の入力 --}}
+   <div id="spot-areas-container" class="space-y-5 lg:space-y-1">
       @for ($i = 0; $i < $initialRows; $i++)
          @php
             $entry = $existingAreas[$i] ?? [
@@ -36,10 +34,10 @@
                 'water_temp' => '',
             ];
          @endphp
-         <div class="flex flex-wrap items-center gap-6 md:gap-10 spot-area-row">
+         <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10 spot-area-row">
             {{-- 釣り場選択 --}}
             <div>
-               <label class="mb-1 block text-sm text-gray-700">釣り場</label>
+               <label class="block text-sm font-semibold text-gray-700">釣り場</label>
                <select class="w-60 rounded" name="spot_areas[{{ $i }}][spot_id]">
                   <option value="">場所を選択してください</option>
                   @foreach ($all_spots as $spot)
@@ -50,7 +48,7 @@
 
             {{-- 流れの有無 --}}
             <div>
-               <label class="mb-1 block text-sm text-gray-700">流れの有無</label>
+               <label class="block text-sm text-gray-700">流れの有無</label>
                <select name="spot_areas[{{ $i }}][river_flow]" class="w-32 rounded">
                   <option value="" @selected(($entry['river_flow'] ?? '') === '')>未選択</option>
                   <option value="流れあり" @selected(($entry['river_flow'] ?? '') === '流れあり')>あり</option>
@@ -60,7 +58,7 @@
 
             {{-- 濁り --}}
             <div>
-               <label class="mb-1 block text-sm text-gray-700">濁り</label>
+               <label class="block text-sm text-gray-700">濁り</label>
                <select name="spot_areas[{{ $i }}][turbidity]" class="w-32 rounded">
                   <option value="" @selected(($entry['turbidity'] ?? '') === '')>未選択</option>
                   <option value="クリア" @selected(($entry['turbidity'] ?? '') === 'クリア')>クリア</option>
@@ -70,7 +68,7 @@
 
             {{-- 水深 --}}
             <div>
-               <label class="mb-1 block text-sm text-gray-700">水深</label>
+               <label class="block text-sm text-gray-700">水深</label>
                <div class="flex items-center gap-2">
                   <input class="w-24 rounded text-right" type="number"
                      name="spot_areas[{{ $i }}][water_level]" value="{{ $entry['water_level'] ?? '' }}"
@@ -81,7 +79,7 @@
 
             {{-- 水温 --}}
             <div>
-               <label class="mb-1 block text-sm text-gray-700">水温</label>
+               <label class="block text-sm text-gray-700">水温</label>
                <div class="flex items-center gap-2">
                   <input class="w-24 rounded text-right" type="number"
                      name="spot_areas[{{ $i }}][water_temp]" value="{{ $entry['water_temp'] ?? '' }}"
@@ -107,7 +105,7 @@
    <x-input-error class="mt-2" :messages="$errors->get('spot_areas.*.water_temp')" />
    <div class="mt-2">
       <button type="button" id="add-spot-area" class="text-sm text-blue-700 hover:underline">
-         ＋場所入力エリア追加（最大3件）
+         ＋釣り場入力エリア追加（最大3件）
       </button>
    </div>
 </div>

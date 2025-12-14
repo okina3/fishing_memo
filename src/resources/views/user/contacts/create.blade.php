@@ -12,7 +12,7 @@
                <div class="mb-10">
                   {{-- 件名の入力 --}}
                   <div class="mb-3">
-                     <h2 class="sub_heading mb-1">件名</h2>
+                     <h2 class="sub_heading-2 mb-1">件名</h2>
                      <input class="block form-control rounded w-60" type="text" name="subject"
                         value="{{ old('subject') }}" placeholder="ここに件名を入力" />
                      {{-- エラーメッセージ （件名） --}}
@@ -20,7 +20,7 @@
                   </div>
                   {{-- お問い合わせ内容の入力 --}}
                   <div class="mb-3">
-                     <h2 class="sub_heading mb-1">お問い合わせ内容</h2>
+                     <h2 class="sub_heading-2 mb-1">お問い合わせ内容</h2>
                      <textarea class="w-full rounded" name="message" rows="7" placeholder="ここに問い合わせ内容を入力">{{ old('message') }}</textarea>
                      {{-- エラーメッセージ （問い合わせ内容） --}}
                      <x-input-error class="mt-2" :messages="$errors->get('message')" />

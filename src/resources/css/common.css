@@ -11,17 +11,6 @@
     }
 
     /**
-    ボタンのレイアウト（タイプ２）
-    */
-    .btn-2 {
-        padding: 0.4rem;
-        color: rgb(255 255 255);
-        border-width: 2px;
-        border-style: double;
-        border-radius: 0.25rem;
-    }
-
-    /**
     ボタンのレイアウト（タイプ３）
     */
     .btn-3 {
@@ -79,6 +68,17 @@
     小見出しのレイアウト
     */
     .sub_heading {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+        font-weight: 600;
+        border-top: 1px solid rgb(209, 213, 219);
+        padding-top: 0.5rem;
+    }
+
+    /**
+    小見出しのレイアウト（タイプ2）
+    */
+    .sub_heading-2 {
         font-size: 1.125rem;
         line-height: 1.75rem;
         font-weight: 600;

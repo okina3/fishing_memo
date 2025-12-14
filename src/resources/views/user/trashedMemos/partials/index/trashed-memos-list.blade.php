@@ -5,7 +5,7 @@
       {{-- 釣行日、備考エリア --}}
       <div class="mr-5 md:w-[70%]">
          {{-- 釣行日 --}}
-         <p class="sub_heading mb-1 truncate">
+         <p class="sub_heading-2 mb-1 truncate">
             {{ optional(optional($trashed_memo)->fishing_date)->format('Y-m-d') ?? '-' }}
          </p>
          {{-- 備考 --}}
