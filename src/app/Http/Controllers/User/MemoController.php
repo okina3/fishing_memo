@@ -125,7 +125,7 @@ class MemoController extends Controller
         // 選択したメモを、一件取得
         $select_memo = Memo::availableSelectMemo($id)->first();
         // 選択したメモに紐づいた釣り場の名前を取得
-        $get_memo_spots_name = SpotService::getMemoSpotsName($select_memo->spots);
+        $get_memo_spots_name = SpotService::getMemoSpotsResults($select_memo->spots);
         // 選択したメモに紐づいたエサの名前を取得
         $get_memo_baits_name = BaitService::getMemoBaitsName($select_memo->baits);
         // 選択したメモに紐づいた釣果のデータを取得（名前・匹数・長さ）

@@ -20,10 +20,8 @@
                @method('patch')
                {{-- 選択した共有メモの釣行日・釣行時間・釣り場を表示 --}}
                <x-user.show.basic-info :selectMemo='$select_memo' />
-               {{-- 選択した共有メモの気象状態を表示 --}}
-               <x-user.show.weather-state :selectMemo='$select_memo' />
-               {{-- 選択した共有メモの川の状態を表示 --}}
-               <x-user.show.river-state :selectMemo='$select_memo' />
+               {{-- 選択した共有メモの釣り場を表示 --}}
+               <x-user.show.spots :getMemoSpotsResults='$get_memo_spots_name' />
                {{-- 選択した共有メモのエサの入力を表示 --}}
                <x-user.show.baits :getMemoBaitsName='$get_memo_baits_name' />
                {{-- 選択した共有メモの釣果の入力を表示 --}}

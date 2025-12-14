@@ -24,7 +24,8 @@ class Spot extends Model
      */
     public function memos(): BelongsToMany
     {
-        return $this->belongsToMany(Memo::class, 'memo_spots');
+        return $this->belongsToMany(Memo::class, 'memo_spots')
+            ->withPivot(['river_flow', 'turbidity', 'water_level', 'water_temp']);
     }
 
     /**

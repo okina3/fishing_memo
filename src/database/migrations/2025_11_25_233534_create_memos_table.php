@@ -17,25 +17,14 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-
             // 釣行日時
             $table->date('fishing_date');
             $table->time('start_time');
             $table->time('end_time');
-
-            // 天候・気象
+            // 天候・気温・風向き
             $table->string('weather', 15);
             $table->integer('air_temp')->nullable();
-            $table->integer('max_wind')->nullable();
             $table->string('wind_dir', 2)->nullable();
-
-            // 川の状態 
-            $table->string('river_flow', 20);
-            $table->string('turbidity', 20)->nullable();
-            $table->string('debris', 20);
-            $table->decimal('water_level', 4, 1)->nullable();
-            $table->integer('water_temp')->nullable();
-
             // 備考
             $table->text('content');
             //ソフトデリート

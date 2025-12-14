@@ -24,30 +24,28 @@ class StoreMemoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 釣行日・時間・釣り場
+            // 釣行日・時間・天気・気温・風向
             'fishing_date' => 'required|date|before_or_equal:today',
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after_or_equal:start_time',
-            'fishing_spot' => 'nullable|integer|exists:spots,id',
-            // 気象状態
             'weather'      => 'required|string|in:晴れ,曇り,雨,その他',
             'air_temp'     => 'nullable|integer|min:0|max:60',
-            'max_wind'     => 'nullable|integer|min:0|max:99',
             'wind_dir'     => 'nullable|string|in:北,北東,東,南東,南,南西,西,北西',
-            // 川の状態
-            'river_flow' => 'required|string|in:流れあり,流れなし',
-            'turbidity' => 'nullable|string|in:クリア,やや濁り,濁り,強い濁り',
-            'debris' => 'required|string|in:なし,ややあり,あり',
-            'water_level' => 'nullable|numeric|min:0|max:999.9',
-            'water_temp' => 'nullable|integer|min:0|max:99',
+            // 釣り場
+            'spot_areas' => 'array',
+            'spot_areas.*.spot_id' => 'nullable|integer|exists:spots,id',
+            'spot_areas.*.river_flow' => 'nullable|string|in:流れあり,流れなし',
+            'spot_areas.*.turbidity' => 'nullable|string|in:クリア,濁り',
+            'spot_areas.*.water_level' => 'nullable|numeric|min:0|max:999.9',
+            'spot_areas.*.water_temp' => 'nullable|integer|min:0|max:99',
             // エサ
             'baits' => 'array',
             'baits.*' => 'nullable|integer|distinct|exists:baits,id',
-            // 釣果入力（配列）
+            // 釣果入力
             'fishing_results' => 'array',
-            'fishing_results.*.fish_name' => 'nullable|integer|exists:fish_names,id',
-            'fishing_results.*.count' => 'nullable|required_with:fishing_results.*.fish_name|integer|min:0',
-            'fishing_results.*.length' => 'nullable|required_with:fishing_results.*.fish_name|integer|min:0',
+            'fishing_results.*.fish_name_id' => 'nullable|integer|exists:fish_names,id',
+            'fishing_results.*.count' => 'nullable|required_with:fishing_results.*.fish_name_id|integer|min:0',
+            'fishing_results.*.length' => 'nullable|required_with:fishing_results.*.fish_name_id|integer|min:0',
             // 新規タグ
             'new_tag'      => [
                 'nullable',
@@ -68,7 +66,7 @@ class StoreMemoRequest extends FormRequest
     public function messages(): array
     {
         return [
-            // 釣行日・時間・釣り場
+            // 釣行日・時間・天気・気温・風向
             'fishing_date.required' => '釣行日を指定してください。',
             'fishing_date.date' => '釣行日の形式が不正です。',
             'fishing_date.before_or_equal' => '釣行日は今日以前の日付を指定してください。',
@@ -77,9 +75,9 @@ class StoreMemoRequest extends FormRequest
             'end_time.required' => '終了時間を指定してください。',
             'end_time.date_format' => '終了時間の形式は HH:MM で指定してください。',
             'end_time.after_or_equal' => '終了時間は開始時間以降を指定してください。',
-            'fishing_spot.integer' => '釣り場は整数で指定してください。',
-            'fishing_spot.exists' => '選択された釣り場は存在しません。',
-            // 気象状態
+            'spot_areas.array' => '釣り場データの形式が不正です。',
+            'spot_areas.*.spot_id.integer' => '釣り場は整数で指定してください。',
+            'spot_areas.*.spot_id.exists' => '選択された釣り場は存在しません。',
             'weather.required' => '天気を指定してください。',
             'weather.in' => '天気の値が不正です。',
             'weather.string' => '天気は文字列で指定してください。',
@@ -87,30 +85,25 @@ class StoreMemoRequest extends FormRequest
             'air_temp.min' => '気温は 0 以上で指定してください。',
             'air_temp.max' => '気温は 60 以下で指定してください。',
             'max_wind.integer' => '最大風速は整数で指定してください。',
-            'max_wind.min' => '最大風速は 0 以上で指定してください。',
-            'max_wind.max' => '最大風速は 99 以下で指定してください。',
             'wind_dir.in' => '風向の値が不正です。',
-            // 川の状態
-            'river_flow.required' => '川の流れを選択してください。',
-            'river_flow.in' => '川の流れの値が不正です。',
-            'turbidity.in' => '濁りの値が不正です。',
-            'debris.required' => '水中のゴミの値を選択してください。',
-            'debris.in' => '水中のゴミの値が不正です。',
-            'water_level.numeric' => '水位は数値で指定してください。',
-            'water_level.min' => '水位は 0 以上で指定してください。',
-            'water_level.max' => '水位は 999.9 以下で指定してください。',
-            'water_temp.integer' => '水温は整数で指定してください。',
-            'water_temp.min' => '水温は 0 以上で指定してください。',
-            'water_temp.max' => '水温は 99 以下で指定してください。',
+            // 釣り場
+            'spot_areas.*.river_flow.in' => '川の流れの値が不正です。',
+            'spot_areas.*.turbidity.in' => '濁りの値が不正です。',
+            'spot_areas.*.water_level.numeric' => '水位は数値で指定してください。',
+            'spot_areas.*.water_level.min' => '水位は 0 以上で指定してください。',
+            'spot_areas.*.water_level.max' => '水位は 999.9 以下で指定してください。',
+            'spot_areas.*.water_temp.integer' => '水温は整数で指定してください。',
+            'spot_areas.*.water_temp.min' => '水温は 0 以上で指定してください。',
+            'spot_areas.*.water_temp.max' => '水温は 99 以下で指定してください。',
             // エサ
             'baits.array' => 'エサの形式が不正です。',
             'baits.*.integer' => 'エサの選択値が不正です。',
             'baits.*.distinct' => '同じエサが複数選択されています。',
             'baits.*.exists' => '選択されたエサは存在しません。',
-            // 釣果入力（配列）
+            // 釣果入力
             'fishing_results.array' => '釣果データの形式が不正です。',
-            'fishing_results.*.fish_name.integer' => '魚名の値が不正です。',
-            'fishing_results.*.fish_name.exists' => '選択された魚名は存在しません。',
+            'fishing_results.*.fish_name_id.integer' => '魚名の値が不正です。',
+            'fishing_results.*.fish_name_id.exists' => '選択された魚名は存在しません。',
             'fishing_results.*.count.required_with' => '匹数も入力してください。',
             'fishing_results.*.count.integer' => '匹数は整数で指定してください。',
             'fishing_results.*.count.min' => '匹数は 0 以上で指定してください。',

@@ -17,19 +17,12 @@ class Memo extends Model
 
     protected $fillable = [
         'user_id',
-        'spot_id',
         'fishing_date',
         'start_time',
         'end_time',
         'weather',
         'air_temp',
-        'max_wind',
         'wind_dir',
-        'river_flow',
-        'turbidity',
-        'debris',
-        'water_level',
-        'water_temp',
         'content',
     ];
 
@@ -38,9 +31,6 @@ class Memo extends Model
         'start_time' => 'datetime:H:i',
         'end_time' => 'datetime:H:i',
         'air_temp' => 'integer',
-        'max_wind' => 'integer',
-        'water_level' => 'float',
-        'water_temp' => 'integer',
     ];
 
     /**
@@ -49,7 +39,8 @@ class Memo extends Model
      */
     public function spots(): BelongsToMany
     {
-        return $this->belongsToMany(Spot::class, 'memo_spots');
+        return $this->belongsToMany(Spot::class, 'memo_spots')
+            ->withPivot(['river_flow', 'turbidity', 'water_level', 'water_temp']);
     }
 
     /**
@@ -68,8 +59,7 @@ class Memo extends Model
     public function fish_names(): BelongsToMany
     {
         return $this->belongsToMany(FishName::class, 'memo_fish_names')
-            ->withPivot(['count', 'length'])
-            ->withTimestamps();
+            ->withPivot(['count', 'length']);
     }
 
     /**

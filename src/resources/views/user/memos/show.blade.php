@@ -20,10 +20,8 @@
                @endif
                {{-- 釣行日・釣行時間・釣り場 --}}
                <x-user.show.basic-info :selectMemo='$select_memo' />
-               {{-- 気象状態 --}}
-               <x-user.show.weather-state :selectMemo='$select_memo' />
-               {{-- 川の状態 --}}
-               <x-user.show.river-state :selectMemo='$select_memo' />
+               {{-- 釣り場 --}}
+               <x-user.show.spots :getMemoSpotsResults='$get_memo_spots_name' />
                {{-- エサの入力 --}}
                <x-user.show.baits :getMemoBaitsName='$get_memo_baits_name' />
                {{-- 釣果の入力 --}}

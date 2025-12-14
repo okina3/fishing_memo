@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             MemoImageSeeder::class,
             MemoFishNameSeeder::class,
             MemoBaitSeeder::class,
+            MemoSpotSeeder::class,
             ShareSettingsSeeder::class,
             ContactSeeder::class,
         ]);
