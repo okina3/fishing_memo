@@ -21,12 +21,11 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->unsignedInteger('count')
-                ->default(0)
+                ->nullable()
                 ->comment('匹数');
             $table->unsignedSmallInteger('length')
                 ->nullable()
                 ->comment('cm');
-            $table->timestamps();
             $table->primary(['memo_id', 'fish_name_id']);
         });
     }

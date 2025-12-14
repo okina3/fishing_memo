@@ -13,7 +13,7 @@
                @method('patch')
                {{-- 現在の釣り場名の表示 --}}
                <div>
-                  <h2 class="sub_heading mb-2 block">現在の釣り場名</h2>
+                  <h2 class="sub_heading-2 mb-2 block">現在の釣り場名</h2>
                   <div class="mb-6 p-2 w-full border border-gray-500 rounded">
                      {{ $spot->name }}
                   </div>

@@ -13,7 +13,7 @@
                @method('patch')
                <div>
                   {{-- 現在の魚名の表示 --}}
-                  <h2 class="sub_heading mb-2 block">現在の魚名</h2>
+                  <h2 class="sub_heading-2 mb-2 block">現在の魚名</h2>
                   <div class="mb-6 p-2 w-full border border-gray-500 rounded">
                      {{ $fish_name->name }}
                   </div>

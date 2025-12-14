@@ -1,10 +1,10 @@
-<div class="mb-8">
+<div class="mb-2">
    {{-- 基本情報 --}}
-   <h2 class="sub_heading mb-1">基本情報</h2>
-   <div class="flex flex-row flex-wrap items-start gap-6 md:gap-10">
+   <h2 class="sub_heading">基本情報</h2>
+   <div class="flex flex-row flex-wrap items-start gap-x-6 gap-y-1 md:gap-x-10">
       {{-- 釣行日 --}}
       <div>
-         <label class="mb-1 block text-sm text-gray-700">釣行日</label>
+         <label class="block text-sm text-gray-700">釣行日</label>
          <input class="rounded" type="date" name="fishing_date" value="{{ old('fishing_date') }}"
             max="{{ now()->toDateString() }}" />
          {{-- エラーメッセージ（釣行日） --}}
@@ -12,7 +12,7 @@
       </div>
       {{-- 釣行時間 --}}
       <div>
-         <label class="mb-1 block text-sm text-gray-700">釣行時間</label>
+         <label class="block text-sm text-gray-700">釣行時間</label>
          <div class="flex items-center w-full">
             <input class="text-center rounded" type="time" name="start_time" value="{{ old('start_time') }}"
                step="60" />
@@ -26,7 +26,7 @@
       </div>
       {{-- 天気 --}}
       <div>
-         <label class="mb-1 block text-sm text-gray-700">天気</label>
+         <label class="block text-sm text-gray-700">天気</label>
          <select name="weather" class="w-28 rounded">
             <option value="" @selected(old('weather', '') === '')>未選択</option>
             <option value="晴れ" @selected(old('weather') === '晴れ')>晴れ</option>
@@ -39,7 +39,7 @@
       </div>
       {{-- 気温 --}}
       <div>
-         <label class="mb-1 block text-sm text-gray-700">気温</label>
+         <label class="block text-sm text-gray-700">気温</label>
          <div class="flex items-center gap-2">
             <input class="w-24 rounded text-right" type="number" name="air_temp" value="{{ old('air_temp') }}"
                placeholder="0" inputmode="numeric" step="1" min="0" max="60" />
@@ -50,7 +50,7 @@
       </div>
       {{-- 風向 --}}
       <div>
-         <label class="mb-1 block text-sm text-gray-700">風向</label>
+         <label class="block text-sm text-gray-700">風向</label>
          <select name="wind_dir" class="w-28 rounded">
             <option value="" @selected(old('wind_dir', '') === '')>未選択</option>
             <option value="北" @selected(old('wind_dir') === '北')>北</option>

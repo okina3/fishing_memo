@@ -34,7 +34,6 @@ return new class extends Migration
             $table->integer('water_temp')
                 ->nullable()
                 ->comment('℃');
-            $table->timestamps();
             $table->primary(['memo_id', 'spot_id']);
         });
     }
