@@ -27,7 +27,6 @@ class SpotServiceTest extends TestCase
       $this->user = User::factory()->create();
       // 2人目の別のユーザーを作成
       $this->secondaryUser = User::factory()->create();
-
       // 認証済みのユーザーを返す
       $this->actingAs($this->user, 'users');
    }
