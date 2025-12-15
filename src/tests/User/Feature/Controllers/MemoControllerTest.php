@@ -78,21 +78,22 @@ class MemoControllerTest extends TestCase
             'fishing_date' => now()->toDateString(),
             'start_time' => '09:00',
             'end_time' => '10:30',
-            'fishing_spot' => $spot->id,
             'weather' => '晴れ',
             'air_temp' => 20,
-            'max_wind' => 5,
             'wind_dir' => '北',
-            'river_flow' => '流れあり',
-            'turbidity' => 'クリア',
-            'debris' => 'なし',
-            'water_level' => 1.2,
-            'water_temp' => 15,
-            'content' => 'テストメモの内容',
+            'spot_areas' => [
+                [
+                    'spot_id' => $spot->id,
+                    'river_flow' => '流れあり',
+                    'turbidity' => 'クリア',
+                    'water_level' => 1.2,
+                    'water_temp' => 15,
+                ],
+            ],
             'baits' => [$bait->id],
             'fishing_results' => [
                 [
-                    'fish_name' => $fish->id,
+                    'fish_name_id' => $fish->id,
                     'count' => 2,
                     'length' => 30,
                 ],
@@ -100,6 +101,7 @@ class MemoControllerTest extends TestCase
             'tags' => [$tag->id],
             'images' => [$image->id],
             'new_tag' => '新規タグA',
+            'content' => 'テストメモの内容',
         ];
 
         // ブラウザバック対策用のセッション設定
@@ -115,9 +117,19 @@ class MemoControllerTest extends TestCase
         // メモが作成されていることを検証
         $memo = Memo::query()->where('user_id', $this->user->id)->latest('id')->first();
         $this->assertNotNull($memo);
-        $this->assertSame($spot->id, $memo->spot_id);
+        $this->assertSame('北', $memo->wind_dir);
         $this->assertSame('晴れ', $memo->weather);
         $this->assertSame('テストメモの内容', $memo->content);
+
+        // メモと釣り場の中間データが作成されていることを検証
+        $this->assertDatabaseHas('memo_spots', [
+            'memo_id' => $memo->id,
+            'spot_id' => $spot->id,
+            'river_flow' => '流れあり',
+            'turbidity' => 'クリア',
+            'water_level' => 1.2,
+            'water_temp' => 15,
+        ]);
 
         // メモとエサの中間データが作成されていることを検証
         $this->assertDatabaseHas('memo_baits', [
@@ -173,21 +185,22 @@ class MemoControllerTest extends TestCase
             'fishing_date' => now()->toDateString(),
             'start_time' => '09:00',
             'end_time' => '10:30',
-            'fishing_spot' => $spot->id,
             'weather' => '晴れ',
             'air_temp' => 20,
-            'max_wind' => 5,
             'wind_dir' => '北',
-            'river_flow' => '流れあり',
-            'turbidity' => 'クリア',
-            'debris' => 'なし',
-            'water_level' => 1.2,
-            'water_temp' => 15,
-            'content' => 'テストメモの内容',
+            'spot_areas' => [
+                [
+                    'spot_id' => $spot->id,
+                    'river_flow' => '流れあり',
+                    'turbidity' => 'クリア',
+                    'water_level' => 1.2,
+                    'water_temp' => 15,
+                ],
+            ],
             'baits' => [$bait->id],
             'fishing_results' => [
                 [
-                    'fish_name' => $fish->id,
+                    'fish_name_id' => $fish->id,
                     'count' => 2,
                     'length' => 30,
                 ],
@@ -195,6 +208,7 @@ class MemoControllerTest extends TestCase
             'tags' => [$tag->id],
             'images' => [$image->id],
             'new_tag' => '新規タグA',
+            'content' => 'テストメモの内容',
         ];
 
         // ブラウザバック対策用のセッション設定
@@ -236,9 +250,10 @@ class MemoControllerTest extends TestCase
         $response->assertOk();
         // 返却されるビューが期待通り（user.memos.show）であることを検証
         $response->assertViewIs('user.memos.show');
-        // ビューに渡される主要なデータ（選択メモ、エサ・魚名・タグ・画像・共有設定）が存在することを検証
+        // ビューに渡される主要なデータが存在することを検証
         $response->assertViewHasAll([
             'select_memo',
+            'get_memo_spots_name',
             'get_memo_baits_name',
             'get_memo_fish_results',
             'get_memo_tags_name',
@@ -260,7 +275,7 @@ class MemoControllerTest extends TestCase
         $response->assertOk();
         // 返却されるビューが期待通り（user.memos.edit）であることを検証
         $response->assertViewIs('user.memos.edit');
-        // ビューに渡される主要なデータ（（釣り場、エサ・魚名・タグ・画像・選択メモ、各中間データ））が存在することを検証
+        // ビューに渡される主要なデータが存在することを検証
         $response->assertViewHasAll([
             'all_spots',
             'all_baits',
@@ -277,9 +292,6 @@ class MemoControllerTest extends TestCase
     // メモが、正しく更新されることをテスト
     public function testUpdateMemoController()
     {
-        // 関連データを作成
-        $spot = Spot::factory()->create(['user_id' => $this->user->id]);
-
         // 自分のメモを1件作成
         $memo = Memo::factory()->create(['user_id' => $this->user->id]);
 
@@ -289,22 +301,16 @@ class MemoControllerTest extends TestCase
             'fishing_date' => now()->toDateString(),
             'start_time' => '10:00',
             'end_time' => '11:30',
-            'fishing_spot' => $spot->id,
             'weather' => '曇り',
             'air_temp' => 22,
-            'max_wind' => 3,
             'wind_dir' => '南',
-            'river_flow' => '流れなし',
-            'turbidity' => 'やや濁り',
-            'debris' => 'あり',
-            'water_level' => 0.8,
-            'water_temp' => 18,
-            'content' => '更新後のメモ内容',
+            'spot_areas' => [],
             'baits' => [],
             'fishing_results' => [],
             'tags' => [],
             'images' => [],
             'new_tag' => '',
+            'content' => '更新後のメモ内容',
         ];
 
         // ブラウザバック対策用のセッション設定
@@ -345,22 +351,16 @@ class MemoControllerTest extends TestCase
             'fishing_date' => now()->toDateString(),
             'start_time' => '10:00',
             'end_time' => '11:30',
-            'fishing_spot' => $spot->id,
             'weather' => '曇り',
             'air_temp' => 22,
-            'max_wind' => 3,
             'wind_dir' => '南',
-            'river_flow' => '流れなし',
-            'turbidity' => 'やや濁り',
-            'debris' => 'あり',
-            'water_level' => 0.8,
-            'water_temp' => 18,
-            'content' => '更新後のメモ内容',
+            'spot_areas' => [],
             'baits' => [],
             'fishing_results' => [],
             'tags' => [],
             'images' => [],
             'new_tag' => '',
+            'content' => '更新後のメモ内容',
         ];
 
         // ブラウザバック対策用のセッション設定

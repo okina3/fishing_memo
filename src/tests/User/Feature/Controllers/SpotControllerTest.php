@@ -30,6 +30,58 @@ class SpotControllerTest extends TestCase
       $this->actingAs($this->user, 'users');
    }
 
+   // 釣り場を保存するテスト
+   public function testStoreSpotController()
+   {
+      // リクエストデータを作成
+      $payload = ['spot_name' => 'マスター追加スポット'];
+
+      // 釣り場を保存するの為に、リクエスト送信
+      $response = $this->post(route('user.spot.store'), $payload);
+
+      // リダイレクトで成功メッセージがフラッシュされていることを検証
+      $response->assertRedirect(route('user.masters.index', ['tab' => 'spots']));
+      $response->assertSessionHas(['message' => '釣り場を追加しました。', 'status' => 'success']);
+
+      // 釣り場が作成されていることを検証
+      $this->assertDatabaseHas('spots', [
+         'user_id' => $this->user->id,
+         'name' => 'マスター追加スポット',
+      ]);
+   }
+
+   // 釣り場を保存する時のエラーハンドリングをテスト
+   #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
+   #[\PHPUnit\Framework\Attributes\PreserveGlobalState(false)]
+   public function testErrorStoreSpotController()
+   {
+      // リクエストデータを作成
+      $payload = ['spot_name' => '失敗スポット'];
+
+      // SpotService::createSpot が例外を投げるようにエイリアスモック（checkUserSpot は通過）
+      $serviceMock = Mockery::mock('alias:App\\Services\\SpotService');
+      $serviceMock->shouldReceive('checkUserSpot')->andReturnNull();
+      $serviceMock->shouldReceive('createSpot')
+         ->once()->andThrow(new Exception('DBエラー'));
+
+      // Log::errorメソッドが呼び出されるときに、例外がログに記録されることを確認
+      Log::shouldReceive('error')->once()->withAnyArgs();
+
+      // 釣り場を保存するの為に、リクエスト送信
+      $response = $this->from(route('user.masters.index', ['tab' => 'spots']))
+         ->post(route('user.spot.store'), $payload);
+
+      // リダイレクトでエラーメッセージがフラッシュされていることを検証
+      $response->assertRedirect(route('user.masters.index', ['tab' => 'spots']));
+      $response->assertSessionHas(['message' => '釣り場の追加に失敗しました', 'status' => 'error']);
+
+      // レコードが保存されていないことを検証
+      $this->assertDatabaseMissing('spots', [
+         'user_id' => $this->user->id,
+         'name' => '失敗スポット',
+      ]);
+   }
+
    // 釣り場の編集画面が正しく表示されることをテスト
    public function testEditSpotController()
    {
@@ -136,8 +188,9 @@ class SpotControllerTest extends TestCase
       // 自分の釣り場を1件作成
       $spot = Spot::factory()->create(['user_id' => $this->user->id]);
 
-      // 釣り場に関連するメモを1件作成
-      Memo::factory()->create(['user_id' => $this->user->id, 'spot_id' => $spot->id]);
+      // 釣り場に関連するメモを1件作成し紐付ける
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      $memo->spots()->attach($spot->id);
 
       // 釣り場を削除する為に、リクエストを送信
       $response = $this->delete(route('user.spot.destroy'), ['spotId' => $spot->id]);

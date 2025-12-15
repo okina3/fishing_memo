@@ -35,13 +35,7 @@ class MemoFactory extends Factory
          'end_time' => $end,
          'weather' => $this->faker->randomElement(['晴れ', '曇り', '雨', 'その他']),
          'air_temp' => $this->faker->optional()->numberBetween(0, 35),
-         'max_wind' => $this->faker->optional()->numberBetween(0, 30),
          'wind_dir' => $this->faker->optional()->randomElement(['北', '北東', '東', '南東', '南', '南西', '西', '北西']),
-         'river_flow' => $this->faker->randomElement(['流れあり', '流れなし']),
-         'turbidity' => $this->faker->optional()->randomElement(['クリア', 'やや濁り', '濁り', '強い濁り']),
-         'debris' => $this->faker->randomElement(['なし', 'ややあり', 'あり']),
-         'water_level' => $this->faker->optional()->randomFloat(1, 0, 99),
-         'water_temp' => $this->faker->optional()->numberBetween(0, 35),
          'content' => $this->faker->paragraph(),
       ];
    }

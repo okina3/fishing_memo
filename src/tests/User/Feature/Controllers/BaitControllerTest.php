@@ -2,8 +2,8 @@
 
 namespace Tests\User\Feature\Controllers;
 
-use App\Models\Memo;
 use App\Models\Bait;
+use App\Models\Memo;
 use App\Models\User;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,6 +28,58 @@ class BaitControllerTest extends TestCase
       $this->user = User::factory()->create();
       // 認証済みのユーザーを返す
       $this->actingAs($this->user, 'users');
+   }
+
+   // エサを保存するテスト
+   public function testStoreBaitController()
+   {
+      // リクエストデータを作成
+      $payload = ['bait_name' => 'マスター追加エサ'];
+
+      // エサを保存するの為に、リクエスト送信
+      $response = $this->post(route('user.bait.store'), $payload);
+
+      // リダイレクトで成功メッセージがフラッシュされていることを検証
+      $response->assertRedirect(route('user.masters.index', ['tab' => 'baits']));
+      $response->assertSessionHas(['message' => 'エサを追加しました。', 'status' => 'success']);
+
+      // エサが作成されていることを検証
+      $this->assertDatabaseHas('baits', [
+         'user_id' => $this->user->id,
+         'name' => 'マスター追加エサ',
+      ]);
+   }
+
+   // エサを保存する時のエラーハンドリングをテスト
+   #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
+   #[\PHPUnit\Framework\Attributes\PreserveGlobalState(false)]
+   public function testErrorStoreBaitController()
+   {
+      // リクエストデータを作成
+      $payload = ['bait_name' => '失敗エサ'];
+
+      // BaitService::createBait が例外を投げるようにエイリアスモック（checkUserBait は通過）
+      $serviceMock = Mockery::mock('alias:App\\Services\\BaitService');
+      $serviceMock->shouldReceive('checkUserBait')->andReturnNull();
+      $serviceMock->shouldReceive('createBait')
+         ->once()->andThrow(new Exception('DBエラー'));
+
+      // Log::errorメソッドが呼び出されるときに、例外がログに記録されることを確認
+      Log::shouldReceive('error')->once()->withAnyArgs();
+
+      // エサを保存するの為に、リクエスト送信
+      $response = $this->from(route('user.masters.index', ['tab' => 'baits']))
+         ->post(route('user.bait.store'), $payload);
+
+      // リダイレクトでエラーメッセージがフラッシュされていることを検証
+      $response->assertRedirect(route('user.masters.index', ['tab' => 'baits']));
+      $response->assertSessionHas(['message' => 'エサの追加に失敗しました', 'status' => 'error']);
+
+      // レコードが保存されていないことを検証
+      $this->assertDatabaseMissing('baits', [
+         'user_id' => $this->user->id,
+         'name' => '失敗エサ',
+      ]);
    }
 
    // エサの編集画面が正しく表示されることをテスト
