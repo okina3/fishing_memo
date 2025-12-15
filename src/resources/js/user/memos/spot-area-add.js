@@ -1,9 +1,9 @@
 'use strict'
-// === 釣り場入力エリア（最大3件） =====================================
+// === 釣り場入力エリア（最大2件） =====================================
 // 定数・要素参照
 const spotAreasContainer = document.getElementById('spot-areas-container');
 const addSpotAreaBtn = document.getElementById('add-spot-area');
-const MAX_SPOT_AREAS = 3;
+const MAX_SPOT_AREAS = 2;
 
 // 行を配列で取得
 const getSpotRows = () => Array.from(spotAreasContainer?.querySelectorAll('.spot-area-row') || []);

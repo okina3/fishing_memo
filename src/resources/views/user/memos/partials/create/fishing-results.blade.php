@@ -1,6 +1,6 @@
 <div class="mb-3">
    {{-- 釣果の入力 --}}
-   <h2 class="sub_heading mb-1">釣果</h2>
+   <h2 class="sub_heading">釣果</h2>
 
    @php
       // 初期表示行数（最低1、最大5）
@@ -19,7 +19,7 @@
          <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10 catch-row">
             {{-- 魚名の選択 --}}
             <div>
-               <label class="block text-sm text-gray-700">魚名</label>
+               <label class="block text-sm font-semibold text-gray-700">魚名</label>
                <select class="w-60 rounded" name="fishing_results[{{ $i }}][fish_name_id]">
                   <option value="">魚名を選択してください</option>
                   @foreach ($all_fish_names as $fish)

@@ -1,13 +1,13 @@
 <div class="mb-8">
    {{-- 釣果の表示 --}}
-   <h2 class="sub_heading mb-1">釣果</h2>
+   <h2 class="sub_heading">釣果</h2>
    {{-- 釣果 --}}
    <div class="space-y-5 lg:space-y-1">
       @forelse($getMemoFishResults as $result)
          <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10">
             {{-- 魚名 --}}
             <div>
-               <label class="block text-sm text-gray-700">魚名</label>
+               <label class="block text-sm font-semibold text-gray-700">魚名</label>
                <div class="p-2 w-60 border border-gray-500 rounded">
                   {{ $result['name'] }}
                </div>
