@@ -10,72 +10,64 @@ use Tests\User\TestCase;
 
 class DeleteTagRequestTest extends TestCase
 {
-    use RefreshDatabase;
-    private User $user;
+   use RefreshDatabase;
+   private User $user;
 
-    // テスト前の初期設定（各テストメソッドの実行前に毎回呼び出される）
-    protected function setUp(): void
-    {
-        // 親クラスのsetUpメソッドを呼び出し
-        parent::setUp();
-        // ユーザーを作成
-        $this->user = User::factory()->create();
+   // テスト前の初期設定（各テストメソッドの実行前に毎回呼び出される）
+   protected function setUp(): void
+   {
+      // 親クラスのsetUpメソッドを呼び出し
+      parent::setUp();
+      // ユーザーを作成
+      $this->user = User::factory()->create();
+      // 認証済みのユーザーを返す
+      $this->actingAs($this->user, 'users');
+   }
 
-        // 認証済みのユーザーを返す
-        $this->actingAs($this->user, 'users');
-    }
+   // authorizeメソッドが、常にtrueを返すことを検証するテスト
+   public function testAuthorizeReturnsTrue()
+   {
+      // DeleteTagRequestのインスタンスを初期化
+      $request = new DeleteTagRequest();
+      // user() が認証ユーザーを返すように UserResolver を設定
+      $request->setUserResolver(function () {
+         return $this->user ?? null;
+      });
 
-    // DeleteTagRequest のインスタンスを作成するヘルパーメソッド
-    private function deleteTagRequest(): DeleteTagRequest
-    {
-        // DeleteTagRequestのインスタンスを返す
-        return new DeleteTagRequest();
-    }
+      // authorize() メソッドが常に true を返すことを確認
+      $this->assertTrue($request->authorize());
+   }
 
-    // authorizeメソッドが、常にtrueを返すことを検証するテスト
-    public function testAuthorizeReturnsTrue()
-    {
-        // DeleteTagRequestのインスタンスを初期化
-        $request = $this->deleteTagRequest();
-        // user() が認証ユーザーを返すように UserResolver を設定
-        $request->setUserResolver(function () {
-            return $this->user ?? null;
-        });
+   // バリデーションが、正しく機能することを確認するテスト
+   public function testRulesValidation()
+   {
+      // バリデーション用のデータを設定
+      $data = ['tags' => [1, 2, 3]];
 
-        // authorize() メソッドが常に true を返すことを確認
-        $this->assertTrue($request->authorize());
-    }
+      // DeleteTagRequestのインスタンスを初期化
+      $request = new DeleteTagRequest();
+      // データをマージしてバリデータを作成
+      $request->merge($data);
+      $validator = Validator::make($request->all(), $request->rules());
 
-    // バリデーションが、正しく機能することを確認するテスト
-    public function testRulesValidation()
-    {
-        // バリデーション用のデータを設定
-        $data = ['tags' => [1, 2, 3]];
+      // バリデーションが成功することを確認
+      $this->assertTrue($validator->passes());
+   }
 
-        // DeleteTagRequestのインスタンスを初期化
-        $request = $this->deleteTagRequest();
-        // データをマージしてバリデータを作成
-        $request->merge($data);
-        $validator = Validator::make($request->all(), $request->rules());
+   // メッセージが正しく定義されていることを確認するテスト
+   public function testMessagesMethod()
+   {
+      // DeleteTagRequestのインスタンスを初期化
+      $request = new DeleteTagRequest();
+      // リクエストから、バリデーションメッセージを取得
+      $messages = $request->messages();
 
-        // バリデーションが成功することを確認
-        $this->assertTrue($validator->passes());
-    }
+      // 期待されるバリデーションメッセージを定義
+      $expectedMessages = [
+         'tags.required' => '削除したいタグに、チェックを入れてください。',
+      ];
 
-    // メッセージが正しく定義されていることを確認するテスト
-    public function testMessagesMethod()
-    {
-        // DeleteTagRequestのインスタンスを初期化
-        $request = $this->deleteTagRequest();
-        // リクエストから、バリデーションメッセージを取得
-        $messages = $request->messages();
-
-        // 期待されるバリデーションメッセージを定義
-        $expectedMessages = [
-            'tags.required' => '削除したいタグに、チェックを入れてください。',
-        ];
-
-        // 取得したメッセージが、期待されるバリデーションメッセージと一致することを確認
-        $this->assertEquals($expectedMessages, $messages);
-    }
+      // 取得したメッセージが、期待されるバリデーションメッセージと一致することを確認
+      $this->assertEquals($expectedMessages, $messages);
+   }
 }
