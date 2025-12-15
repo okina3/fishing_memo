@@ -11,95 +11,87 @@ use Tests\User\TestCase;
 
 class StoreImageRequestTest extends TestCase
 {
-    use RefreshDatabase;
+   use RefreshDatabase;
 
-    private User $user;
+   private User $user;
 
-    // テスト前の初期設定（各テストメソッドの実行前に毎回呼び出される）
-    protected function setUp(): void
-    {
-        // 親クラスのsetUpメソッドを呼び出し
-        parent::setUp();
-        // ユーザーを作成
-        $this->user = User::factory()->create();
+   // テスト前の初期設定（各テストメソッドの実行前に毎回呼び出される）
+   protected function setUp(): void
+   {
+      // 親クラスのsetUpメソッドを呼び出し
+      parent::setUp();
+      // ユーザーを作成
+      $this->user = User::factory()->create();
+      // 認証済みのユーザーを返す
+      $this->actingAs($this->user, 'users');
+   }
 
-        // 認証済みのユーザーを返す
-        $this->actingAs($this->user, 'users');
-    }
+   // authorizeメソッドが、常にtrueを返すことを検証するテスト
+   public function testAuthorizeReturnsTrue()
+   {
+      // StoreImageRequestのインスタンスを初期化
+      $request = new StoreImageRequest();
 
-    // StoreImageRequestのインスタンスを作成するヘルパーメソッド
-    private function StoreImageRequest(): StoreImageRequest
-    {
-        // StoreImageRequestのインスタンスを返す
-        return new StoreImageRequest();
-    }
+      // user() が認証ユーザーを返すように UserResolver を設定
+      $request->setUserResolver(function () {
+         return $this->user ?? null;
+      });
 
-    // authorizeメソッドが、常にtrueを返すことを検証するテスト
-    public function testAuthorizeReturnsTrue()
-    {
-        // StoreImageRequestのインスタンスを初期化
-        $request = $this->StoreImageRequest();
+      // authorize() メソッドが常に true を返すことを確認
+      $this->assertTrue($request->authorize());
+   }
 
-        // user() が認証ユーザーを返すように UserResolver を設定
-        $request->setUserResolver(function () {
-            return $this->user ?? null;
-        });
+   // バリデーションが、正しく機能することを確認するテスト
+   public function testRulesValidation()
+   {
+      // バリデーション用のデータを設定
+      $data = [
+         'images' => UploadedFile::fake()->image('test_image.jpg')->size(1024)
+      ];
+      // StoreImageRequestのインスタンスを初期化
+      $request = new StoreImageRequest();
+      // データをマージしてバリデータを作成
+      $request->merge($data);
+      $validator = Validator::make($request->all(), $request->rules());
 
-        // authorize() メソッドが常に true を返すことを確認
-        $this->assertTrue($request->authorize());
-    }
+      // バリデーションが成功することを確認
+      $this->assertTrue($validator->passes());
+   }
 
-    // バリデーションが、正しく機能することを確認するテスト
-    public function testRulesValidation()
-    {
-        // バリデーション用のデータを設定
-        $data = [
-            'images' => UploadedFile::fake()->image('test_image.jpg')->size(1024)
-        ];
-        // StoreImageRequestのインスタンスを初期化
-        $request = $this->StoreImageRequest();
-        // データをマージしてバリデータを作成
-        $request->merge($data);
-        $validator = Validator::make($request->all(), $request->rules());
+   // バリデーションが、失敗することを確認するテスト
+   public function testErrorRulesValidation()
+   {
+      // バリデーション用のデータを設定（拡張子が、txt）
+      $data = [
+         'images' => UploadedFile::fake()->image('test_image.txt')->size(1024)
+      ];
+      // StoreImageRequestのインスタンスを初期化
+      $request = new StoreImageRequest();
+      // データをマージしてバリデータを作成
+      $request->merge($data);
+      $validator = Validator::make($request->all(), $request->rules());
 
-        // バリデーションが成功することを確認
-        $this->assertTrue($validator->passes());
-    }
+      // バリデーションが失敗することを確認
+      $this->assertFalse($validator->passes());
+   }
 
-    // バリデーションが、失敗することを確認するテスト
-    public function testErrorRulesValidation()
-    {
-        // バリデーション用のデータを設定（拡張子が、txt）
-        $data = [
-            'images' => UploadedFile::fake()->image('test_image.txt')->size(1024)
-        ];
-        // StoreImageRequestのインスタンスを初期化
-        $request = $this->StoreImageRequest();
-        // データをマージしてバリデータを作成
-        $request->merge($data);
-        $validator = Validator::make($request->all(), $request->rules());
+   // バリデーションエラーメッセージが、正しく設定されていることを確認するテスト
+   public function testMessagesMethod()
+   {
+      // StoreImageRequestのインスタンスを初期化
+      $request = new StoreImageRequest();
+      // リクエストから、バリデーションメッセージを取得
+      $messages = $request->messages();
 
-        // バリデーションが失敗することを確認
-        $this->assertFalse($validator->passes());
-    }
+      // 期待されるバリデーションメッセージを定義
+      $expectedMessages = [
+         'images.required' => '画像が指定されていません。',
+         'images.image' => '指定されたファイルが画像ではありません。',
+         'images.mimes' => '指定された拡張子(jpg/jpeg/png)ではありません。',
+         'images.max' => 'ファイルサイズは2MB以内にしてください。'
+      ];
 
-    // バリデーションエラーメッセージが、正しく設定されていることを確認するテスト
-    public function testMessagesMethod()
-    {
-        // StoreImageRequestのインスタンスを初期化
-        $request = $this->StoreImageRequest();
-        // リクエストから、バリデーションメッセージを取得
-        $messages = $request->messages();
-        
-        // 期待されるバリデーションメッセージを定義
-        $expectedMessages = [
-            'images.required' => '画像が指定されていません。',
-            'images.image' => '指定されたファイルが画像ではありません。',
-            'images.mimes' => '指定された拡張子(jpg/jpeg/png)ではありません。',
-            'images.max' => 'ファイルサイズは2MB以内にしてください。'
-        ];
-
-        // 取得したメッセージが、期待されるバリデーションメッセージと一致することを確認
-        $this->assertEquals($expectedMessages, $messages);
-    }
+      // 取得したメッセージが、期待されるバリデーションメッセージと一致することを確認
+      $this->assertEquals($expectedMessages, $messages);
+   }
 }

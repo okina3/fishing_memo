@@ -10,76 +10,68 @@ use Tests\Admin\TestCase;
 
 class DeleteUserRequestTest extends TestCase
 {
-    use RefreshDatabase;
+   use RefreshDatabase;
 
-    private Admin $admin;
+   private Admin $admin;
 
-    // テスト前の初期設定（各テストメソッドの実行前に毎回呼び出される）
-    protected function setUp(): void
-    {
-        // 親クラスのsetUpメソッドを呼び出し
-        parent::setUp();
-        // 管理者を作成
-        $this->admin = Admin::factory()->create();
+   // テスト前の初期設定（各テストメソッドの実行前に毎回呼び出される）
+   protected function setUp(): void
+   {
+      // 親クラスのsetUpメソッドを呼び出し
+      parent::setUp();
+      // 管理者を作成
+      $this->admin = Admin::factory()->create();
+      // 認証済みの管理者を返す
+      $this->actingAs($this->admin, 'admin');
+   }
 
-        // 認証済みの管理者を返す
-        $this->actingAs($this->admin, 'admin');
-    }
+   // authorizeメソッドが、常にtrueを返すことを検証するテスト
+   public function testAuthorizeReturnsTrue()
+   {
+      // DeleteUserRequestのインスタンスを初期化
+      $request = new DeleteUserRequest();
+      // user() が認証済み admin を返すように設定
+      $request->setUserResolver(function () {
+         return $this->admin ?? null;
+      });
 
-    // DeleteUserRequest のインスタンスを作成するヘルパーメソッド
-    private function deleteUserRequest(): DeleteUserRequest
-    {
-        // DeleteUserRequestのインスタンスを返す
-        return new DeleteUserRequest();
-    }
+      // authorize() メソッドが常に true を返すことを確認
+      $this->assertTrue($request->authorize());
+   }
 
-    // authorizeメソッドが、常にtrueを返すことを検証するテスト
-    public function testAuthorizeReturnsTrue()
-    {
-        // DeleteUserRequestのインスタンスを初期化
-        $request = $this->deleteUserRequest();
-        // user() が認証済み admin を返すように設定
-        $request->setUserResolver(function () {
-            return $this->admin ?? null;
-        });
+   // バリデーションが、正しく機能することを確認するテスト
+   public function testRulesValidation()
+   {
+      // バリデーション用のデータを設定
+      $user = \App\Models\User::factory()->create();
+      $data = ['userId' => $user->id];
 
-        // authorize() メソッドが常に true を返すことを確認
-        $this->assertTrue($request->authorize());
-    }
+      // DeleteUserRequestのインスタンスを初期化
+      $request = new DeleteUserRequest();
+      // データをマージしてバリデータを作成
+      $request->merge($data);
+      $validator = Validator::make($request->all(), $request->rules());
 
-    // バリデーションが、正しく機能することを確認するテスト
-    public function testRulesValidation()
-    {
-        // バリデーション用のデータを設定
-        $user = \App\Models\User::factory()->create();
-        $data = ['userId' => $user->id];
+      // バリデーションが成功することを確認
+      $this->assertTrue($validator->passes());
+   }
 
-        // DeleteUserRequestのインスタンスを初期化
-        $request = $this->deleteUserRequest();
-        // データをマージしてバリデータを作成
-        $request->merge($data);
-        $validator = Validator::make($request->all(), $request->rules());
+   // メッセージが正しく定義されていることを確認するテスト
+   public function testMessagesMethod()
+   {
+      // DeleteUserRequestのインスタンスを初期化
+      $request = new DeleteUserRequest();
+      // リクエストから、バリデーションメッセージを取得
+      $messages = $request->messages();
 
-        // バリデーションが成功することを確認
-        $this->assertTrue($validator->passes());
-    }
+      // 期待されるバリデーションメッセージを定義
+      $expectedMessages = [
+         'userId.required' => 'ユーザーIDは必須です。',
+         'userId.integer' => 'ユーザーIDは整数で指定してください。',
+         'userId.exists' => '指定されたユーザーIDは存在しません。',
+      ];
 
-    // メッセージが正しく定義されていることを確認するテスト
-    public function testMessagesMethod()
-    {
-        // DeleteUserRequestのインスタンスを初期化
-        $request = $this->deleteUserRequest();
-        // リクエストから、バリデーションメッセージを取得
-        $messages = $request->messages();
-
-        // 期待されるバリデーションメッセージを定義
-        $expectedMessages = [
-            'userId.required' => 'ユーザーIDは必須です。',
-            'userId.integer' => 'ユーザーIDは整数で指定してください。',
-            'userId.exists' => '指定されたユーザーIDは存在しません。',
-        ];
-
-        // 取得したメッセージが、期待されるバリデーションメッセージと一致することを確認
-        $this->assertEquals($expectedMessages, $messages);
-    }
+      // 取得したメッセージが、期待されるバリデーションメッセージと一致することを確認
+      $this->assertEquals($expectedMessages, $messages);
+   }
 }
