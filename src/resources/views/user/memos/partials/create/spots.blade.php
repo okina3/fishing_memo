@@ -1,7 +1,10 @@
 <div class="mb-3">
+   {{-- 場所の入力 --}}
+   <h2 class="sub_heading">場所</h2>
+
    @php
-      // 初期表示行数（最低1、最大3）
-      $initialRows = max(1, min(count(old('spot_areas', [])), 3));
+      // 初期表示行数（最低1、最大2）
+      $initialRows = max(1, min(count(old('spot_areas', [])), 2));
    @endphp
    {{-- 釣り場の入力 --}}
    <div id="spot-areas-container" class="space-y-5 lg:space-y-1">
@@ -86,7 +89,7 @@
    <x-input-error class="mt-2" :messages="$errors->get('spot_areas.*.water_temp')" />
    <div class="mt-2">
       <button type="button" id="add-spot-area" class="text-sm text-blue-700 hover:underline">
-         ＋釣り場入力エリア追加（最大3件）
+         ＋釣り場入力エリア追加（最大2件）
       </button>
    </div>
 </div>

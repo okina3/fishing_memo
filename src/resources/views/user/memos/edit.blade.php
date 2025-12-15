@@ -6,7 +6,7 @@
          {{-- 選択したメモを編集するエリア --}}
          <div class="px-3 pb-3">
             <p class="my-2 text-sm font-bold">
-               ＊ 管理画面（マスターズ）で「釣り場」「エサ」「魚名」を登録してください。
+               ＊ マスターズ管理で「釣り場」「エサ」「魚名」を登録してください。
             </p>
             <form action="{{ route('user.update') }}" method="post">
                @csrf

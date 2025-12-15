@@ -1,4 +1,4 @@
-<div class="mb-2">
+<div class="mb-4">
    {{-- 基本情報 --}}
    <h2 class="sub_heading">基本情報</h2>
    <div class="flex flex-row flex-wrap items-start gap-x-6 gap-y-1 md:gap-x-10">

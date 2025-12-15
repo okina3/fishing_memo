@@ -34,7 +34,7 @@
          <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10 catch-row">
             {{-- 魚名の選択 --}}
             <div>
-               <label class="block text-sm text-gray-700">魚名</label>
+               <label class="block text-sm font-semibold text-gray-700">魚名</label>
                <select class="w-60 rounded" name="fishing_results[{{ $i }}][fish_name_id]">
                   <option value="">魚名を選択してください</option>
                   @foreach ($all_fish_names as $fish)
