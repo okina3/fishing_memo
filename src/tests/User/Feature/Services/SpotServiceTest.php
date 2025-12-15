@@ -82,4 +82,49 @@ class SpotServiceTest extends TestCase
       ]);
       $this->assertEquals('updated_name', $updated->name);
    }
+
+   // 選択したメモに紐づいた釣り場データを配列で取得するメソッドのテスト
+   public function testGetMemoSpotsResults()
+   {
+      // 2件の自分の釣り場を作成
+      $spots = Spot::factory()->count(2)->create(['user_id' => $this->user->id]);
+
+      // pivot 情報を手動で付与
+      $spots[0]->pivot = (object)[
+         'river_flow' => 'あり',
+         'turbidity' => 'クリア',
+         'water_level' => 1.5,
+         'water_temp' => 20,
+      ];
+      $spots[1]->pivot = (object)[
+         'river_flow' => 'なし',
+         'turbidity' => '濁り',
+         'water_level' => 0.5,
+         'water_temp' => 15,
+      ];
+
+      // サービスメソッドを実行
+      $results = SpotService::getMemoSpotsResults($spots);
+
+      // 期待される配列を作成
+      $expected = [
+         [
+            'name' => $spots[0]->name,
+            'river_flow' => 'あり',
+            'turbidity' => 'クリア',
+            'water_level' => 1.5,
+            'water_temp' => 20,
+         ],
+         [
+            'name' => $spots[1]->name,
+            'river_flow' => 'なし',
+            'turbidity' => '濁り',
+            'water_level' => 0.5,
+            'water_temp' => 15,
+         ],
+      ];
+
+      // サービスが返す配列が期待したデータの配列と一致することを確認
+      $this->assertEquals($expected, $results);
+   }
 }
