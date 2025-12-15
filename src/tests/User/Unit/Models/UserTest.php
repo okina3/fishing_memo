@@ -5,7 +5,6 @@ namespace Tests\User\Unit\Models;
 use App\Models\Memo;
 use App\Models\User;
 use App\Notifications\User\ResetPasswordNotification;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
@@ -13,121 +12,107 @@ use Tests\User\TestCase;
 
 class UserTest extends TestCase
 {
-    use RefreshDatabase;
+   use RefreshDatabase;
 
-    private User $user;
+   private User $user;
 
-    // テスト前の初期設定（各テストメソッドの実行前に毎回呼び出される）
-    protected function setUp(): void
-    {
-        // 親クラスのsetUpメソッドを呼び出し
-        parent::setUp();
-        // ユーザーを作成
-        $this->user = User::factory()->create();
-        // 認証済みのユーザーを返す
-        $this->actingAs($this->user, 'users');
-    }
+   // テスト前の初期設定（各テストメソッドの実行前に毎回呼び出される）
+   protected function setUp(): void
+   {
+      // 親クラスのsetUpメソッドを呼び出し
+      parent::setUp();
+      // ユーザーを作成
+      $this->user = User::factory()->create();
+      // 認証済みのユーザーを返す
+      $this->actingAs($this->user, 'users');
+   }
 
-    // メモを作成するヘルパーメソッド
-    private function createMemos(int $count): Collection
-    {
-        // 指定された数のメモを、現在のユーザーに関連付けて作成する
-        return Memo::factory()->count($count)->create(['user_id' => $this->user->id]);
-    }
+   // ユーザーパスワードリセット通知のテスト
+   public function testSendPasswordResetNotification()
+   {
+      // 通知を偽装する
+      Notification::fake();
+      // ダミートークンを設定
+      $token = 'dummy-token123';
+      // パスワードリセット通知をユーザーに送信
+      $this->user->sendPasswordResetNotification($token);
 
-    // ユーザーを作成するヘルパーメソッド
-    private function createUsers(int $count): Collection
-    {
-        // 指定された数のユーザーを作成する
-        return User::factory()->count($count)->create();
-    }
+      // 指定されたユーザーに対してResetPasswordNotificationが送信されたかを確認
+      Notification::assertSentTo(
+         $this->user,
+         ResetPasswordNotification::class,
+         fn($notification) => $notification->token === $token
+      );
+   }
 
-    // ユーザーパスワードリセット通知のテスト
-    public function testSendPasswordResetNotification()
-    {
-        // 通知を偽装する
-        Notification::fake();
-        // ダミートークンを設定
-        $token = 'dummy-token123';
-        // パスワードリセット通知をユーザーに送信
-        $this->user->sendPasswordResetNotification($token);
+   // 基本的なリレーションが、正しく機能しているかのテスト
+   public function testUserMemoRelationship()
+   {
+      // 2件のメモを作成
+      $attachedMemos = Memo::factory()->count(2)->create(['user_id' => $this->user->id]);
 
-        // 指定されたユーザーに対してResetPasswordNotificationが送信されたかを確認
-        Notification::assertSentTo(
-            $this->user,
-            ResetPasswordNotification::class,
-            fn($notification) => $notification->token === $token
-        );
-    }
+      // ユーザーとメモのリレーションが、正しいインスタンスであることを確認
+      $this->assertInstanceOf(HasMany::class, $this->user->memos());
+      // 作成したメモのIDが、自分のユーザーに紐づいたメモのIDと、一致しているかを確認（順序非依存）
+      $this->assertEqualsCanonicalizing($attachedMemos->pluck('id')->toArray(), $this->user->memos->pluck('id')->toArray());
+   }
 
-    // 基本的なリレーションが、正しく機能しているかのテスト
-    public function testUserMemoRelationship()
-    {
-        // 2件のメモを作成
-        $attachedMemos = $this->createMemos(2);
+   // ユーザーを更新順に、取得するスコープのテスト
+   public function testAvailableAllUsersScope()
+   {
+      // 既存のユーザーを削除
+      User::query()->delete();
 
-        // ユーザーとメモのリレーションが、正しいインスタンスであることを確認
-        $this->assertInstanceOf(HasMany::class, $this->user->memos());
-        // 作成したメモのIDが、自分のユーザーに紐づいたメモのIDと、一致しているかを確認（順序非依存）
-        $this->assertEqualsCanonicalizing($attachedMemos->pluck('id')->toArray(), $this->user->memos->pluck('id')->toArray());
-    }
+      // 3人のユーザーを異なる更新日時で作成
+      User::factory()->create(['email' => 'user1@example.com', 'updated_at' => now()]);
+      User::factory()->create(['email' => 'user2@example.com', 'updated_at' => now()->addSeconds(5)]);
+      User::factory()->create(['email' => 'user3@example.com', 'updated_at' => now()->addSeconds(10)]);
 
-    // ユーザーを更新順に、取得するスコープのテスト
-    public function testAvailableAllUsersScope()
-    {
-        // 既存のユーザーを削除
-        User::query()->delete();
+      // ユーザーを更新順に取得
+      $users = User::availableAllUsers()->get();
 
-        // 3人のユーザーを異なる更新日時で作成
-        User::factory()->create(['email' => 'user1@example.com', 'updated_at' => now()]);
-        User::factory()->create(['email' => 'user2@example.com', 'updated_at' => now()->addSeconds(5)]);
-        User::factory()->create(['email' => 'user3@example.com', 'updated_at' => now()->addSeconds(10)]);
+      // 最後に作成したユーザーが、最新の更新ユーザーであることを確認
+      $this->assertEquals('user3@example.com', $users->first()->email);
+      // 最初に作成したユーザーが、最も古い更新ユーザーであることを確認
+      $this->assertEquals('user1@example.com', $users->last()->email);
+   }
 
-        // ユーザーを更新順に取得
-        $users = User::availableAllUsers()->get();
+   // 選択したユーザーを、取得するスコープのテスト
+   public function testAvailableSelectUserScope()
+   {
+      // 1件のユーザーを作成
+      $user = User::factory()->create();
+      // 選択したユーザーを取得
+      $selectedUser = User::availableSelectUser($user->id)->first();
 
-        // 最後に作成したユーザーが、最新の更新ユーザーであることを確認
-        $this->assertEquals('user3@example.com', $users->first()->email);
-        // 最初に作成したユーザーが、最も古い更新ユーザーであることを確認
-        $this->assertEquals('user1@example.com', $users->last()->email);
-    }
+      // 作成したユーザーのIDが、取得したユーザーのIDと、一致するか確認
+      $this->assertEquals($user->id, $selectedUser->id);
+   }
 
-    // 選択したユーザーを、取得するスコープのテスト
-    public function testAvailableSelectUserScope()
-    {
-        // 1件のユーザーを作成
-        $user = $this->createUsers(1)->first();
-        // 選択したユーザーを取得
-        $selectedUser = User::availableSelectUser($user->id)->first();
+   // 選択したメールアドレスからユーザーを、取得するスコープのテスト
+   public function testAvailableSelectMailUserScope()
+   {
+      // 1件のユーザーを作成
+      $user = User::factory()->create();
+      // メールアドレスでユーザーを取得
+      $selectedMailUser = User::availableSelectMailUser($user->email)->first();
 
-        // 作成したユーザーのIDが、取得したユーザーのIDと、一致するか確認
-        $this->assertEquals($user->id, $selectedUser->id);
-    }
+      // 作成したユーザーのメールアドレスが、取得したユーザーのメールアドレスと、一致するか確認
+      $this->assertEquals($user->email, $selectedMailUser->email);
+   }
 
-    // 選択したメールアドレスからユーザーを、取得するスコープのテスト
-    public function testAvailableSelectMailUserScope()
-    {
-        // 1件のユーザーを作成
-        $user = $this->createUsers(1)->first();
-        // メールアドレスでユーザーを取得
-        $selectedMailUser = User::availableSelectMailUser($user->email)->first();
+   // メールアドレスでユーザーを、検索するスコープのテスト
+   public function testSearchKeywordScope()
+   {
+      // 1件のユーザーを作成
+      $user = User::factory()->create();
 
-        // 作成したユーザーのメールアドレスが、取得したユーザーのメールアドレスと、一致するか確認
-        $this->assertEquals($user->email, $selectedMailUser->email);
-    }
+      // キーワードでユーザーを検索
+      $searchResult = User::searchKeyword($user->email)->get();
 
-    // メールアドレスでユーザーを、検索するスコープのテスト
-    public function testSearchKeywordScope()
-    {
-        // 1件のユーザーを作成
-        $user = $this->createUsers(1)->first();
-
-        // キーワードでユーザーを検索
-        $searchResult = User::searchKeyword($user->email)->get();
-
-        // 検索結果が1件であることを確認
-        $this->assertCount(1, $searchResult);
-        // 作成したユーザーのメールアドレスが、検索結果のユーザーのメールアドレスと、一致するか確認
-        $this->assertEquals($user->email, $searchResult->first()->email);
-    }
+      // 検索結果が1件であることを確認
+      $this->assertCount(1, $searchResult);
+      // 作成したユーザーのメールアドレスが、検索結果のユーザーのメールアドレスと、一致するか確認
+      $this->assertEquals($user->email, $searchResult->first()->email);
+   }
 }

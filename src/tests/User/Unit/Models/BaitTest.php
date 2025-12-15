@@ -5,7 +5,6 @@ namespace Tests\User\Unit\Models;
 use App\Models\Bait;
 use App\Models\Memo;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,38 +27,21 @@ class BaitTest extends TestCase
       $this->actingAs($this->user, 'users');
    }
 
-   // エサを作成するヘルパーメソッド
-   private function createBaits(int $count): Collection
-   {
-      // 指定された数のエサを、現在のユーザーに関連付けて作成する
-      return Bait::factory()->count($count)->create(['user_id' => $this->user->id]);
-   }
-
-   // エサにメモを関連付けるヘルパーメソッド
-   private function attachMemos(Bait $bait, int $memoCount): Collection
-   {
-      // メモを作成し、エサに関連付け
-      $memos = Memo::factory()->count($memoCount)->create();
-      $bait->memos()->attach($memos->pluck('id')->toArray());
-
-      // リレーションを最新化し（テストの安定化のため）
-      $bait->load('memos');
-
-      // 作成されたメモのコレクションを返す
-      return $memos;
-   }
-
    // 基本的なリレーションが、正しく機能しているかのテスト
    public function testBaitAttributesAndRelations()
    {
       // 1件のエサを作成
-      $bait = $this->createBaits(1)->first();
-      // エサに2件のメモを関連付け
-      $attachedMemos = $this->attachMemos($bait, 2);
+      $bait = Bait::factory()->create(['user_id' => $this->user->id]);
+      // メモを作成し、2件のエサに関連付け
+      $attachedMemos = Memo::factory()->count(2)->create();
+      $bait->memos()->attach($attachedMemos->pluck('id')->toArray());
+
+      // リレーションを最新化しておく（テストの安定化のため）
+      $bait->load('memos');
 
       // エサとメモのリレーションが、正しいインスタンスであることを確認
       $this->assertInstanceOf(BelongsToMany::class, $bait->memos());
-      // 作成した関連付けられたメモのID配列が、作成したエサに紐づいたメモのID配列と、一致しているかを確認（順序非依存）
+      // メモのID配列がエサの関連IDと一致するか確認（順序非依存）
       $this->assertEqualsCanonicalizing($attachedMemos->pluck('id')->toArray(), $bait->memos->pluck('id')->toArray());
 
       // エサとユーザーのリレーションが、正しいインスタンスであることを確認
@@ -72,11 +54,11 @@ class BaitTest extends TestCase
    public function testAvailableAllBaitsScope()
    {
       // 3件のエサを作成
-      $baits = $this->createBaits(3);
+      $baits = Bait::factory()->count(3)->create(['user_id' => $this->user->id]);
       // 全てのエサを取得
       $allBaits = Bait::availableAllBaits()->get();
 
-      // 作成したエサのIDの配列が、取得したエサのIDの配列と、一致するか確認（順序非依存）
+      // エサのID配列が取得結果と一致するか確認（順序非依存）
       $this->assertEqualsCanonicalizing($baits->pluck('id')->toArray(), $allBaits->pluck('id')->toArray());
    }
 
@@ -84,11 +66,11 @@ class BaitTest extends TestCase
    public function testAvailableSelectBaitScope()
    {
       // 1件のエサを作成
-      $bait = $this->createBaits(1)->first();
+      $bait = Bait::factory()->create(['user_id' => $this->user->id]);
       // 選択したエサを取得
       $selectedBait = Bait::availableSelectBait($bait->id)->first();
 
-      // 作成したエサのIDが、取得したエサのIDと、一致しているか確認
+      // 作成したエサIDが取得結果と一致するか確認
       $this->assertEquals($bait->id, $selectedBait->id);
    }
 

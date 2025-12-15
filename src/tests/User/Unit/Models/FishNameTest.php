@@ -28,23 +28,20 @@ class FishNameTest extends TestCase
       $this->actingAs($this->user, 'users');
    }
 
-   // 魚名を作成するヘルパーメソッド
-   private function createFishNames(int $count): Collection
-   {
-      // 指定された数の魚名を、現在のユーザーに関連付けて作成する
-      return FishName::factory()->count($count)->create(['user_id' => $this->user->id]);
-   }
-
-   // 魚名にメモを関連付けるヘルパーメソッド
+   // ピボット属性付きで魚名にメモを関連付けるヘルパーメソッド
    private function attachMemos(FishName $fishName, int $memoCount): Collection
    {
-      // メモを作成し、魚名に関連付け
-      $memos = Memo::factory()->count($memoCount)->create();
-      $fishName->memos()->attach($memos->pluck('id')->toArray());
-
-      // リレーションを最新化し（テストの安定化のため）
-      $fishName->load('memos');
-
+      // メモを作成
+      $memos = Memo::factory()->count($memoCount)->create(['user_id' => $this->user->id]);
+      // ピボット用データを、魚名に関連付け
+      $pivotData = [];
+      foreach ($memos as $memo) {
+         $pivotData[$memo->id] = [
+            'count' => 1,
+            'length' => 10,
+         ];
+      }
+      $fishName->memos()->attach($pivotData);
       // 作成されたメモのコレクションを返す
       return $memos;
    }
@@ -53,13 +50,16 @@ class FishNameTest extends TestCase
    public function testFishNameAttributesAndRelations()
    {
       // 1件の魚名を作成
-      $fishName = $this->createFishNames(1)->first();
-      // 魚名に2件のメモを関連付け
+      $fishName = FishName::factory()->create(['user_id' => $this->user->id]);
+      // 魚名に2件のメモを関連付け（ピボットデータ付き）
       $attachedMemos = $this->attachMemos($fishName, 2);
+
+      // リレーションを最新化しておく（テストの安定化のため）
+      $fishName->load('memos');
 
       // 魚名とメモのリレーションが、正しいインスタンスであることを確認
       $this->assertInstanceOf(BelongsToMany::class, $fishName->memos());
-      // 作成した関連付けられたメモのID配列が、作成した魚名に紐づいたメモのID配列と、一致しているかを確認（順序非依存）
+      // メモのID配列が魚名の関連IDと一致するか確認（順序非依存）
       $this->assertEqualsCanonicalizing($attachedMemos->pluck('id')->toArray(), $fishName->memos->pluck('id')->toArray());
 
       // 魚名とユーザーのリレーションが、正しいインスタンスであることを確認
@@ -72,11 +72,11 @@ class FishNameTest extends TestCase
    public function testAvailableAllFishNamesScope()
    {
       // 3件の魚名を作成
-      $fishNames = $this->createFishNames(3);
+      $fishNames = FishName::factory()->count(3)->create(['user_id' => $this->user->id]);
       // 全ての魚名を取得
       $allFishNames = FishName::availableAllFishNames()->get();
 
-      // 作成した魚名のIDの配列が、取得した魚名のIDの配列と、一致しているか確認（順序非依存）
+      // 魚名のID配列が取得結果と一致するか確認（順序非依存）
       $this->assertEqualsCanonicalizing($fishNames->pluck('id')->toArray(), $allFishNames->pluck('id')->toArray());
    }
 
@@ -84,11 +84,11 @@ class FishNameTest extends TestCase
    public function testAvailableSelectFishNameScope()
    {
       // 1件の魚名を作成
-      $fishName = $this->createFishNames(1)->first();
+      $fishName = FishName::factory()->create(['user_id' => $this->user->id]);
       // 選択した魚名を取得
       $selected = FishName::availableSelectFishName($fishName->id)->first();
 
-      // 作成した魚名のIDが、取得した魚名のIDと、一致しているか確認
+      // 作成した魚名IDが取得結果と一致するか確認
       $this->assertEquals($fishName->id, $selected->id);
    }
 
