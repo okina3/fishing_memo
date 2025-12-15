@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\User\Feature\Services;
+namespace Tests\Admin\Feature\Services;
 
 use App\Models\Image;
 use App\Models\User;
