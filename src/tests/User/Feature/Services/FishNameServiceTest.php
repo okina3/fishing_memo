@@ -26,7 +26,6 @@ class FishNameServiceTest extends TestCase
       $this->user = User::factory()->create();
       // 2人目の別のユーザーを作成
       $this->secondaryUser = User::factory()->create();
-
       // 認証済みのユーザーを返す
       $this->actingAs($this->user, 'users');
    }
@@ -90,16 +89,30 @@ class FishNameServiceTest extends TestCase
       $fishNames = FishName::factory()->count(2)->create(['user_id' => $this->user->id]);
 
       // pivot 情報を手動で付与
-      $fishNames[0]->pivot = (object)['count' => 3, 'length' => 30];
-      $fishNames[1]->pivot = (object)['count' => 1, 'length' => 10];
+      $fishNames[0]->pivot = (object)[
+         'count' => 3, 
+         'length' => 30
+      ];
+      $fishNames[1]->pivot = (object)[
+         'count' => 1, 
+         'length' => 10
+      ];
 
       // サービスメソッドを実行
       $results = FishNameService::getMemoFishResults($fishNames);
 
       // 期待する配列を作成
       $expected = [
-         ['name' => $fishNames[0]->name, 'count' => 3, 'length' => 30],
-         ['name' => $fishNames[1]->name, 'count' => 1, 'length' => 10],
+         [
+            'name' => $fishNames[0]->name, 
+            'count' => 3, 
+            'length' => 30
+         ],
+         [
+            'name' => $fishNames[1]->name, 
+            'count' => 1, 
+            'length' => 10
+         ],
       ];
 
       // サービスが返す配列が期待した釣果データの配列と一致することを確認

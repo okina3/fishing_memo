@@ -6,7 +6,6 @@ use App\Models\Image;
 use App\Models\Memo;
 use App\Models\User;
 use App\Services\ImageService;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -33,27 +32,8 @@ class ImageServiceTest extends TestCase
       $this->user = User::factory()->create();
       // 2人目の別のユーザーを作成
       $this->secondaryUser = User::factory()->create();
-
       // 認証済みのユーザーを返す
       $this->actingAs($this->user, 'users');
-   }
-
-   // メモを作成するヘルパーメソッド
-   private function createMemos(int $count): Collection
-   {
-      // 指定された数のメモを、現在のユーザーに関連付けて作成する
-      return Memo::factory()->count($count)->create(['user_id' => $this->user->id]);
-   }
-
-   // メモに画像を関連付けるヘルパーメソッド
-   private function attachImages(Memo $memo, int $imageCount): Collection
-   {
-      // 画像を作成し、メモに関連付け
-      $images = Image::factory()->count($imageCount)->create();
-      $memo->images()->attach($images->pluck('id')->toArray());
-
-      // 作成した画像のコレクションを返す
-      return $images;
    }
 
    // 別のユーザーの画像を見られなくするメソッドのテスト
@@ -98,30 +78,34 @@ class ImageServiceTest extends TestCase
    public function testGetMemoImages()
    {
       // 1件の自分のメモを作成
-      $memo = $this->createMemos(1)->first();
-      // メモに2件のタグを関連付け
-      $attachImages = $this->attachImages($memo, 2);
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      // メモに2件の画像を関連付け
+      $attachImages = Image::factory()->count(2)->create();
+      $memo->images()->attach($attachImages->pluck('id')->toArray());
       // 選択したメモに紐づいた画像を取得するサービスメソッドを実行
       $memo_images = ImageService::getMemoImages($attachImages);
 
       // サービスメソッドから取得した情報をコレクションに変換
       $memo_images = collect($memo_images);
-      // 作成した関連付けられた画像のID配列が、取得したメモに紐づいた画像のID配列と、一致しているかを確認
-      $this->assertEquals($attachImages->pluck('id')->toArray(), $memo_images->pluck('id')->toArray());
+      // 画像のID配列がメモの関連IDと一致するか確認（順序非依存）
+      $this->assertEqualsCanonicalizing($attachImages->pluck('id')
+         ->toArray(), $memo_images->pluck('id')->toArray());
    }
 
    // 選択したメモに紐づいた画像のidを取得するテスト
    public function testGetMemoImagesId()
    {
       // 1件の自分のメモを作成
-      $memo = $this->createMemos(1)->first();
-      // メモに2件のタグを関連付け
-      $attachImages = $this->attachImages($memo, 2);
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      // メモに2件の画像を関連付け
+      $attachImages = Image::factory()->count(2)->create();
+      $memo->images()->attach($attachImages->pluck('id')->toArray());
       // 選択したメモに紐づいた画像を取得するサービスメソッドを実行
       $memo_images = ImageService::getMemoImagesId($attachImages);
 
-      // 作成した関連付けられた画像のID配列が、取得したメモに紐づいた画像のID配列と、一致しているかを確認
-      $this->assertEquals($attachImages->pluck('id')->toArray(), $memo_images);
+      // 画像のID配列がメモの関連IDと一致するか確認（順序非依存）
+      $this->assertEqualsCanonicalizing($attachImages->pluck('id')
+         ->toArray(), $memo_images);
    }
 
    // 画像をリサイズして、Laravelのフォルダ内に保存するテスト
