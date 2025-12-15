@@ -33,7 +33,7 @@ class StoreMemoRequest extends FormRequest
             'wind_dir'     => 'nullable|string|in:北,北東,東,南東,南,南西,西,北西',
             // 釣り場
             'spot_areas' => 'array',
-            'spot_areas.*.spot_id' => 'nullable|integer|exists:spots,id',
+            'spot_areas.*.spot_id' => 'required|integer|exists:spots,id',
             'spot_areas.*.river_flow' => 'nullable|string|in:流れあり,流れなし',
             'spot_areas.*.turbidity' => 'nullable|string|in:クリア,濁り',
             'spot_areas.*.water_level' => 'nullable|numeric|min:0|max:999.9',
@@ -86,6 +86,7 @@ class StoreMemoRequest extends FormRequest
             'max_wind.integer' => '最大風速は整数で指定してください。',
             'wind_dir.in' => '風向の値が不正です。',
             // 釣り場
+            'spot_areas.*.spot_id.required' => '釣り場を選択してください。また、マスターズ管理から釣り場を登録をしてから選択してください。',
             'spot_areas.*.river_flow.in' => '川の流れの値が不正です。',
             'spot_areas.*.turbidity.in' => '濁りの値が不正です。',
             'spot_areas.*.water_level.numeric' => '水位は数値で指定してください。',
