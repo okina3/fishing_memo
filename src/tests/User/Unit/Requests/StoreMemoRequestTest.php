@@ -55,8 +55,7 @@ class StoreMemoRequestTest extends TestCase
          'weather' => '晴れ',
          'air_temp' => 20,
          'wind_dir' => '北',
-         // タグ・備考
-         'new_tag' => 'テスト新しいタグ',
+         // 備考
          'content' => 'テストメモの内容',
       ];
       // StoreMemoRequestのインスタンスを初期化
@@ -122,9 +121,6 @@ class StoreMemoRequestTest extends TestCase
          'fishing_results.*.length.required_with' => '長さも入力してください。',
          'fishing_results.*.length.integer' => '長さは整数で指定してください。',
          'fishing_results.*.length.min' => '長さは 0 以上で指定してください。',
-         // 新規タグ
-         'new_tag.max' => 'タグは、25文字以内で入力してください。',
-         'new_tag.unique' => 'このタグは、すでに登録されています。',
          // 備考
          'content.string' => 'メモの備考が空です。また、文字列で指定してください。',
          'content.max' => '文字数は、1000文字以内にしてください。',

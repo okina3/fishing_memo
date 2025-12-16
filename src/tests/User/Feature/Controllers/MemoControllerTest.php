@@ -7,7 +7,6 @@ use App\Models\FishName;
 use App\Models\Image;
 use App\Models\Memo;
 use App\Models\Spot;
-use App\Models\Tag;
 use App\Models\User;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -35,7 +34,7 @@ class MemoControllerTest extends TestCase
         $this->actingAs($this->user, 'users');
     }
 
-    // メモとタグの一覧が正しく表示されることをテスト
+    // メモの一覧が正しく表示されることをテスト
     public function testIndexMemoController()
     {
         // 認証済みユーザーでメモ一覧ルートへアクセス
@@ -45,8 +44,8 @@ class MemoControllerTest extends TestCase
         $response->assertOk();
         // 返却されるビューが期待通り（user.memos.index）であることを検証
         $response->assertViewIs('user.memos.index');
-        // ビューに渡される主要なデータ（全メモ・全タグ）が存在することを検証
-        $response->assertViewHasAll(['all_memos', 'all_tags']);
+        // ビューに渡される主要なデータ（全メモ）が存在することを検証
+        $response->assertViewHasAll(['all_memos']);
     }
 
     // メモの新規作成画面が、正しく表示されることをテスト
@@ -59,8 +58,8 @@ class MemoControllerTest extends TestCase
         $response->assertOk();
         // 返却されるビューが期待通り（user.memos.create）であることを検証
         $response->assertViewIs('user.memos.create');
-        // ビューに渡される主要なデータ（釣り場・エサ・魚名・タグ・画像）が存在することを検証
-        $response->assertViewHasAll(['all_spots', 'all_baits', 'all_fish_names', 'all_tags', 'all_images']);
+        // ビューに渡される主要なデータ（釣り場・エサ・魚名・画像）が存在することを検証
+        $response->assertViewHasAll(['all_spots', 'all_baits', 'all_fish_names', 'all_images']);
     }
 
     // メモが、正しく保存されることをテスト
@@ -70,7 +69,6 @@ class MemoControllerTest extends TestCase
         $spot = Spot::factory()->create(['user_id' => $this->user->id]);
         $bait = Bait::factory()->create(['user_id' => $this->user->id]);
         $fish = FishName::factory()->create(['user_id' => $this->user->id]);
-        $tag = Tag::factory()->create(['user_id' => $this->user->id]);
         $image = Image::factory()->create(['user_id' => $this->user->id]);
 
         // リクエストデータを作成
@@ -98,9 +96,7 @@ class MemoControllerTest extends TestCase
                     'length' => 30,
                 ],
             ],
-            'tags' => [$tag->id],
             'images' => [$image->id],
-            'new_tag' => '新規タグA',
             'content' => 'テストメモの内容',
         ];
 
@@ -145,26 +141,10 @@ class MemoControllerTest extends TestCase
             'length' => 30,
         ]);
 
-        // メモとタグの中間データが作成されていることを検証
-        $this->assertDatabaseHas('memo_tags', [
-            'memo_id' => $memo->id,
-            'tag_id' => $tag->id,
-        ]);
-
         // メモと画像の中間データが作成されていることを検証
         $this->assertDatabaseHas('memo_images', [
             'memo_id' => $memo->id,
             'image_id' => $image->id,
-        ]);
-
-        // 新規タグが作成され、メモと紐づいていることを検証
-        $createdNewTag = Tag::query()->where('name', '新規タグA')->where('user_id', $this->user->id)->first();
-        $this->assertNotNull($createdNewTag);
-
-        // メモと新規タグの中間データが作成されていることを検証
-        $this->assertDatabaseHas('memo_tags', [
-            'memo_id' => $memo->id,
-            'tag_id' => $createdNewTag->id,
         ]);
     }
 
@@ -177,7 +157,6 @@ class MemoControllerTest extends TestCase
         $spot = Spot::factory()->create(['user_id' => $this->user->id]);
         $bait = Bait::factory()->create(['user_id' => $this->user->id]);
         $fish = FishName::factory()->create(['user_id' => $this->user->id]);
-        $tag = Tag::factory()->create(['user_id' => $this->user->id]);
         $image = Image::factory()->create(['user_id' => $this->user->id]);
 
         // リクエストデータを作成
@@ -205,9 +184,7 @@ class MemoControllerTest extends TestCase
                     'length' => 30,
                 ],
             ],
-            'tags' => [$tag->id],
             'images' => [$image->id],
-            'new_tag' => '新規タグA',
             'content' => 'テストメモの内容',
         ];
 
@@ -256,7 +233,6 @@ class MemoControllerTest extends TestCase
             'get_memo_spots_name',
             'get_memo_baits_name',
             'get_memo_fish_results',
-            'get_memo_tags_name',
             'get_memo_images',
             'shared_users',
         ]);
@@ -280,10 +256,8 @@ class MemoControllerTest extends TestCase
             'all_spots',
             'all_baits',
             'all_fish_names',
-            'all_tags',
             'all_images',
             'select_memo',
-            'get_memo_tags_id',
             'get_memo_images_id',
             'get_memo_images',
         ]);
@@ -307,9 +281,7 @@ class MemoControllerTest extends TestCase
             'spot_areas' => [],
             'baits' => [],
             'fishing_results' => [],
-            'tags' => [],
             'images' => [],
-            'new_tag' => '',
             'content' => '更新後のメモ内容',
         ];
 
@@ -357,9 +329,7 @@ class MemoControllerTest extends TestCase
             'spot_areas' => [],
             'baits' => [],
             'fishing_results' => [],
-            'tags' => [],
             'images' => [],
-            'new_tag' => '',
             'content' => '更新後のメモ内容',
         ];
 

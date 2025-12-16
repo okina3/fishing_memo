@@ -46,14 +46,6 @@ class StoreMemoRequest extends FormRequest
             'fishing_results.*.fish_name_id' => 'nullable|integer|exists:fish_names,id',
             'fishing_results.*.count' => 'nullable|required_with:fishing_results.*.fish_name_id|integer|min:0',
             'fishing_results.*.length' => 'nullable|required_with:fishing_results.*.fish_name_id|integer|min:0',
-            // 新規タグ
-            'new_tag'      => [
-                'nullable',
-                'max:25',
-                Rule::unique('tags', 'name')->where(function ($query) {
-                    return $query->where('user_id', auth()->id());
-                }),
-            ],
             // 備考
             'content'      => 'string|max:1000',
         ];
@@ -110,9 +102,6 @@ class StoreMemoRequest extends FormRequest
             'fishing_results.*.length.required_with' => '長さも入力してください。',
             'fishing_results.*.length.integer' => '長さは整数で指定してください。',
             'fishing_results.*.length.min' => '長さは 0 以上で指定してください。',
-            // 新規タグ
-            'new_tag.max' => 'タグは、25文字以内で入力してください。',
-            'new_tag.unique' => 'このタグは、すでに登録されています。',
             // 備考
             'content.string' => 'メモの備考が空です。また、文字列で指定してください。',
             'content.max' => '文字数は、1000文字以内にしてください。',

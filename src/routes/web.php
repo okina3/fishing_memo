@@ -9,7 +9,6 @@ use App\Http\Controllers\User\MastersController;
 use App\Http\Controllers\User\MemoController;
 use App\Http\Controllers\User\ShareSettingController;
 use App\Http\Controllers\User\SpotController;
-use App\Http\Controllers\User\TagController;
 use App\Http\Controllers\User\TrashedMemoController;
 use Illuminate\Support\Facades\Route;
 
@@ -72,13 +71,6 @@ Route::prefix('/')->as('user.')->group(function () {
                 Route::patch('/update', 'update')->name('fish-name.update');
                 Route::delete('/destroy', 'destroy')->name('fish-name.destroy');
             });
-
-        //タグ管理画面
-        Route::controller(TagController::class)->prefix('tag')->group(function () {
-            Route::get('/', 'index')->name('tag.index');
-            Route::post('/store', 'store')->name('tag.store');
-            Route::delete('/destroy', 'destroy')->name('tag.destroy');
-        });
 
         //画像管理画面
         Route::controller(ImageController::class)->prefix('image')->group(function () {

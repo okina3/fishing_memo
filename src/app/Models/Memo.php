@@ -63,15 +63,6 @@ class Memo extends Model
     }
 
     /**
-     * Tagモデルとの多対多のリレーションを定義。
-     * @return BelongsToMany
-     */
-    public function tags(): BelongsToMany
-    {
-        return $this->belongsToMany(Tag::class, 'memo_tags');
-    }
-
-    /**
      * Imageモデルとの多対多のリレーションを定義。
      * @return BelongsToMany
      */

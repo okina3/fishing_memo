@@ -22,8 +22,6 @@
             <x-user.show.fishing-results :getMemoFishResults='$get_memo_fish_results' />
             {{-- 選択した共有メモの備考の表示 --}}
             <x-user.show.content :selectMemo='$select_memo' />
-            {{-- 選択した共有メモに紐づいたタグの表示 --}}
-            <x-user.tags.tags :getMemoTagsName='$get_memo_tags_name' />
             {{-- 選択した共有メモに紐づいた画像の表示 --}}
             <x-user.images.big-select-image :getMemoImages='$get_memo_images' />
             {{-- 戻るボタン --}}

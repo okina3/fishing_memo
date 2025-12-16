@@ -28,8 +28,6 @@
                <x-user.show.fishing-results :getMemoFishResults='$get_memo_fish_results' />
                {{-- メモの備考表示 --}}
                <x-user.show.content :selectMemo='$select_memo' />
-               {{-- タグの表示 --}}
-               <x-user.tags.tags :getMemoTagsName='$get_memo_tags_name' />
                {{-- 画像の表示 --}}
                <x-user.images.big-select-image :getMemoImages='$get_memo_images' />
                {{-- 戻るボタン --}}
