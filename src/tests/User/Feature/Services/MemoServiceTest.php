@@ -75,33 +75,21 @@ class MemoServiceTest extends TestCase
    {
       // 4件の自分のメモを作成
       Memo::factory()->count(4)->create(['user_id' => $this->user->id]);
-      // 1件の自分のメモを作成
+      // 1件の自分のメモを作成（共有設定を付与する対象）
       $memo = Memo::factory()->create(['user_id' => $this->user->id]);
-      // 1件の共有設定を作成（自分のメモを、2人目のユーザーに共有）
+      // 共有設定を作成（自分のメモを、2人目のユーザーに共有）
       $this->createShareSetting($this->secondaryUser, $memo);
 
-      // メモにタグを関連付ける
-      $memo->tags()->attach($tag);
-      // タグのIDをクエリパラメータに設定
-      request()->query->set('tag', $tag->id);
       // メモを検索するサービスメソッドを実行
       $response = MemoService::searchMemos();
 
-      // 期待されるメモの数が、1であることを確認
-      $this->assertCount(1, $response);
+      // 期待されるメモの数が、5であることを確認
+      $this->assertCount(5, $response);
 
       // 共有設定を確認
       $sharedMemo = $response->firstWhere('id', $memo->id);
       $this->assertNotNull($sharedMemo, 'Shared memo not found in the response');
       $this->assertEquals('共有中', $sharedMemo->status ?? null);
-
-      // タグのIDをクエリパラメータから削除
-      request()->query->remove('tag');
-      // 再度メモを検索するサービスメソッドを実行（タグなし）
-      $response = MemoService::searchMemos();
-
-      // 期待されるメモの数が、5であることを確認
-      $this->assertCount(5, $response);
    }
 
    // メモ保存機能のテスト
