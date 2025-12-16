@@ -28,17 +28,16 @@ class MemoService
 
     /**
      * メモを一覧表示するメソッド。
+     * @param string|null $keyword
      * @return mixed
      */
-    public static function searchMemos(): mixed
+    public static function searchMemos(?string $keyword = null): mixed
     {
-        // 全メモを取得
-        $memos = Memo::availableAllMemos()->get();
+        // 全メモ、または、検索されたメモを取得
+        $memos = Memo::availableAllMemos()->searchKeyword($keyword)->get();
+        // 共有されているメモにはステータスを付与
         foreach ($memos as $memo) {
-            // メモが共有されているかどうかを確認
-            $is_shared = $memo->shareSettings->isNotEmpty();
-            // もしメモが共有されている場合、そのメモに目印を付ける
-            if ($is_shared) {
+            if ($memo->shareSettings->isNotEmpty()) {
                 $memo->status = "共有中";
             }
         }
