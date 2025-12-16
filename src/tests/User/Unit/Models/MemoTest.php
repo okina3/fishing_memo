@@ -171,4 +171,36 @@ class MemoTest extends TestCase
       // 削除済みメモIDが取得結果と一致するか確認
       $this->assertEquals($memo->id, $selectedTrashedMemo->id);
    }
+
+   // メモを、検索するスコープのテスト
+   public function testSearchKeywordScope()
+   {
+      // 既存データをクリア
+      Memo::query()->delete();
+
+      // 3件のメモのデータを作成
+      Memo::factory()->create([
+         'fishing_date' => '2022-12-01',
+         'content' => 'よく釣れた。',
+         'user_id' => $this->user->id
+      ]);
+      Memo::factory()->create([
+         'fishing_date' => '2023-8-12',
+         'content' => '風が強くて大変だった。',
+         'user_id' => $this->user->id
+      ]);
+      Memo::factory()->create([
+         'fishing_date' => '2025-6-17',
+         'content' => '快適に釣りができた。',
+         'user_id' => $this->user->id
+      ]);
+
+      // キーワード「風」で、メモを検索
+      $searchResults = Memo::searchKeyword('風')->get();
+
+      // 検索結果が1件であることを確認
+      $this->assertCount(1, $searchResults);
+      // 検索結果の最初の要素の content に「風」が含まれているかを確認
+      $this->assertStringContainsString('風', $searchResults->first()->content);
+   }
 }

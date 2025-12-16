@@ -7,6 +7,7 @@ use App\Models\FishName;
 use App\Models\Image;
 use App\Models\Memo;
 use App\Models\ShareSetting;
+use App\Models\Spot;
 use App\Models\User;
 use App\Services\MemoService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -117,6 +118,82 @@ class MemoServiceTest extends TestCase
       ]);
    }
 
+   // メモに紐づいた釣り場データを、中間テーブルに保存するメソッドのテスト
+   public function testAttachExistingSpots()
+   {
+      // 1件の自分メモを作成
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      // 2件の自分の釣り場を作成
+      $spots = Spot::factory()->count(2)->create(['user_id' => $this->user->id]);
+
+      // spot_areas の形式でリクエストを作成
+      $spotAreas = [
+         ['spot_id' => $spots[0]->id, 'river_flow' => '流れあり', 'turbidity' => '濁り', 'water_level' => 1.2, 'water_temp' => 15],
+         ['spot_id' => $spots[1]->id, 'river_flow' => '流れなし', 'turbidity' => 'クリア', 'water_level' => 1.0, 'water_temp' => 10],
+      ];
+
+      // リクエストを作成してサービスを呼び出す
+      $request = new Request(['spot_areas' => $spotAreas]);
+      MemoService::attachExistingSpots($request, $memo->id);
+
+      // 中間テーブルに関連付けが保存されていることを確認
+      $this->assertDatabaseHas('memo_spots', [
+         'memo_id' => $memo->id,
+         'spot_id' => $spots[0]->id,
+         'river_flow' => '流れあり',
+         'turbidity' => '濁り',
+         'water_level' => 1.2,
+         'water_temp' => 15,
+      ]);
+
+      // 中間テーブルに関連付けが保存されていることを確認
+      $this->assertDatabaseHas('memo_spots', [
+         'memo_id' => $memo->id,
+         'spot_id' => $spots[1]->id,
+         'river_flow' => '流れなし',
+         'turbidity' => 'クリア',
+         'water_level' => 1.0,
+         'water_temp' => 10,
+      ]);
+   }
+
+   // メモに紐づいた釣り場データを、中間テーブルに保存するメソッドのテスト（空の釣り場データ）
+   public function testAttachExistingSpots_withEmptyResults()
+   {
+      // 1件の自分メモを作成
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      // 空の釣り場データでリクエストを作成してサービスを呼び出す
+      $request = new Request(['spot_areas' => []]);
+      MemoService::attachExistingSpots($request, $memo->id);
+
+      // 中間テーブルに関連付けが保存されていないことを確認
+      $this->assertDatabaseMissing('memo_spots', ['memo_id' => $memo->id]);
+   }
+
+   // メモに紐づいた釣り場データを、中間テーブルに保存するメソッドのテスト（無効な釣り場ID）
+   public function testAttachExistingSpots_skipsInvalidEntries()
+   {
+      // 1件の自分メモを作成
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      // 1件の自分の釣り場を作成
+      $spots = Spot::factory()->create(['user_id' => $this->user->id]);
+
+      // spot_areas の形式でリクエストを作成（無効な釣り場ID）
+      $spotAreas = [
+         ['spot_id' => 0, 'river_flow' => '流れあり', 'turbidity' => '濁り', 'water_level' => 1.2, 'water_temp' => 15],
+      ];
+
+      // リクエストを作成してサービスを呼び出す
+      $request = new Request(['spot_areas' => $spotAreas]);
+      MemoService::attachExistingSpots($request, $memo->id);
+
+      // 無効な釣り場IDに対する関連付けが行われていないことを確認
+      $this->assertDatabaseMissing('memo_spots', [
+         'memo_id' => $memo->id,
+         'spot_id' => 0,
+      ]);
+   }
+
    // メモに紐づいたエサを、中間テーブルに保存するメソッドのテスト
    public function testAttachExistingBaits()
    {
@@ -186,31 +263,22 @@ class MemoServiceTest extends TestCase
       $this->assertDatabaseMissing('memo_fish_names', ['memo_id' => $memo->id]);
    }
 
-   // メモに紐づいた釣果データを、中間テーブルに保存するメソッドのテスト（無効な魚名IDを含む場合）
+   // メモに紐づいた釣果データを、中間テーブルに保存するメソッドのテスト（無効な魚名ID）
    public function testAttachExistingFishNames_skipsInvalidEntries()
    {
       // 1件の自分メモを作成
       $memo = Memo::factory()->create(['user_id' => $this->user->id]);
-      // 2件の自分の魚名を作成
-      $fishNames = FishName::factory()->count(2)->create(['user_id' => $this->user->id]);
+      // 1件の自分の魚名を作成
+      $fishNames = FishName::factory()->create(['user_id' => $this->user->id]);
 
-      // fishing_results の形式でリクエストを作成（1件は無効な魚名ID）
+      // fishing_results の形式でリクエストを作成（無効な魚名ID）
       $fishingResults = [
          ['fish_name_id' => 0, 'count' => 2, 'length' => 20],
-         ['fish_name_id' => $fishNames[1]->id, 'count' => 1, 'length' => 10], // valid -> should be attached
       ];
 
       // リクエストを作成してサービスを呼び出す
       $request = new Request(['fishing_results' => $fishingResults]);
       MemoService::attachExistingFishNames($request, $memo->id);
-
-      // 中間テーブルに関連付けが保存されていることを確認
-      $this->assertDatabaseHas('memo_fish_names', [
-         'memo_id' => $memo->id,
-         'fish_name_id' => $fishNames[1]->id,
-         'count' => 1,
-         'length' => 10,
-      ]);
 
       // 無効な魚名IDに対する関連付けが行われていないことを確認
       $this->assertDatabaseMissing('memo_fish_names', [

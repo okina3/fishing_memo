@@ -89,6 +89,7 @@ class StoreMemoRequestTest extends TestCase
          'end_time.after_or_equal' => '終了時間は開始時間以降を指定してください。',
          'spot_areas.array' => '釣り場データの形式が不正です。',
          'spot_areas.*.spot_id.integer' => '釣り場は整数で指定してください。',
+         'spot_areas.*.spot_id.required' => '釣り場を選択してください。また、マスターズ管理から釣り場を登録をしてから選択してください。',
          'spot_areas.*.spot_id.exists' => '選択された釣り場は存在しません。',
          'weather.in' => '天気の値が不正です。',
          'weather.string' => '天気は文字列で指定してください。',
