@@ -2,7 +2,7 @@
    <div class="px-2 py-2 bg-slate-200">
       {{-- フラッシュメッセージ --}}
       <x-common.flash-message status="session('status')" />
-      <div class="mb-2 md:flex justify-between">
+      <div class="mb-2">
          {{-- メモ一覧の表示エリア --}}
          @include('user.memos.partials.index.memos-list')
       </div>

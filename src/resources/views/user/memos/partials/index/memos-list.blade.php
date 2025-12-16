@@ -1,5 +1,5 @@
 {{-- メモ一覧の表示エリア --}}
-<section class="md:ml-2 md:w-4/5 text-gray-600 border border-gray-500 rounded-lg overflow-hidden">
+<section class="text-gray-600 border border-gray-500 rounded-lg overflow-hidden">
    {{-- タイトル --}}
    <div class="heading_bg py-1.5 flex justify-between items-center">
       <h1 class="heading">メモ一覧</h1>
@@ -9,7 +9,7 @@
       </button>
    </div>
    {{-- メモ一覧 --}}
-   <div class="p-2 h-[60vh] md:h-[85vh] overflow-y-scroll overscroll-none bg-white">
+   <div class="p-2 h-[85vh] overflow-y-scroll overscroll-none bg-white">
       @foreach ($all_memos as $memo)
          <div class="mb-5 p-2 border border-gray-400 rounded-lg shadow">
             {{-- 共有中のメモの目印 --}}
