@@ -171,7 +171,7 @@ class ShareSettingControllerTest extends TestCase
         $response->assertOk();
         // 返却されるビューが期待通り（user.shareSettings.show）であることを検証
         $response->assertViewIs('user.shareSettings.show');
-        // ビューに渡される主要なデータ（選択メモ・エサ・魚名・タグ・画像・共有ユーザー名）が存在することを検証
+        // ビューに渡される主要なデータ（選択メモ・エサ・魚名・画像・共有ユーザー名）が存在することを検証
         $response->assertViewHasAll([
             'select_memo',
             'get_memo_baits_name',
@@ -212,7 +212,7 @@ class ShareSettingControllerTest extends TestCase
         $response->assertOk();
         // 返却されるビューが期待通り（user.shareSettings.edit）であることを検証
         $response->assertViewIs('user.shareSettings.edit');
-        // ビューに渡される主要なデータ（選択メモ・エサ・魚名・タグ・画像・共有ユーザー名）が存在することを検証
+        // ビューに渡される主要なデータ（選択メモ・エサ・魚名・画像・共有ユーザー名）が存在することを検証
         $response->assertViewHasAll([
             'select_memo',
             'get_memo_baits_name',

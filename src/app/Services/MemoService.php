@@ -32,18 +32,8 @@ class MemoService
      */
     public static function searchMemos(): mixed
     {
-        // クエリパラメータを取得
-        $get_url_tag = request()->query('tag');
-        // クエリパラメータがあった場合の処理
-        if (!empty($get_url_tag)) {
-            // クエリパラメータから絞り込んだタグを取得
-            $select_tag = Tag::availableSelectTag($get_url_tag)->first();
-            // クエリパラメータから絞り込んだタグに、リレーションされたメモを取得
-            $memos = $select_tag->memos;
-        } else {
-            // 全メモを取得
-            $memos = Memo::availableAllMemos()->get();
-        }
+        // 全メモを取得
+        $memos = Memo::availableAllMemos()->get();
         foreach ($memos as $memo) {
             // メモが共有されているかどうかを確認
             $is_shared = $memo->shareSettings->isNotEmpty();

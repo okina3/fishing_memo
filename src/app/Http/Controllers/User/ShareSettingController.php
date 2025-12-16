@@ -77,7 +77,7 @@ class ShareSettingController extends Controller
         // 共有されていないメモの詳細を見られなくする
         ShareSettingService::checkSharedMemoShow($id);
         // 選択した共有メモを、一件取得
-        $select_memo = Memo::with('tags.user')->where('id', $id)->first();
+        $select_memo = Memo::with('images.user')->where('id', $id)->first();
         // 選択したメモに紐づいた釣り場の名前を取得
         $get_memo_spots_name = SpotService::getMemoSpotsResults($select_memo->spots);
         // 選択したメモに紐づいたエサの名前を取得
@@ -105,7 +105,7 @@ class ShareSettingController extends Controller
         // 共有、許可されていない、メモの編集をできなくする
         ShareSettingService::checkSharedMemoEdit($id);
         // 選択した共有メモを、一件取得
-        $select_memo = Memo::with('tags.user')->where('id', $id)->first();
+        $select_memo = Memo::with('images.user')->where('id', $id)->first();
         // 選択したメモに紐づいた釣り場の名前を取得
         $get_memo_spots_name = SpotService::getMemoSpotsResults($select_memo->spots);
         // 選択したメモに紐づいたエサの名前を取得
