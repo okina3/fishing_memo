@@ -3,8 +3,6 @@
       {{-- フラッシュメッセージ --}}
       <x-common.flash-message status="session('status')" />
       <div class="mb-2 md:flex justify-between">
-         {{-- タグ検索の表示エリア --}}
-         @include('user.memos.partials.index.tags-search')
          {{-- メモ一覧の表示エリア --}}
          @include('user.memos.partials.index.memos-list')
       </div>

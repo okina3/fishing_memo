@@ -7,7 +7,6 @@ use App\Models\FishName;
 use App\Models\Image;
 use App\Models\Memo;
 use App\Models\ShareSetting;
-use App\Models\Tag;
 use App\Models\User;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -148,13 +147,11 @@ class ShareSettingControllerTest extends TestCase
         $memo = Memo::factory()->create(['user_id' => $this->secondaryUser->id]);
         $bait = Bait::factory()->create(['user_id' => $this->secondaryUser->id]);
         $fish = FishName::factory()->create(['user_id' => $this->secondaryUser->id]);
-        $tag = Tag::factory()->create(['user_id' => $this->secondaryUser->id]);
         $image = Image::factory()->create(['user_id' => $this->secondaryUser->id]);
 
         // 他人メモに関連データを紐付け
         $memo->baits()->attach($bait->id);
         $memo->fish_names()->attach($fish->id, ['count' => 1, 'length' => 10]);
-        $memo->tags()->attach($tag->id);
         $memo->images()->attach($image->id);
 
         // 共有設定作成（他ユーザーが、自分へ共有している想定のレコード）
@@ -174,12 +171,11 @@ class ShareSettingControllerTest extends TestCase
         $response->assertOk();
         // 返却されるビューが期待通り（user.shareSettings.show）であることを検証
         $response->assertViewIs('user.shareSettings.show');
-        // ビューに渡される主要なデータ（選択メモ・エサ・魚名・タグ・画像・共有ユーザー名）が存在することを検証
+        // ビューに渡される主要なデータ（選択メモ・エサ・魚名・画像・共有ユーザー名）が存在することを検証
         $response->assertViewHasAll([
             'select_memo',
             'get_memo_baits_name',
             'get_memo_fish_results',
-            'get_memo_tags_name',
             'get_memo_images',
             'select_user',
         ]);
@@ -192,13 +188,11 @@ class ShareSettingControllerTest extends TestCase
         $memo = Memo::factory()->create(['user_id' => $this->user->id]);
         $bait = Bait::factory()->create(['user_id' => $this->user->id]);
         $fish = FishName::factory()->create(['user_id' => $this->user->id]);
-        $tag = Tag::factory()->create(['user_id' => $this->user->id]);
         $image = Image::factory()->create(['user_id' => $this->user->id]);
 
         // 他人メモに関連データを紐付け
         $memo->baits()->attach($bait->id);
         $memo->fish_names()->attach($fish->id, ['count' => 1, 'length' => 10]);
-        $memo->tags()->attach($tag->id);
         $memo->images()->attach($image->id);
 
         // 共有設定作成（他ユーザーが、自分へ共有している想定のレコード）
@@ -218,12 +212,11 @@ class ShareSettingControllerTest extends TestCase
         $response->assertOk();
         // 返却されるビューが期待通り（user.shareSettings.edit）であることを検証
         $response->assertViewIs('user.shareSettings.edit');
-        // ビューに渡される主要なデータ（選択メモ・エサ・魚名・タグ・画像・共有ユーザー名）が存在することを検証
+        // ビューに渡される主要なデータ（選択メモ・エサ・魚名・画像・共有ユーザー名）が存在することを検証
         $response->assertViewHasAll([
             'select_memo',
             'get_memo_baits_name',
             'get_memo_fish_results',
-            'get_memo_tags_name',
             'get_memo_images',
             'select_user',
         ]);

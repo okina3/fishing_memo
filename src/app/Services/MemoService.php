@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Memo;
-use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
 
 class MemoService
@@ -28,23 +27,13 @@ class MemoService
     }
 
     /**
-     * 全メモ、また、検索したメモを一覧表示するメソッド。
+     * メモを一覧表示するメソッド。
      * @return mixed
      */
     public static function searchMemos(): mixed
     {
-        // クエリパラメータを取得
-        $get_url_tag = request()->query('tag');
-        // クエリパラメータがあった場合の処理
-        if (!empty($get_url_tag)) {
-            // クエリパラメータから絞り込んだタグを取得
-            $select_tag = Tag::availableSelectTag($get_url_tag)->first();
-            // クエリパラメータから絞り込んだタグに、リレーションされたメモを取得
-            $memos = $select_tag->memos;
-        } else {
-            // 全メモを取得
-            $memos = Memo::availableAllMemos()->get();
-        }
+        // 全メモを取得
+        $memos = Memo::availableAllMemos()->get();
         foreach ($memos as $memo) {
             // メモが共有されているかどうかを確認
             $is_shared = $memo->shareSettings->isNotEmpty();
@@ -187,24 +176,6 @@ class MemoService
         if (!empty($attachData)) {
             $memo = Memo::findOrFail($memo_id);
             $memo->fish_names()->attach($attachData);
-        }
-    }
-
-    /**
-     * メモに紐づいた既存のタグを、中間テーブルに保存するメソッド。
-     * @param $request
-     * @param int $memo_id
-     * @return void
-     */
-    public static function attachExistingTags($request, int $memo_id): void
-    {
-        // 既存タグの選択があれば、メモに紐付けて中間テーブルに保存
-        if (!empty($request->tags)) {
-            $memo = Memo::findOrFail($memo_id);
-            $tagIds = array_map('intval', (array) $request->tags);
-            if (!empty($tagIds)) {
-                $memo->tags()->attach($tagIds);
-            }
         }
     }
 

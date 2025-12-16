@@ -32,7 +32,7 @@ class TrashedMemoControllerTest extends TestCase
     // ソフトデリートしたメモ一覧が、正しく表示されることをテスト
     public function testIndexTrashedMemoController()
     {
-        // 認証済みユーザーでタグ一覧ルートへアクセス
+        // 認証済みユーザーでメモ一覧ルートへアクセス
         $response = $this->get(route('user.trashed-memo.index'));
 
         // ステータスコード200（OK）であることを検証

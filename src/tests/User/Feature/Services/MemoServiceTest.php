@@ -7,10 +7,8 @@ use App\Models\FishName;
 use App\Models\Image;
 use App\Models\Memo;
 use App\Models\ShareSetting;
-use App\Models\Tag;
 use App\Models\User;
 use App\Services\MemoService;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
@@ -36,13 +34,6 @@ class MemoServiceTest extends TestCase
       // 認証済みのユーザーを返す
       $this->actingAs($this->user, 'users');
    }
-
-   // タグを作成するヘルパーメソッド
-   private function createTags(int $count): Collection
-   {
-      return Tag::factory()->count($count)->create(['user_id' => $this->user->id]);
-   }
-
 
    // メモを共有させる設定を作成するヘルパーメソッド
    private function createShareSetting(User $sharingUser, Memo $memo): ShareSetting
@@ -79,15 +70,13 @@ class MemoServiceTest extends TestCase
       MemoService::checkUserMemo($request);
    }
 
-   // 全メモ、また、検索したメモを一覧表示するメソッドのテスト
+   // 全メモ、検索したメモを一覧表示するメソッドのテスト
    public function testSearchMemos()
    {
       // 4件の自分のメモを作成
       Memo::factory()->count(4)->create(['user_id' => $this->user->id]);
       // 1件の自分のメモを作成
       $memo = Memo::factory()->create(['user_id' => $this->user->id]);
-      // 1件の自分のタグを作成
-      $tag = $this->createTags(1)->first();
       // 1件の共有設定を作成（自分のメモを、2人目のユーザーに共有）
       $this->createShareSetting($this->secondaryUser, $memo);
 
@@ -240,27 +229,6 @@ class MemoServiceTest extends TestCase
          'memo_id' => $memo->id,
          'fish_name_id' => 0,
       ]);
-   }
-
-   // メモに紐づいた既存のタグを、中間テーブルに保存するメソッドのテスト
-   public function testAttachExistingTags()
-   {
-      // 1件の自分メモを作成
-      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
-      // 2件の自分のタグを作成
-      $tags = $this->createTags(2);
-
-      // リクエストを作成してサービスを呼び出す
-      $request = new Request(['tags' => $tags->pluck('id')->toArray()]);
-      MemoService::attachExistingTags($request, $memo->id);
-
-      // 中間テーブルに関連付けが保存されていることを確認
-      foreach ($tags as $tag) {
-         $this->assertDatabaseHas('memo_tags', [
-            'memo_id' => $memo->id,
-            'tag_id' => $tag->id,
-         ]);
-      }
    }
 
    // メモに紐づいた既存画像を、中間テーブルに値を保存するメソッドのテスト

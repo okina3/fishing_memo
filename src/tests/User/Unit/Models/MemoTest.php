@@ -8,7 +8,6 @@ use App\Models\Image;
 use App\Models\Memo;
 use App\Models\ShareSetting;
 use App\Models\Spot;
-use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -72,17 +71,6 @@ class MemoTest extends TestCase
       return $spots;
    }
 
-   // メモにタグを関連付けるヘルパーメソッド
-   private function attachTags(Memo $memo, int $tagCount): Collection
-   {
-      // タグを作成し、メモに関連付け
-      $tags = Tag::factory()->count($tagCount)->create();
-      $memo->tags()->attach($tags->pluck('id')->toArray());
-
-      // 作成されたタグのコレクションを返す
-      return $tags;
-   }
-
    // 基本的なリレーションが、正しく機能しているかのテスト
    public function testMemoRelations()
    {
@@ -95,14 +83,12 @@ class MemoTest extends TestCase
       $memo->baits()->attach($attachedBaits->pluck('id')->toArray());
       // メモに2件の魚名を関連付け（ピボットデータ付き）
       $attachedFishNames = $this->attachFishNames($memo, 2);
-      // メモに2件のタグを関連付け
-      $attachedTags = $this->attachTags($memo, 2);
       // メモに2件の画像を関連付け
       $attachedImages = Image::factory()->count(2)->create();
       $memo->images()->attach($attachedImages->pluck('id')->toArray());
 
       // リレーションを最新化しておく（テストの安定化のため）
-      $memo->load(['tags', 'images', 'baits', 'fish_names', 'spots']);
+      $memo->load(['images', 'baits', 'fish_names', 'spots']);
 
       // メモと釣り場のリレーションが、正しいインスタンスであることを確認
       $this->assertInstanceOf(BelongsToMany::class, $memo->spots());
@@ -118,11 +104,6 @@ class MemoTest extends TestCase
       $this->assertInstanceOf(BelongsToMany::class, $memo->fish_names());
       // 魚名のID配列がメモの関連IDと一致するか確認（順序非依存）
       $this->assertEqualsCanonicalizing($attachedFishNames->pluck('id')->toArray(), $memo->fish_names->pluck('id')->toArray());
-
-      // メモとタグのリレーションが、正しいインスタンスであることを確認
-      $this->assertInstanceOf(BelongsToMany::class, $memo->tags());
-      // タグのID配列がメモの関連IDと一致するか確認（順序非依存）
-      $this->assertEqualsCanonicalizing($attachedTags->pluck('id')->toArray(), $memo->tags->pluck('id')->toArray());
 
       // メモと画像のリレーションが、正しいインスタンスであることを確認
       $this->assertInstanceOf(BelongsToMany::class, $memo->images());
