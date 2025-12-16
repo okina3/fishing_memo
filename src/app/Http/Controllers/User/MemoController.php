@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\SearchKeywordRequest;
 use App\Http\Requests\User\StoreMemoRequest;
 use App\Models\Bait;
 use App\Models\FishName;
@@ -41,14 +42,16 @@ class MemoController extends Controller
 
     /**
      * メモ一覧を表示するメソッド。
+     * @param SearchKeywordRequest $request
      * @return View
      */
-    public function index(): View
+    public function index(SearchKeywordRequest $request): View
     {
         // ブラウザバック対策（値を削除する）
         SessionService::resetBrowserBackSession();
+
         // 全メモ、または検索されたメモを表示する
-        $all_memos = MemoService::searchMemos();
+        $all_memos = MemoService::searchMemos($request->keyword);
 
         return view('user.memos.index', compact('all_memos'));
     }
