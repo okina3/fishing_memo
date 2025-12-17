@@ -24,7 +24,7 @@ class MemoSpotSeeder extends Seeder
                 'water_temp' => 10,
             ],
             [
-                'memo_id' => 1,
+                'memo_id' => 2,
                 'spot_id' => 3,
                 'river_flow' => '流れなし',
                 'turbidity' => 'クリア',
