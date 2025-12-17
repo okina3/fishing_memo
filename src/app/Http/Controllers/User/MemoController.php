@@ -12,12 +12,15 @@ use App\Models\Memo;
 use App\Models\MemoBait;
 use App\Models\MemoFishName;
 use App\Models\MemoImage;
+use App\Models\MemoRod;
 use App\Models\MemoSpot;
+use App\Models\Rod;
 use App\Models\Spot;
 use App\Services\BaitService;
 use App\Services\FishNameService;
 use App\Services\ImageService;
 use App\Services\MemoService;
+use App\Services\RodService;
 use App\Services\SessionService;
 use App\Services\ShareSettingService;
 use App\Services\SpotService;
@@ -62,8 +65,10 @@ class MemoController extends Controller
      */
     public function create(): View
     {
-        // 全スポットを取得する
+        // 全釣り場を取得する
         $all_spots = Spot::availableAllSpots()->get();
+        // 全釣り竿を取得する
+        $all_rods = Rod::availableAllRods()->get();
         // 全エサを取得する
         $all_baits = Bait::availableAllBaits()->get();
         // 全魚名を取得する
@@ -73,7 +78,7 @@ class MemoController extends Controller
         // ブラウザバック対策（値を持たせる）
         SessionService::setBrowserBackSession();
 
-        return view('user.memos.create', compact('all_spots', 'all_baits', 'all_fish_names', 'all_images'));
+        return view('user.memos.create', compact('all_spots', 'all_rods', 'all_baits', 'all_fish_names', 'all_images'));
     }
 
     /**
@@ -92,6 +97,8 @@ class MemoController extends Controller
                 $memo = MemoService::createMemo($request);
                 // 釣り場を、メモに紐付けて中間テーブルに保存
                 MemoService::attachExistingSpots($request, $memo->id);
+                // 釣り竿を、メモに紐付けて中間テーブルに保存
+                MemoService::attachExistingRods($request, $memo->id);
                 // エサを、メモに紐付けて中間テーブルに保存
                 MemoService::attachExistingBaits($request, $memo->id);
                 // 釣果データ（名前・匹数・長さ）を、メモに紐付けて中間テーブルに保存
@@ -118,6 +125,8 @@ class MemoController extends Controller
         $select_memo = Memo::availableSelectMemo($id)->first();
         // 選択したメモに紐づいた釣り場の名前を取得
         $get_memo_spots_name = SpotService::getMemoSpotsResults($select_memo->spots);
+        // 選択したメモに紐づいた釣り竿の名前を取得
+        $get_memo_rods_name = RodService::getMemoRodsResults($select_memo->rods);
         // 選択したメモに紐づいたエサの名前を取得
         $get_memo_baits_name = BaitService::getMemoBaitsName($select_memo->baits);
         // 選択したメモに紐づいた釣果のデータを取得（名前・匹数・長さ）
@@ -129,7 +138,7 @@ class MemoController extends Controller
         // 自分が共有しているメモの、共有状態の情報を取得
         $shared_users = ShareSettingService::checkSharedMemoStatus($id);
 
-        return view('user.memos.show', compact('select_memo', 'get_memo_spots_name', 'get_memo_baits_name',  'get_memo_images', 'shared_users', 'get_memo_fish_results'));
+        return view('user.memos.show', compact('select_memo', 'get_memo_spots_name', 'get_memo_rods_name', 'get_memo_baits_name',  'get_memo_images', 'shared_users', 'get_memo_fish_results'));
     }
 
     /**
@@ -139,8 +148,10 @@ class MemoController extends Controller
      */
     public function edit(int $id): View
     {
-        // 全スポットを取得する
+        // 全釣り場を取得する
         $all_spots = Spot::availableAllSpots()->get();
+        // 全釣り竿を取得する
+        $all_rods = Rod::availableAllRods()->get();
         // 全エサを取得する
         $all_baits = Bait::availableAllBaits()->get();
         // 全魚名を取得する
@@ -160,7 +171,7 @@ class MemoController extends Controller
 
         return view(
             'user.memos.edit',
-            compact('all_spots', 'all_baits', 'all_fish_names', 'all_images', 'select_memo',  'get_memo_images_id', 'get_memo_images')
+            compact('all_spots', 'all_rods', 'all_baits', 'all_fish_names', 'all_images', 'select_memo',  'get_memo_images_id', 'get_memo_images')
         );
     }
 
@@ -180,6 +191,8 @@ class MemoController extends Controller
                 $memo = MemoService::updateMemo($request);
                 // 一旦メモと釣り場を紐付けた中間デーブルのデータを削除
                 MemoSpot::where('memo_id', $request->memoId)->delete();
+                // 一旦メモと釣り竿を紐付けた中間デーブルのデータを削除
+                MemoRod::where('memo_id', $request->memoId)->delete();
                 // 一旦メモとエサを紐付けた中間デーブルのデータを削除
                 MemoBait::where('memo_id', $request->memoId)->delete();
                 // 一旦メモと釣果のデータを紐付けた中間デーブルのデータを削除
@@ -188,6 +201,8 @@ class MemoController extends Controller
                 MemoImage::where('memo_id', $request->memoId)->delete();
                 // 釣り場を、メモに紐付けて中間テーブルに保存
                 MemoService::attachExistingSpots($request, $memo->id);
+                // 釣り竿を、メモに紐付けて中間テーブルに保存
+                MemoService::attachExistingRods($request, $memo->id);
                 // エサを、メモに紐付けて中間テーブルに保存
                 MemoService::attachExistingBaits($request, $memo->id);
                 // 釣果データ（名前・匹数・長さ）を、メモに紐付けて中間テーブルに保存

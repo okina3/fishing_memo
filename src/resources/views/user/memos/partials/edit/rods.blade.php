@@ -4,13 +4,29 @@
 
    @php
       // 初期表示行数（最低1、最大2）
-      $initialRows = max(1, min(count(old('rod_areas', [])), 2));
+      $oldAreas = old('rod_areas');
+      if (is_array($oldAreas)) {
+          $existingAreas = $oldAreas;
+      } else {
+          $existingAreas = [];
+          if (isset($select_memo) && $select_memo->rods->isNotEmpty()) {
+              foreach ($select_memo->rods as $r) {
+                  $existingAreas[] = [
+                      'rod_id' => $r->id ?? '',
+                      'main_line' => $r->pivot->main_line ?? '',
+                  ];
+              }
+          }
+      }
+      // 初期表示行数（最低1、最大2）
+      $initialRows = max(1, min(count($existingAreas), 2));
    @endphp
+
    {{-- 釣り竿の入力 --}}
    <div id="rod-areas-container" class="space-y-5 lg:space-y-1">
       @for ($i = 0; $i < $initialRows; $i++)
          @php
-            $entry = old('rod_areas', [])[$i] ?? [
+            $entry = $existingAreas[$i] ?? [
                 'rod_id' => '',
                 'main_line' => '',
             ];

@@ -22,6 +22,8 @@
                <x-user.show.basic-info :selectMemo='$select_memo' />
                {{-- 釣り場 --}}
                <x-user.show.spots :getMemoSpotsResults='$get_memo_spots_name' />
+               {{-- 釣り竿 --}}
+               <x-user.show.rods :getMemoRodsName='$get_memo_rods_name' />
                {{-- エサの入力 --}}
                <x-user.show.baits :getMemoBaitsName='$get_memo_baits_name' />
                {{-- 釣果の入力 --}}

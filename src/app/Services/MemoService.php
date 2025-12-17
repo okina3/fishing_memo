@@ -127,6 +127,42 @@ class MemoService
     }
 
     /**
+     * メモに紐づいた釣り竿を、中間テーブルに保存するメソッド
+     * @param $request
+     * @param int $memo_id
+     * @return void
+     */
+    public static function attachExistingRods($request, int $memo_id): void
+    {
+        // 釣り竿入力があれば処理を進める
+        $rod_areas = $request->input('rod_areas', []);
+        if (!is_array($rod_areas) || count($rod_areas) === 0) {
+            return;
+        }
+
+        // ピボット属性付きで中間テーブルに保存するための配列を作成
+        $attachData = [];
+        foreach ($rod_areas as $rod_area) {
+            $rodId = (int) ($rod_area['rod_id'] ?? 0);
+            if ($rodId <= 0) {
+                // 無効値はスキップ
+                continue;
+            }
+            $main_line = isset($rod_area['main_line']) ? (float) $rod_area['main_line'] : 0.0;
+            $attachData[$rodId] = [
+                'main_line' => $main_line,
+            ];
+        }
+
+        // 釣り竿データを、メモに紐付けて中間テーブルに保存
+        if (!empty($attachData)) {
+            $memo = Memo::findOrFail($memo_id);
+            $memo->rods()->attach($attachData);
+        }
+    }
+
+
+    /**
      * メモに紐づいたエサを、中間テーブルに保存するメソッド
      * @param $request
      * @param int $memo_id

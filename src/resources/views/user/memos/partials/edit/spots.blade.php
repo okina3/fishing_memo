@@ -3,7 +3,7 @@
    <h2 class="sub_heading">場所</h2>
 
    @php
-      // 初期表示行数（最低1、最大3）
+      // 初期表示行数（最低1、最大2）
       $oldAreas = old('spot_areas');
       if (is_array($oldAreas)) {
           $existingAreas = $oldAreas;

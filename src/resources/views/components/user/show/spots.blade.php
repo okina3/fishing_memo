@@ -1,8 +1,6 @@
 <div class="mb-5">
-   {{-- 場所の入力 --}}
    <h2 class="sub_heading">場所</h2>
-   
-   {{-- 釣り場の表示 --}}
+   {{-- 場所の表示 --}}
    <div class="space-y-5 lg:space-y-1">
       @forelse($getMemoSpotsResults as $result)
          <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10">

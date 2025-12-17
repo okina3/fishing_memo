@@ -23,7 +23,7 @@ return new class extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
          // 道糸
-         $table->decimal('main_line', 4, 2)
+         $table->decimal('main_line', 4, 1)
             ->nullable()
             ->comment('号数');
          $table->primary(['memo_id', 'rod_id']);
