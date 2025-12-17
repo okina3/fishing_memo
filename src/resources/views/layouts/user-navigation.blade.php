@@ -28,7 +28,7 @@
             </div>
             <div class="hidden space-x-8 sm:-my-px sm:ml-8 sm:flex">
                <x-nav-link :href="route('user.share-setting.index')" :active="request()->routeIs('user.share-setting.index')">
-                  共有メモ
+                  共有メモ管理
                </x-nav-link>
             </div>
             <div class="hidden space-x-8 sm:-my-px sm:ml-8 sm:flex">

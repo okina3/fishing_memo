@@ -4,7 +4,7 @@
    <div class="flex flex-row flex-wrap items-start gap-x-6 gap-y-1 md:gap-x-10">
       {{-- 釣行日 --}}
       <div>
-         <label class="block text-sm text-gray-700">釣行日</label>
+         <label class="block text-sm text-gray-700">釣行日<span class="text-red-600">（必須）</span></label>
          <input class="rounded" type="date" name="fishing_date"
             value="{{ old('fishing_date', optional(optional($select_memo)->fishing_date)->format('Y-m-d')) }}"
             max="{{ now()->toDateString() }}" />
@@ -13,7 +13,7 @@
       </div>
       {{-- 釣行時間 --}}
       <div>
-         <label class="block text-sm text-gray-700">釣行時間</label>
+         <label class="block text-sm text-gray-700">釣行時間<span class="text-red-600">（必須）</span></label>
          <div class="flex items-center w-full">
             <input class="text-center rounded" type="time" name="start_time"
                value="{{ old('start_time', optional(optional($select_memo)->start_time)->format('H:i')) }}"

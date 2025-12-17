@@ -7,7 +7,7 @@
          <h2 class="sub_heading-2 mb-1">釣り場の登録</h2>
          <div class="flex gap-2 items-center">
             <input class="w-60 rounded" type="text" name="spot_name" value="{{ old('spot_name') }}"
-               placeholder="例:相模川上流">
+               placeholder="例: T県 サンプル川上流域">
             <button class="btn bg-blue-800 hover:bg-blue-700" type="submit">保存</button>
          </div>
          {{-- エラーメッセージ（釣り場の登録） --}}
@@ -21,7 +21,7 @@
          <h2 class="sub_heading-2 mb-1">釣り竿の登録</h2>
          <div class="flex gap-2 items-center">
             <input class="w-60 rounded" type="text" name="rod_name" value="{{ old('rod_name') }}"
-               placeholder="例: サンプルロッド 12尺">
+               placeholder="例: D社 サンプルロッド 12尺">
             <button class="btn bg-blue-800 hover:bg-blue-700" type="submit">保存</button>
          </div>
          {{-- エラーメッセージ（釣り竿の登録） --}}

@@ -20,9 +20,9 @@
                </div>
             </div>
 
-            {{-- 濁り --}}
+            {{-- 水質 --}}
             <div>
-               <h2 class="block text-sm text-gray-700">濁り</h2>
+               <h2 class="block text-sm text-gray-700">水質</h2>
                <div class="p-2 w-32 border border-gray-500 rounded">
                   {{ $result['turbidity'] }}
                </div>

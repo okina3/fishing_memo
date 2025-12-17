@@ -21,7 +21,7 @@
          <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10 spot-area-row">
             {{-- 釣り場選択 --}}
             <div>
-               <label class="block text-sm font-semibold text-gray-700">釣り場</label>
+               <label class="block text-sm text-gray-700">釣り場<span class="text-red-600">（必須）</span></label>
                <select name="spot_areas[{{ $i }}][spot_id]" class="w-60 rounded">
                   <option value="">場所を選択してください</option>
                   @foreach ($all_spots as $spot)
@@ -40,9 +40,9 @@
                </select>
             </div>
 
-            {{-- 濁り --}}
+            {{-- 水質 --}}
             <div>
-               <label class="block text-sm text-gray-700">濁り</label>
+               <label class="block text-sm text-gray-700">水質</label>
                <select name="spot_areas[{{ $i }}][turbidity]" class="w-32 rounded">
                   <option value="" @selected(($entry['turbidity'] ?? '') === '')>未選択</option>
                   <option value="クリア" @selected(($entry['turbidity'] ?? '') === 'クリア')>クリア</option>

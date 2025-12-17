@@ -20,7 +20,7 @@
                      <div class="p-2 w-24 border border-gray-500 rounded">
                         {{ $result['main_line'] }}
                      </div>
-                     <span class="text-gray-600">m</span>
+                     <span class="text-gray-600">号</span>
                   </div>
                </div>
 

@@ -15,19 +15,19 @@ class FishNameSeeder extends Seeder
         DB::table('fish_names')->insert([
             // ユーザー1のダミーデータ
             [
-                'name' => '魚１',
+                'name' => '1-1 ヘラブナ',
                 'user_id' => 1,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
             ],
             [
-                'name' => '魚１-2',
+                'name' => '1-2 マブナ',
                 'user_id' => 1,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
             ],
             [
-                'name' => '魚１-3',
+                'name' => '1-3 コイ',
                 'user_id' => 1,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
@@ -35,19 +35,19 @@ class FishNameSeeder extends Seeder
 
             // ユーザー２のダミーデータ
             [
-                'name' => '魚２',
+                'name' => '2-1 ヘラブナ',
                 'user_id' => 2,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
             ],
             [
-                'name' => '魚２-1',
+                'name' => '2-2 マブナ',
                 'user_id' => 2,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
             ],
             [
-                'name' => '魚２-2',
+                'name' => '2-3 コイ',
                 'user_id' => 2,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
@@ -55,19 +55,19 @@ class FishNameSeeder extends Seeder
 
             // ユーザー３のダミーデータ
             [
-                'name' => '魚３',
+                'name' => '3-1 ヘラブナ',
                 'user_id' => 3,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
             ],
             [
-                'name' => '魚３-1',
+                'name' => '3-2 マブナ',
                 'user_id' => 3,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
             ],
             [
-                'name' => '魚３-2',
+                'name' => '3-3 コイ',
                 'user_id' => 3,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
@@ -75,19 +75,19 @@ class FishNameSeeder extends Seeder
 
             // ユーザー４のダミーデータ
             [
-                'name' => '魚４',
+                'name' => '4-1 ヘラブナ',
                 'user_id' => 4,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
             ],
             [
-                'name' => '魚４-1',
+                'name' => '4-2 マブナ',
                 'user_id' => 4,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
             ],
             [
-                'name' => '魚４-2',
+                'name' => '4-3 コイ',
                 'user_id' => 4,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
@@ -95,19 +95,19 @@ class FishNameSeeder extends Seeder
 
             // ユーザー５のダミーデータ
             [
-                'name' => '魚５',
+                'name' => '5-1 ヘラブナ',
                 'user_id' => 5,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
             ],
             [
-                'name' => '魚５-1',
+                'name' => '5-2 マブナ',
                 'user_id' => 5,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
             ],
             [
-                'name' => '魚５-2',
+                'name' => '5-3 コイ',
                 'user_id' => 5,
                 'created_at' => '2023-10-01 11:11:11',
                 'updated_at' => '2023-10-01 11:11:11',
