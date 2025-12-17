@@ -18,7 +18,7 @@
          <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10 rod-area-row">
             {{-- 釣り竿選択 --}}
             <div>
-               <label class="block text-sm font-semibold text-gray-700">釣り竿</label>
+               <label class="block text-sm text-gray-700">釣り竿<span class="text-red-600">（必須）</span></label>
                <select name="rod_areas[{{ $i }}][rod_id]" class="w-60 rounded">
                   <option value="">竿を選択してください</option>
                   @foreach ($all_rods as $rod)

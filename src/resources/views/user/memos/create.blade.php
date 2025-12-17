@@ -5,9 +5,15 @@
          <h1 class="heading heading_bg">新規メモ作成</h1>
          {{-- メモを新規作成するエリア --}}
          <div class="px-3 pb-3">
-            <p class="my-2 text-sm font-bold">
-               ＊ まず、マスターズ管理で「釣り場」「エサ」「魚名」を登録してください。
-            </p>
+            <div class="my-2 text-sm font-bold">
+               ＊ 最初に、マスターズ管理から
+               「<span class="imp_comment">釣り場</span>」
+               「<span class="imp_comment">釣り竿</span>」
+               「<span class="imp_comment">釣り針</span>」
+               「<span class="imp_comment">エサ</span>」
+               「<span class="imp_comment">魚名</span>」
+               を登録してください。
+            </div>
             <form action="{{ route('user.store') }}" method="post">
                @csrf
                {{-- 釣行日・釣行時間 --}}

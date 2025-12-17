@@ -6,7 +6,13 @@
          {{-- 選択したメモを編集するエリア --}}
          <div class="px-3 pb-3">
             <p class="my-2 text-sm font-bold">
-               ＊ マスターズ管理で「釣り場」「エサ」「魚名」を登録してください。
+               ＊ マスターズ管理から
+               「<span class="imp_comment">釣り場</span>」
+               「<span class="imp_comment">釣り竿</span>」
+               「<span class="imp_comment">釣り針</span>」
+               「<span class="imp_comment">エサ</span>」
+               「<span class="imp_comment">魚名</span>」
+               を登録してください。
             </p>
             <form action="{{ route('user.update') }}" method="post">
                @csrf
