@@ -22,6 +22,8 @@
                @include('user.memos.partials.create.spots')
                {{-- 釣り竿 --}}
                @include('user.memos.partials.create.rods')
+               {{-- 釣り針 --}}
+               @include('user.memos.partials.create.hooks')
                {{-- エサの入力 --}}
                @include('user.memos.partials.create.baits')
                {{-- 釣果の入力 --}}

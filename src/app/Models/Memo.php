@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Rod;
+use App\Models\Hook;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -52,6 +53,16 @@ class Memo extends Model
    {
       return $this->belongsToMany(Rod::class, 'memo_rods')
          ->withPivot(['main_line']);
+   }
+
+   /**
+    * Hookモデルとの多対多のリレーションを定義。
+    * @return BelongsToMany
+    */
+   public function hooks(): BelongsToMany
+   {
+      return $this->belongsToMany(Hook::class, 'memo_hooks')
+         ->withPivot(['leader_size', 'leader_upper_cm', 'leader_lower_cm']);
    }
 
    /**
