@@ -38,6 +38,10 @@ class StoreMemoRequest extends FormRequest
             'spot_areas.*.turbidity' => 'nullable|string|in:クリア,濁り',
             'spot_areas.*.water_level' => 'nullable|numeric|min:0|max:999.9',
             'spot_areas.*.water_temp' => 'nullable|integer|min:0|max:99',
+            // 釣り竿
+            'rod_areas' => 'array',
+            'rod_areas.*.rod_id' => 'required|integer|exists:rods,id',
+            'rod_areas.*.main_line' => 'nullable|numeric|min:0|max:99.9',
             // エサ
             'baits' => 'array',
             'baits.*' => 'nullable|integer|distinct|exists:baits,id',
@@ -67,9 +71,6 @@ class StoreMemoRequest extends FormRequest
             'end_time.required' => '終了時間を指定してください。',
             'end_time.date_format' => '終了時間の形式は HH:MM で指定してください。',
             'end_time.after_or_equal' => '終了時間は開始時間以降を指定してください。',
-            'spot_areas.array' => '釣り場データの形式が不正です。',
-            'spot_areas.*.spot_id.integer' => '釣り場は整数で指定してください。',
-            'spot_areas.*.spot_id.exists' => '選択された釣り場は存在しません。',
             'weather.in' => '天気の値が不正です。',
             'weather.string' => '天気は文字列で指定してください。',
             'air_temp.integer' => '気温は整数で指定してください。',
@@ -78,7 +79,10 @@ class StoreMemoRequest extends FormRequest
             'max_wind.integer' => '最大風速は整数で指定してください。',
             'wind_dir.in' => '風向の値が不正です。',
             // 釣り場
-            'spot_areas.*.spot_id.required' => '釣り場を選択してください。また、マスターズ管理から釣り場を登録をしてから選択してください。',
+            'spot_areas.array' => '釣り場データの形式が不正です。',
+            'spot_areas.*.spot_id.required' => '釣り場を選択してください。また、マスターズ管理から釣り場を登録をしてください。',
+            'spot_areas.*.spot_id.integer' => '釣り場は整数で指定してください。',
+            'spot_areas.*.spot_id.exists' => '選択された釣り場は存在しません。',
             'spot_areas.*.river_flow.in' => '川の流れの値が不正です。',
             'spot_areas.*.turbidity.in' => '濁りの値が不正です。',
             'spot_areas.*.water_level.numeric' => '水位は数値で指定してください。',
@@ -87,6 +91,14 @@ class StoreMemoRequest extends FormRequest
             'spot_areas.*.water_temp.integer' => '水温は整数で指定してください。',
             'spot_areas.*.water_temp.min' => '水温は 0 以上で指定してください。',
             'spot_areas.*.water_temp.max' => '水温は 99 以下で指定してください。',
+            // 釣り竿
+            'rod_areas.array' => '釣り竿データの形式が不正です。',
+            'rod_areas.*.rod_id.required' => '釣り竿を選択してください。また、マスターズ管理から釣り竿を登録をしてください。',
+            'rod_areas.*.rod_id.integer' => '釣り竿は整数で指定してください。',
+            'rod_areas.*.rod_id.exists' => '選択された釣り竿は存在しません。',
+            'rod_areas.*.main_line.numeric' => '道糸は数値で指定してください。',
+            'rod_areas.*.main_line.min' => '道糸は 0 以上で指定してください。',
+            'rod_areas.*.main_line.max' => '道糸は 99.9 以下で指定してください。',
             // エサ
             'baits.array' => 'エサの形式が不正です。',
             'baits.*.integer' => 'エサの選択値が不正です。',

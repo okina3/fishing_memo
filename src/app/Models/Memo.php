@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Rod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -41,6 +42,16 @@ class Memo extends Model
    {
       return $this->belongsToMany(Spot::class, 'memo_spots')
          ->withPivot(['river_flow', 'turbidity', 'water_level', 'water_temp']);
+   }
+
+   /**
+    * Rodモデルとの多対多のリレーションを定義。
+    * @return BelongsToMany
+    */
+   public function rods(): BelongsToMany
+   {
+      return $this->belongsToMany(Rod::class, 'memo_rods')
+         ->withPivot(['main_line']);
    }
 
    /**

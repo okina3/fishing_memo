@@ -21,8 +21,8 @@
                @include('user.memos.partials.edit.basic-info')
                {{-- 釣り場 --}}
                @include('user.memos.partials.edit.spots')
-               {{-- 川の状態 --}}
-               {{-- @include('user.memos.partials.edit.river-state') --}}
+               {{-- 釣り竿 --}}
+               @include('user.memos.partials.edit.rods')
                {{-- エサの入力 --}}
                @include('user.memos.partials.edit.baits')
                {{-- 釣果の入力 --}}

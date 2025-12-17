@@ -1,7 +1,6 @@
 <div class="mb-8">
-   {{-- 釣果の表示 --}}
    <h2 class="sub_heading">釣果</h2>
-   {{-- 釣果 --}}
+   {{-- 釣果の表示 --}}
    <div class="space-y-5 lg:space-y-1">
       @forelse($getMemoFishResults as $result)
          <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10">

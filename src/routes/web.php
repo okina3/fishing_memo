@@ -7,6 +7,7 @@ use App\Http\Controllers\User\FishNameController;
 use App\Http\Controllers\User\ImageController;
 use App\Http\Controllers\User\MastersController;
 use App\Http\Controllers\User\MemoController;
+use App\Http\Controllers\User\RodController;
 use App\Http\Controllers\User\ShareSettingController;
 use App\Http\Controllers\User\SpotController;
 use App\Http\Controllers\User\TrashedMemoController;
@@ -52,6 +53,15 @@ Route::prefix('/')->as('user.')->group(function () {
                 Route::get('/edit/{spot}', 'edit')->name('spot.edit');
                 Route::patch('/update', 'update')->name('spot.update');
                 Route::delete('/destroy', 'destroy')->name('spot.destroy');
+            });
+
+        // 釣り竿の登録
+        Route::controller(RodController::class)->prefix('rod')
+            ->group(function () {
+                Route::post('/store', 'store')->name('rod.store');
+                Route::get('/edit/{rod}', 'edit')->name('rod.edit');
+                Route::patch('/update', 'update')->name('rod.update');
+                Route::delete('/destroy', 'destroy')->name('rod.destroy');
             });
 
         // エサの登録

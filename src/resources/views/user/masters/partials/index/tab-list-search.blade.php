@@ -8,6 +8,10 @@
             class="btn-3 {{ $tab === 'spots' ? 'active' : '' }}" title="釣り場の一覧を表示">
             釣り場
          </button>
+         <button type="submit" form="searchForm" name="tab" value="rods"
+            class="btn-3 {{ $tab === 'rods' ? 'active' : '' }}" title="釣り竿の一覧を表示">
+            釣り竿
+         </button>
          <button type="submit" form="searchForm" name="tab" value="baits"
             class="btn-3 {{ $tab === 'baits' ? 'active' : '' }}" title="エサの一覧を表示">
             エサ

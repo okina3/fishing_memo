@@ -12,6 +12,8 @@
             @include('user.masters.partials.index.tab-list-search')
             {{-- 釣り場のタブ内容 --}}
             @include('user.masters.partials.index.spots-tab-content')
+            {{-- 釣り竿のタブ内容 --}}
+            @include('user.masters.partials.index.rods-tab-content')
             {{-- エサのタブ内容 --}}
             @include('user.masters.partials.index.baits-tab-content')
             {{-- 魚名のタブ内容 --}}

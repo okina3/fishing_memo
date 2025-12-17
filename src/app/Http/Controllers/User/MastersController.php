@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\SearchKeywordRequest;
 use App\Models\Bait;
 use App\Models\FishName;
+use App\Models\Rod;
 use App\Models\Spot;
 use App\Services\SessionService;
 use Illuminate\View\View;
@@ -13,7 +14,7 @@ use Illuminate\View\View;
 class MastersController extends Controller
 {
    /**
-    * スポット/エサ/魚名（マスターズ管理画面）を一覧表示するメソッド。
+    * 釣り場/釣り竿/エサ/魚名（マスターズ管理画面）を一覧表示するメソッド。
     * @param SearchKeywordRequest $request
     * @return View
     */
@@ -27,6 +28,8 @@ class MastersController extends Controller
       // 各マスターズデータを検索する
       $spots = Spot::with('user')
          ->searchKeyword($request->keyword)->availableAllSpots()->get();
+      $rods = Rod::with('user')
+         ->searchKeyword($request->keyword)->availableAllRods()->get();
       $baits = Bait::with('user')
          ->searchKeyword($request->keyword)->availableAllBaits()->get();
       $fishNames = FishName::with('user')
@@ -34,6 +37,6 @@ class MastersController extends Controller
       // 検索後に入力欄がクリア
       $keyword = '';
 
-      return view('user.masters.index', compact('tab', 'spots', 'baits', 'fishNames', 'keyword'));
+      return view('user.masters.index', compact('tab', 'spots', 'rods', 'baits', 'fishNames', 'keyword'));
    }
 }
