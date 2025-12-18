@@ -161,6 +161,44 @@ class MemoService
         }
     }
 
+    /**
+     * メモに紐づいた釣り針を、中間テーブルに保存するメソッド
+     * @param $request
+     * @param int $memo_id
+     * @return void
+     */
+    public static function attachExistingHooks($request, int $memo_id): void
+    {
+        // 釣り針入力があれば処理を進める
+        $hook_areas = $request->input('hook_areas', []);
+        if (!is_array($hook_areas) || count($hook_areas) === 0) {
+            return;
+        }
+
+        // ピボット属性付きで中間テーブルに保存するための配列を作成
+        $attachData = [];
+        foreach ($hook_areas as $hook_area) {
+            $hookId = (int) ($hook_area['hook_id'] ?? 0);
+            if ($hookId <= 0) {
+                // 無効値はスキップ
+                continue;
+            }
+            $leader_size = isset($hook_area['leader_size']) ? (float) $hook_area['leader_size'] : null;
+            $leader_upper_cm = isset($hook_area['leader_upper_cm']) ? (int) $hook_area['leader_upper_cm'] : null;
+            $leader_lower_cm = isset($hook_area['leader_lower_cm']) ? (int) $hook_area['leader_lower_cm'] : null;
+            $attachData[$hookId] = [
+                'leader_size' => $leader_size,
+                'leader_upper_cm' => $leader_upper_cm,
+                'leader_lower_cm' => $leader_lower_cm,
+            ];
+        }
+
+        // 釣り針データを、メモに紐付けて中間テーブルに保存
+        if (!empty($attachData)) {
+            $memo = Memo::findOrFail($memo_id);
+            $memo->hooks()->attach($attachData);
+        }
+    }
 
     /**
      * メモに紐づいたエサを、中間テーブルに保存するメソッド
