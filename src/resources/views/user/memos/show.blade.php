@@ -25,7 +25,7 @@
                {{-- 釣り竿の入力 --}}
                <x-user.show.rods :getMemoRodsName='$get_memo_rods_name' />
                {{-- 釣り針の入力 --}}
-               <x-user.show.hooks :getMemoHoodsName='$get_memo_hooks_name' />
+               <x-user.show.hooks :getMemoHooksName='$get_memo_hooks_name' />
                {{-- エサの入力 --}}
                <x-user.show.baits :getMemoBaitsName='$get_memo_baits_name' />
                {{-- 釣果の入力 --}}
