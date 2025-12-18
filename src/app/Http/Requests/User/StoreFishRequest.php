@@ -26,7 +26,7 @@ class StoreFishRequest extends FormRequest
          'fish_name' => [
             'required',
             'string',
-            'max:25',
+            'max:30',
             Rule::unique('fish_names', 'name')->where(function ($query) {
                return $query->where('user_id', auth()->id());
             }),
@@ -43,7 +43,7 @@ class StoreFishRequest extends FormRequest
       return [
          'fish_name.required' => '魚名を入力してください。',
          'fish_name.string' => '魚名は文字列で入力してください。',
-         'fish_name.max' => '魚名は、25文字以内で入力してください。',
+         'fish_name.max' => '魚名は、30文字以内で入力してください。',
          'fish_name.unique' => 'この魚はすでに登録されています。',
       ];
    }

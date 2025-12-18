@@ -26,7 +26,7 @@ class StoreBaitRequest extends FormRequest
          'bait_name' => [
             'required',
             'string',
-            'max:25',
+            'max:30',
             Rule::unique('baits', 'name')->where(function ($query) {
                return $query->where('user_id', auth()->id());
             }),
@@ -43,7 +43,7 @@ class StoreBaitRequest extends FormRequest
       return [
          'bait_name.required' => 'エサを入力してください。',
          'bait_name.string' => 'エサ名は文字列で入力してください。',
-         'bait_name.max' => 'エサは、25文字以内で入力してください。',
+         'bait_name.max' => 'エサは、30文字以内で入力してください。',
          'bait_name.unique' => 'このエサはすでに登録されています。',
       ];
    }
