@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Auth;
 
-class Rod extends Model
+class Hook extends Model
 {
    use HasFactory;
 
@@ -24,8 +24,8 @@ class Rod extends Model
     */
    public function memos(): BelongsToMany
    {
-      return $this->belongsToMany(Memo::class, 'memo_rods')
-         ->withPivot(['main_line']);
+      return $this->belongsToMany(Memo::class, 'memo_hooks')
+         ->withPivot(['leader_size', 'leader_upper_cm', 'leader_lower_cm']);
    }
 
    /**
@@ -38,30 +38,30 @@ class Rod extends Model
    }
 
    /**
-    * 自分自身の、全ての釣り竿を取得する為のスコープ。
+    * 自分自身の、全ての釣り針を取得する為のスコープ。
     * @param Builder $query
     * @return void
     */
-   public function scopeAvailableAllRods(Builder $query): void
+   public function scopeAvailableAllHooks(Builder $query): void
    {
       $query->where('user_id', Auth::id())
          ->orderBy('created_at', 'desc');
    }
 
    /**
-    * 自分自身の、選択した釣り竿を取得する為のスコープ。
+    * 自分自身の、選択した釣り針を取得する為のスコープ。
     * @param Builder $query
     * @param int $id
     * @return void
     */
-   public function scopeAvailableSelectRod(Builder $query, int $id): void
+   public function scopeAvailableSelectHook(Builder $query, int $id): void
    {
       $query->where('id', $id)
          ->where('user_id', Auth::id());
    }
 
    /**
-    * 検索した釣り竿の名前を表示するの為のスコープ。
+    * 検索した釣り針の名前を表示するためのスコープ。
     * @param Builder $query
     * @param string|null $keyword
     * @return void

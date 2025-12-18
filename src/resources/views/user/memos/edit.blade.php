@@ -23,12 +23,14 @@
                      <p class="mark">{{ $select_memo->status }}</p>
                   </div>
                @endif
-               {{-- 釣行日・釣行時間・釣り場 --}}
+               {{-- 基本情報の入力 --}}
                @include('user.memos.partials.edit.basic-info')
-               {{-- 釣り場 --}}
+               {{-- 釣り場の入力 --}}
                @include('user.memos.partials.edit.spots')
-               {{-- 釣り竿 --}}
+               {{-- 釣り竿の入力 --}}
                @include('user.memos.partials.edit.rods')
+               {{-- 釣り針の入力 --}}
+               @include('user.memos.partials.edit.hooks')
                {{-- エサの入力 --}}
                @include('user.memos.partials.edit.baits')
                {{-- 釣果の入力 --}}

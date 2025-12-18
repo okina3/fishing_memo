@@ -28,6 +28,20 @@
          <x-input-error class="mt-2" :messages="$errors->get('rod_name')" />
       </form>
    </div>
+   {{-- 釣り針の登録 --}}
+   <div class="sm:mr-10">
+      <form action="{{ route('user.hook.store') }}" method="POST">
+         @csrf
+         <h2 class="sub_heading-2 mb-1">釣り針の登録</h2>
+         <div class="flex gap-2 items-center">
+            <input class="w-60 rounded" type="text" name="hook_name" value="{{ old('hook_name') }}"
+               placeholder="例: G社 サンプル針 9号">
+            <button class="btn bg-blue-800 hover:bg-blue-700" type="submit">保存</button>
+         </div>
+         {{-- エラーメッセージ（釣り針の登録） --}}
+         <x-input-error class="mt-2" :messages="$errors->get('hook_name')" />
+      </form>
+   </div>
    {{-- エサの登録 --}}
    <div class="sm:mr-10">
       <form action="{{ route('user.bait.store') }}" method="POST">

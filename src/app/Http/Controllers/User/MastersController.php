@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\SearchKeywordRequest;
 use App\Models\Bait;
 use App\Models\FishName;
+use App\Models\Hook;
 use App\Models\Rod;
 use App\Models\Spot;
 use App\Services\SessionService;
@@ -30,6 +31,8 @@ class MastersController extends Controller
          ->searchKeyword($request->keyword)->availableAllSpots()->get();
       $rods = Rod::with('user')
          ->searchKeyword($request->keyword)->availableAllRods()->get();
+      $hooks = Hook::with('user')
+         ->searchKeyword($request->keyword)->availableAllHooks()->get();
       $baits = Bait::with('user')
          ->searchKeyword($request->keyword)->availableAllBaits()->get();
       $fishNames = FishName::with('user')
@@ -37,6 +40,6 @@ class MastersController extends Controller
       // 検索後に入力欄がクリア
       $keyword = '';
 
-      return view('user.masters.index', compact('tab', 'spots', 'rods', 'baits', 'fishNames', 'keyword'));
+      return view('user.masters.index', compact('tab', 'spots', 'rods', 'hooks', 'baits', 'fishNames', 'keyword'));
    }
 }

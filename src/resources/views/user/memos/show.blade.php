@@ -18,12 +18,14 @@
                      <p class="mark">{{ $select_memo->status }}</p>
                   </div>
                @endif
-               {{-- 釣行日・釣行時間・釣り場 --}}
+               {{-- 基本情報の入力 --}}
                <x-user.show.basic-info :selectMemo='$select_memo' />
-               {{-- 釣り場 --}}
+               {{-- 釣り場の入力 --}}
                <x-user.show.spots :getMemoSpotsResults='$get_memo_spots_name' />
-               {{-- 釣り竿 --}}
+               {{-- 釣り竿の入力 --}}
                <x-user.show.rods :getMemoRodsName='$get_memo_rods_name' />
+               {{-- 釣り針の入力 --}}
+               <x-user.show.hooks :getMemoHoodsName='$get_memo_hooks_name' />
                {{-- エサの入力 --}}
                <x-user.show.baits :getMemoBaitsName='$get_memo_baits_name' />
                {{-- 釣果の入力 --}}
