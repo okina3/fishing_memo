@@ -4,7 +4,6 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreMemoRequest extends FormRequest
 {
@@ -42,6 +41,12 @@ class StoreMemoRequest extends FormRequest
             'rod_areas' => 'array',
             'rod_areas.*.rod_id' => 'required|integer|exists:rods,id',
             'rod_areas.*.main_line' => 'nullable|numeric|min:0|max:99.9',
+            // 釣り針
+            'hook_areas' => 'array',
+            'hook_areas.*.hook_id' => 'required|integer|exists:hooks,id',
+            'hook_areas.*.leader_size' => 'nullable|numeric|min:0|max:99.9',
+            'hook_areas.*.leader_upper_cm' => 'nullable|integer|min:0|max:999',
+            'hook_areas.*.leader_lower_cm' => 'nullable|integer|min:0|max:999',
             // エサ
             'baits' => 'array',
             'baits.*' => 'nullable|integer|distinct|exists:baits,id',
@@ -99,6 +104,20 @@ class StoreMemoRequest extends FormRequest
             'rod_areas.*.main_line.numeric' => '道糸は数値で指定してください。',
             'rod_areas.*.main_line.min' => '道糸は 0 以上で指定してください。',
             'rod_areas.*.main_line.max' => '道糸は 99.9 以下で指定してください。',
+            // 釣り針
+            'hook_areas.array' => '仕掛けデータの形式が不正です。',
+            'hook_areas.*.hook_id.required' => '釣り針を選択してください。また、マスターズ管理から釣り針を登録をしてください。',
+            'hook_areas.*.hook_id.integer' => '釣り針は整数で指定してください。',
+            'hook_areas.*.hook_id.exists' => '選択された釣り針は存在しません。',
+            'hook_areas.*.leader_size.numeric' => 'ハリス（太さ）は数値で指定してください。',
+            'hook_areas.*.leader_size.min' => 'ハリス（太さ）は 0 以上で指定してください。',
+            'hook_areas.*.leader_size.max' => 'ハリス（太さ）は 99.9 以下で指定してください。',
+            'hook_areas.*.leader_upper_cm.integer' => '上ハリス（長さ）は整数で指定してください。',
+            'hook_areas.*.leader_upper_cm.min' => '上ハリス（長さ）は 0 以上で指定してください。',
+            'hook_areas.*.leader_upper_cm.max' => '上ハリス（長さ）は 999 以下で指定してください。',
+            'hook_areas.*.leader_lower_cm.integer' => '下ハリス（長さ）は整数で指定してください。',
+            'hook_areas.*.leader_lower_cm.min' => '下ハリス（長さ）は 0 以上で指定してください。',
+            'hook_areas.*.leader_lower_cm.max' => '下ハリス（長さ）は 999 以下で指定してください。',
             // エサ
             'baits.array' => 'エサの形式が不正です。',
             'baits.*.integer' => 'エサの選択値が不正です。',

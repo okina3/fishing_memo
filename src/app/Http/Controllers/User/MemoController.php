@@ -222,6 +222,8 @@ class MemoController extends Controller
                 MemoService::attachExistingSpots($request, $memo->id);
                 // 釣り竿を、メモに紐付けて中間テーブルに保存
                 MemoService::attachExistingRods($request, $memo->id);
+                // 釣り針を、メモに紐付けて中間テーブルに保存
+                MemoService::attachExistingHooks($request, $memo->id);
                 // エサを、メモに紐付けて中間テーブルに保存
                 MemoService::attachExistingBaits($request, $memo->id);
                 // 釣果データ（名前・匹数・長さ）を、メモに紐付けて中間テーブルに保存

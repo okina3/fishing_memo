@@ -16,13 +16,13 @@
             </div>
             <form action="{{ route('user.store') }}" method="post">
                @csrf
-               {{-- 釣行日・釣行時間 --}}
+               {{-- 基本情報の入力 --}}
                @include('user.memos.partials.create.basic-info')
-               {{-- 釣り場 --}}
+               {{-- 釣り場の入力 --}}
                @include('user.memos.partials.create.spots')
-               {{-- 釣り竿 --}}
+               {{-- 釣り竿の入力 --}}
                @include('user.memos.partials.create.rods')
-               {{-- 釣り針 --}}
+               {{-- 釣り針の入力 --}}
                @include('user.memos.partials.create.hooks')
                {{-- エサの入力 --}}
                @include('user.memos.partials.create.baits')
