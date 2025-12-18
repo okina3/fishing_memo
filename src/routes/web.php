@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\BaitController;
 use App\Http\Controllers\User\ContactController;
 use App\Http\Controllers\User\FishNameController;
+use App\Http\Controllers\User\HookController;
 use App\Http\Controllers\User\ImageController;
 use App\Http\Controllers\User\MastersController;
 use App\Http\Controllers\User\MemoController;
@@ -62,6 +63,15 @@ Route::prefix('/')->as('user.')->group(function () {
                 Route::get('/edit/{rod}', 'edit')->name('rod.edit');
                 Route::patch('/update', 'update')->name('rod.update');
                 Route::delete('/destroy', 'destroy')->name('rod.destroy');
+            });
+
+        // 釣り針の登録
+        Route::controller(HookController::class)->prefix('hook')
+            ->group(function () {
+                Route::post('/store', 'store')->name('hook.store');
+                Route::get('/edit/{hook}', 'edit')->name('hook.edit');
+                Route::patch('/update', 'update')->name('hook.update');
+                Route::delete('/destroy', 'destroy')->name('hook.destroy');
             });
 
         // エサの登録
