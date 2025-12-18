@@ -18,13 +18,17 @@
             <form action="{{ route('user.share-setting.update') }}" method="post">
                @csrf
                @method('patch')
-               {{-- 選択した共有メモの釣行日・釣行時間・釣り場を表示 --}}
+               {{-- 選択した共有メモの基本情報を表示 --}}
                <x-user.show.basic-info :selectMemo='$select_memo' />
                {{-- 選択した共有メモの釣り場を表示 --}}
                <x-user.show.spots :getMemoSpotsResults='$get_memo_spots_name' />
-               {{-- 選択した共有メモのエサの入力を表示 --}}
+               {{-- 選択した共有メモの釣り竿を表示 --}}
+               <x-user.show.rods :getMemoRodsName='$get_memo_rods_name' />
+               {{-- 選択した共有メモの釣り針を表示 --}}
+               <x-user.show.hooks :getMemoHooksName='$get_memo_hooks_name' />
+               {{-- 選択した共有メモのエサを表示 --}}
                <x-user.show.baits :getMemoBaitsName='$get_memo_baits_name' />
-               {{-- 選択した共有メモの釣果の入力を表示 --}}
+               {{-- 選択した共有メモの釣果を表示 --}}
                <x-user.show.fishing-results :getMemoFishResults='$get_memo_fish_results' />
                {{-- 選択した共有メモの備考を表示 --}}
                <x-user.edit.content :selectMemo='$select_memo' />
