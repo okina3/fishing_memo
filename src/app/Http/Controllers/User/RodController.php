@@ -55,7 +55,7 @@ class RodController extends Controller
       // ブラウザバック対策（値を持たせる）
       SessionService::setBrowserBackSession();
 
-      return view('user.masters.edit-rod', compact('rod'));
+      return view('user.masters.rods.edit-rod', compact('rod'));
    }
 
    /**
