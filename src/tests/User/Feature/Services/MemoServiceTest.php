@@ -4,8 +4,10 @@ namespace Tests\User\Feature\Services;
 
 use App\Models\Bait;
 use App\Models\FishName;
+use App\Models\Hook;
 use App\Models\Image;
 use App\Models\Memo;
+use App\Models\Rod;
 use App\Models\ShareSetting;
 use App\Models\Spot;
 use App\Models\User;
@@ -191,6 +193,150 @@ class MemoServiceTest extends TestCase
       $this->assertDatabaseMissing('memo_spots', [
          'memo_id' => $memo->id,
          'spot_id' => 0,
+      ]);
+   }
+
+   // メモに紐づいた釣り竿データを、中間テーブルに保存するメソッドのテスト
+   public function testAttachExistingRods()
+   {
+      // 1件の自分メモを作成
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      // 2件の自分の釣り竿を作成
+      $rods = Rod::factory()->count(2)->create(['user_id' => $this->user->id]);
+
+      // rod_areas の形式でリクエストを作成
+      $rodAreas = [
+         ['rod_id' => $rods[0]->id, 'main_line' => 2.5],
+         ['rod_id' => $rods[1]->id, 'main_line' => 3.0],
+      ];
+
+      // リクエストを作成してサービスを呼び出す
+      $request = new Request(['rod_areas' => $rodAreas]);
+      MemoService::attachExistingRods($request, $memo->id);
+
+      // 中間テーブルに関連付けが保存されていることを確認
+      $this->assertDatabaseHas('memo_rods', [
+         'memo_id' => $memo->id,
+         'rod_id' => $rods[0]->id,
+         'main_line' => 2.5,
+      ]);
+
+      // 中間テーブルに関連付けが保存されていることを確認
+      $this->assertDatabaseHas('memo_rods', [
+         'memo_id' => $memo->id,
+         'rod_id' => $rods[1]->id,
+         'main_line' => 3.0,
+      ]);
+   }
+
+   // メモに紐づいた釣り竿データを、中間テーブルに保存するメソッドのテスト（空の釣り竿データ）
+   public function testAttachExistingRods_withEmptyResults()
+   {
+      // 1件の自分メモを作成
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      // 空の釣り竿データでリクエストを作成してサービスを呼び出す
+      $request = new Request(['rod_areas' => []]);
+      MemoService::attachExistingRods($request, $memo->id);
+
+      // 中間テーブルに関連付けが保存されていないことを確認
+      $this->assertDatabaseMissing('memo_rods', ['memo_id' => $memo->id]);
+   }
+
+   // メモに紐づいた釣り竿データを、中間テーブルに保存するメソッドのテスト（無効な竿ID）
+   public function testAttachExistingRods_skipsInvalidEntries()
+   {
+      // 1件の自分メモを作成
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      // 1件の自分の釣り竿を作成
+      Rod::factory()->create(['user_id' => $this->user->id]);
+
+      // rod_areas の形式でリクエストを作成（無効な竿ID）
+      $rodAreas = [
+         ['rod_id' => 0, 'main_line' => 2.5],
+      ];
+
+      // リクエストを作成してサービスを呼び出す
+      $request = new Request(['rod_areas' => $rodAreas]);
+      MemoService::attachExistingRods($request, $memo->id);
+
+      // 無効な竿IDに対する関連付けが行われていないことを確認
+      $this->assertDatabaseMissing('memo_rods', [
+         'memo_id' => $memo->id,
+         'rod_id' => 0,
+      ]);
+   }
+
+   // メモに紐づいた釣り針データを、中間テーブルに保存するメソッドのテスト
+   public function testAttachExistingHooks()
+   {
+      // 1件の自分メモを作成
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      // 2件の自分の釣り針を作成
+      $hooks = Hook::factory()->count(2)->create(['user_id' => $this->user->id]);
+
+      // hook_areas の形式でリクエストを作成
+      $hookAreas = [
+         ['hook_id' => $hooks[0]->id, 'leader_size' => 1.5, 'leader_upper_cm' => 30, 'leader_lower_cm' => 20],
+         ['hook_id' => $hooks[1]->id, 'leader_size' => 2.0, 'leader_upper_cm' => 40, 'leader_lower_cm' => 25],
+      ];
+
+      // リクエストを作成してサービスを呼び出す
+      $request = new Request(['hook_areas' => $hookAreas]);
+      MemoService::attachExistingHooks($request, $memo->id);
+
+      // 中間テーブルに関連付けが保存されていることを確認
+      $this->assertDatabaseHas('memo_hooks', [
+         'memo_id' => $memo->id,
+         'hook_id' => $hooks[0]->id,
+         'leader_size' => 1.5,
+         'leader_upper_cm' => 30,
+         'leader_lower_cm' => 20,
+      ]);
+
+      // 中間テーブルに関連付けが保存されていることを確認
+      $this->assertDatabaseHas('memo_hooks', [
+         'memo_id' => $memo->id,
+         'hook_id' => $hooks[1]->id,
+         'leader_size' => 2.0,
+         'leader_upper_cm' => 40,
+         'leader_lower_cm' => 25,
+      ]);
+   }
+
+   // メモに紐づいた釣り針データを、中間テーブルに保存するメソッドのテスト（空の釣り針データ）
+   public function testAttachExistingHooks_withEmptyResults()
+   {
+      // 1件の自分メモを作成
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      // 空の釣り針データでリクエストを作成してサービスを呼び出す
+      $request = new Request(['hook_areas' => []]);
+      MemoService::attachExistingHooks($request, $memo->id);
+
+      // 中間テーブルに関連付けが保存されていないことを確認
+      $this->assertDatabaseMissing('memo_hooks', ['memo_id' => $memo->id]);
+   }
+
+   // メモに紐づいた釣り針データを、中間テーブルに保存するメソッドのテスト（無効な釣り針ID）
+   public function testAttachExistingHooks_skipsInvalidEntries()
+   {
+      // 1件の自分メモを作成
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      // 1件の自分の釣り針を作成
+      Hook::factory()->create(['user_id' => $this->user->id]);
+
+      // hook_areas の形式でリクエストを作成（無効な釣り針ID）
+      $hookAreas = [
+         ['hook_id' => 0, 'leader_size' => 1.5, 'leader_upper_cm' => 30, 'leader_lower_cm' => 20],
+      ];
+
+      // リクエストを作成してサービスを呼び出す
+      $request = new Request(['hook_areas' => $hookAreas]);
+      MemoService::attachExistingHooks($request, $memo->id);
+
+      // 無効な釣り針IDに対する関連付けが行われていないことを確認
+      $this->assertDatabaseMissing('memo_hooks', [
+         'memo_id' => $memo->id,
+         'hook_id' => 0,
       ]);
    }
 
