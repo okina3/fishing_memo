@@ -55,7 +55,7 @@ class HookController extends Controller
       // ブラウザバック対策（値を持たせる）
       SessionService::setBrowserBackSession();
 
-      return view('user.masters.edit-hook', compact('hook'));
+      return view('user.masters.hooks.edit-hook', compact('hook'));
    }
 
    /**

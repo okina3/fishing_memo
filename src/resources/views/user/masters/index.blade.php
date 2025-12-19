@@ -9,17 +9,18 @@
             {{-- 新規登録フォーム --}}
             @include('user.masters.partials.index.create-forms')
             {{-- タブ表示と検索エリア --}}
-            @include('user.masters.partials.index.tab-list-search')
-            {{-- 釣り場のタブ内容 --}}
-            @include('user.masters.partials.index.spots-tab-content')
-            {{-- 釣り竿のタブ内容 --}}
-            @include('user.masters.partials.index.rods-tab-content')
-            {{-- 釣り針のタブ内容 --}}
-            @include('user.masters.partials.index.hooks-tab-content')
-            {{-- エサのタブ内容 --}}
-            @include('user.masters.partials.index.baits-tab-content')
-            {{-- 魚名のタブ内容 --}}
-            @include('user.masters.partials.index.fish-names-tab-content')
+            @include('user.masters.partials.index.tab-search')
+            {{-- 選択された各タブの内容表示エリア --}}
+            {{-- 釣り場の表示 --}}
+            @include('user.masters.spots.index-spots')
+            {{-- 釣り竿の表示 --}}
+            @include('user.masters.rods.index-rods')
+            {{-- 釣り針の表示 --}}
+            @include('user.masters.hooks.index-hooks')
+            {{-- エサの表示 --}}
+            @include('user.masters.baits.index-baits')
+            {{-- 魚名の表示 --}}
+            @include('user.masters.fish-names.index-fish-names')
          </div>
       </section>
    </div>

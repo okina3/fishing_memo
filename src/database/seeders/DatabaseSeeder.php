@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -27,11 +28,13 @@ class DatabaseSeeder extends Seeder
             MemoSeeder::class,
             SpotSeeder::class,
             RodSeeder::class,
+            HookSeeder::class,
             BaitSeeder::class,
             FishNameSeeder::class,
             ImageSeeder::class,
             MemoSpotSeeder::class,
             MemoRodSeeder::class,
+            MemoHookSeeder::class,
             MemoBaitSeeder::class,
             MemoFishNameSeeder::class,
             MemoImageSeeder::class,
