@@ -55,7 +55,7 @@ class BaitController extends Controller
       // ブラウザバック対策（値を持たせる）
       SessionService::setBrowserBackSession();
 
-      return view('user.masters.edit-bait', compact('bait'));
+      return view('user.masters.baits.edit-bait', compact('bait'));
    }
 
    /**
