@@ -60,9 +60,9 @@ class StoreFishRequestTest extends TestCase
    // バリデーションが、失敗することを確認するテスト
    public function testErrorRulesValidation()
    {
-      // バリデーション用のデータを設定（魚名が、26文字以上）
+      // バリデーション用のデータを設定（魚名が、31文字以上）
       $data = [
-         'fish_name' => str_repeat('あ', 26),
+         'fish_name' => str_repeat('あ', 31),
       ];
 
       // StoreFishRequestのインスタンスを初期化
@@ -87,7 +87,7 @@ class StoreFishRequestTest extends TestCase
       $expectedMessages = [
          'fish_name.required' => '魚名を入力してください。',
          'fish_name.string' => '魚名は文字列で入力してください。',
-         'fish_name.max' => '魚名は、25文字以内で入力してください。',
+         'fish_name.max' => '魚名は、30文字以内で入力してください。',
          'fish_name.unique' => 'この魚はすでに登録されています。',
       ];
 

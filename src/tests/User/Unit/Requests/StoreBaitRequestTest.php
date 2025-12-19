@@ -60,9 +60,9 @@ class StoreBaitRequestTest extends TestCase
    // バリデーションが、失敗することを確認するテスト
    public function testErrorRulesValidation()
    {
-      // バリデーション用のデータを設定（エサ名が、26文字以上）
+      // バリデーション用のデータを設定（エサ名が、31文字以上）
       $data = [
-         'bait_name' => str_repeat('あ', 26),
+         'bait_name' => str_repeat('あ', 31),
       ];
 
       // StoreBaitRequestのインスタンスを初期化
@@ -87,7 +87,7 @@ class StoreBaitRequestTest extends TestCase
       $expectedMessages = [
          'bait_name.required' => 'エサを入力してください。',
          'bait_name.string' => 'エサ名は文字列で入力してください。',
-         'bait_name.max' => 'エサは、25文字以内で入力してください。',
+         'bait_name.max' => 'エサは、30文字以内で入力してください。',
          'bait_name.unique' => 'このエサはすでに登録されています。',
       ];
 

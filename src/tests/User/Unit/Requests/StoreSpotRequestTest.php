@@ -60,9 +60,9 @@ class StoreSpotRequestTest extends TestCase
    // バリデーションが、失敗することを確認するテスト
    public function testErrorRulesValidation()
    {
-      // 26文字以上を入れて max 制約に引っかける
+      // 31文字以上を入れて max 制約に引っかける 
       $data = [
-         'spot_name' => str_repeat('あ', 26),
+         'spot_name' => str_repeat('あ', 31),
       ];
 
       // StoreSpotRequestのインスタンスを初期化
@@ -87,7 +87,7 @@ class StoreSpotRequestTest extends TestCase
       $expectedMessages = [
          'spot_name.required' => '釣り場を入力してください。',
          'spot_name.string' => '釣り場名は文字列で入力してください。',
-         'spot_name.max' => '釣り場は、25文字以内で入力してください。',
+         'spot_name.max' => '釣り場は、30文字以内で入力してください。',
          'spot_name.unique' => 'この釣り場はすでに登録されています。',
       ];
 
