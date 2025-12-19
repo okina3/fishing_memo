@@ -11,7 +11,9 @@ use App\Models\ShareSetting;
 use App\Models\User;
 use App\Services\BaitService;
 use App\Services\FishNameService;
+use App\Services\HookService;
 use App\Services\ImageService;
+use App\Services\RodService;
 use App\Services\SessionService;
 use App\Services\ShareSettingService;
 use App\Services\SpotService;
@@ -80,6 +82,10 @@ class ShareSettingController extends Controller
         $select_memo = Memo::with('images.user')->where('id', $id)->first();
         // 選択したメモに紐づいた釣り場の名前を取得
         $get_memo_spots_name = SpotService::getMemoSpotsResults($select_memo->spots);
+        // 選択したメモに紐づいた釣り竿の名前を取得
+        $get_memo_rods_name = RodService::getMemoRodsResults($select_memo->rods);
+        // 選択したメモに紐づいた釣り針の名前を取得
+        $get_memo_hooks_name = HookService::getMemoHooksResults($select_memo->hooks);
         // 選択したメモに紐づいたエサの名前を取得
         $get_memo_baits_name = BaitService::getMemoBaitsName($select_memo->baits);
         // 選択したメモに紐づいた釣果のデータを取得（名前・匹数・長さ）
@@ -91,7 +97,7 @@ class ShareSettingController extends Controller
 
         return view(
             'user.shareSettings.show',
-            compact('select_memo', 'get_memo_spots_name', 'get_memo_baits_name', 'get_memo_fish_results', 'get_memo_images', 'select_user')
+            compact('select_memo', 'get_memo_spots_name', 'get_memo_rods_name', 'get_memo_hooks_name', 'get_memo_baits_name', 'get_memo_fish_results', 'get_memo_images', 'select_user')
         );
     }
 
@@ -108,6 +114,10 @@ class ShareSettingController extends Controller
         $select_memo = Memo::with('images.user')->where('id', $id)->first();
         // 選択したメモに紐づいた釣り場の名前を取得
         $get_memo_spots_name = SpotService::getMemoSpotsResults($select_memo->spots);
+        // 選択したメモに紐づいた釣り竿の名前を取得
+        $get_memo_rods_name = RodService::getMemoRodsResults($select_memo->rods);
+        // 選択したメモに紐づいた釣り針の名前を取得
+        $get_memo_hooks_name = HookService::getMemoHooksResults($select_memo->hooks);
         // 選択したメモに紐づいたエサの名前を取得
         $get_memo_baits_name = BaitService::getMemoBaitsName($select_memo->baits);
         // 選択したメモに紐づいた釣果のデータを取得（名前・匹数・長さ）
@@ -119,7 +129,7 @@ class ShareSettingController extends Controller
 
         return view(
             'user.shareSettings.edit',
-            compact('select_memo', 'get_memo_spots_name', 'get_memo_baits_name', 'get_memo_fish_results', 'get_memo_images', 'select_user')
+            compact('select_memo', 'get_memo_spots_name', 'get_memo_rods_name', 'get_memo_hooks_name', 'get_memo_baits_name', 'get_memo_fish_results', 'get_memo_images', 'select_user')
         );
     }
 

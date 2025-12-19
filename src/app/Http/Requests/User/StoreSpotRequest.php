@@ -26,7 +26,7 @@ class StoreSpotRequest extends FormRequest
          'spot_name' => [
             'required',
             'string',
-            'max:25',
+            'max:30',
             Rule::unique('spots', 'name')->where(function ($query) {
                return $query->where('user_id', auth()->id());
             }),
@@ -43,7 +43,7 @@ class StoreSpotRequest extends FormRequest
       return [
          'spot_name.required' => '釣り場を入力してください。',
          'spot_name.string' => '釣り場名は文字列で入力してください。',
-         'spot_name.max' => '釣り場は、25文字以内で入力してください。',
+         'spot_name.max' => '釣り場は、30文字以内で入力してください。',
          'spot_name.unique' => 'この釣り場はすでに登録されています。',
       ];
    }

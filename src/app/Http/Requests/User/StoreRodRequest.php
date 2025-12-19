@@ -26,7 +26,7 @@ class StoreRodRequest extends FormRequest
          'rod_name' => [
             'required',
             'string',
-            'max:25',
+            'max:30',
             Rule::unique('rods', 'name')->where(function ($query) {
                return $query->where('user_id', auth()->id());
             }),
@@ -43,7 +43,7 @@ class StoreRodRequest extends FormRequest
       return [
          'rod_name.required' => '釣り竿を入力してください。',
          'rod_name.string' => '釣り竿名は文字列で入力してください。',
-         'rod_name.max' => '釣り竿は、25文字以内で入力してください。',
+         'rod_name.max' => '釣り竿は、30文字以内で入力してください。',
          'rod_name.unique' => 'この釣り竿はすでに登録されています。',
       ];
    }

@@ -108,7 +108,7 @@
             画像管理
          </x-responsive-nav-link>
          <x-responsive-nav-link :href="route('user.share-setting.index')" :active="request()->routeIs('user.share-setting.index')">
-            共有メモ
+            共有メモ管理
          </x-responsive-nav-link>
          <x-responsive-nav-link :href="route('user.trashed-memo.index')" :active="request()->routeIs('user.trashed-memo.index')">
             ゴミ箱

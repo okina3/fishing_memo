@@ -3,7 +3,7 @@
    {{-- 仕掛けの表示の表示 --}}
    <div class="space-y-5 lg:space-y-1">
       <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-14">
-         @forelse($getMemoHoodsName as $result)
+         @forelse($getMemoHooksName as $result)
             <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10">
                {{-- 釣り針名 --}}
                <div>
