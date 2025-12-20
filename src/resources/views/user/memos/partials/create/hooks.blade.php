@@ -23,9 +23,9 @@
                <label class="block text-sm text-gray-700">釣り針<span class="text-red-600">（必須）</span></label>
                <select name="hook_areas[{{ $i }}][hook_id]" class="w-60 rounded">
                   <option value="">針を選択してください</option>
-                  {{-- @foreach ($all_hooks as $hook)
+                  @foreach ($all_hooks as $hook)
                      <option value="{{ $hook->id }}" @selected(($entry['hook_id'] ?? '') == $hook->id)>{{ $hook->name }}</option>
-                  @endforeach --}}
+                  @endforeach
                </select>
             </div>
 

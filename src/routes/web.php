@@ -51,6 +51,7 @@ Route::prefix('/')->as('user.')->group(function () {
         Route::controller(SpotController::class)->prefix('spot')
             ->group(function () {
                 Route::post('/store', 'store')->name('spot.store');
+                Route::post('/store-ajax', 'storeAjax')->name('spot.store.ajax');
                 Route::get('/edit/{spot}', 'edit')->name('spot.edit');
                 Route::patch('/update', 'update')->name('spot.update');
                 Route::delete('/destroy', 'destroy')->name('spot.destroy');
@@ -78,6 +79,7 @@ Route::prefix('/')->as('user.')->group(function () {
         Route::controller(BaitController::class)->prefix('bait')
             ->group(function () {
                 Route::post('/store', 'store')->name('bait.store');
+                Route::post('/store-ajax', 'storeAjax')->name('bait.store.ajax');
                 Route::get('/edit/{bait}', 'edit')->name('bait.edit');
                 Route::patch('/update', 'update')->name('bait.update');
                 Route::delete('/destroy', 'destroy')->name('bait.destroy');
@@ -87,6 +89,7 @@ Route::prefix('/')->as('user.')->group(function () {
         Route::controller(FishNameController::class)->prefix('fish-name')
             ->group(function () {
                 Route::post('/store', 'store')->name('fish-name.store');
+                Route::post('/store-ajax', 'storeAjax')->name('fish-name.store.ajax');
                 Route::get('/edit/{fishName}', 'edit')->name('fish-name.edit');
                 Route::patch('/update', 'update')->name('fish-name.update');
                 Route::delete('/destroy', 'destroy')->name('fish-name.destroy');
