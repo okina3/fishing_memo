@@ -2,7 +2,7 @@
    {{-- 釣果の入力 --}}
    <div class="pt-2 flex items-center border-t border-gray-300">
       <h2 class="sub_heading-2">釣果</h2>
-      {{-- 釣り場の追加 --}}
+      {{-- 魚名の追加 --}}
       <x-user.ajax-add.fish-name-add />
    </div>
 
