@@ -1,6 +1,6 @@
 {{-- ブラウザの表示 --}}
 <a data-micromodal-trigger="modal-add-bait" href='javascript:'
-   class="btn-2 btn-bk bg-yellow-500 hover:bg-yellow-400">＋エサの追加
+   class="btn-2 btn-bk bg-yellow-500 hover:bg-yellow-400">＋エサを追加
 </a>
 
 {{-- エサ追加モーダルウィンドウ --}}
@@ -24,7 +24,7 @@
                      追加
                   </button>
                </div>
-               {{-- エラーメッセージ（エサの追加） --}}
+               {{-- エラーメッセージ（エサを追加） --}}
                <x-input-error class="mt-2" :messages="$errors->get('bait_name')" />
                {{-- AJAX 用メッセージ表示領域 --}}
                <div id="bait_message" class="mt-2 text-sm" aria-live="polite"></div>

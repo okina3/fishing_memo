@@ -1,6 +1,6 @@
 {{-- ブラウザの表示 --}}
 <a data-micromodal-trigger="modal-add-fish" href='javascript:'
-   class="btn-2 btn-bk bg-yellow-500 hover:bg-yellow-400">＋魚名の追加
+   class="btn-2 btn-bk bg-yellow-500 hover:bg-yellow-400">＋魚名を追加
 </a>
 
 {{-- 魚名追加モーダルウィンドウ --}}
@@ -24,7 +24,7 @@
                      追加
                   </button>
                </div>
-               {{-- エラーメッセージ（魚名の追加） --}}
+               {{-- エラーメッセージ（魚名を追加） --}}
                <x-input-error class="mt-2" :messages="$errors->get('fish_name')" />
                {{-- AJAX 用メッセージ表示領域 --}}
                <div id="fish_message" class="mt-2 text-sm" aria-live="polite"></div>
