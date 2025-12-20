@@ -8,6 +8,7 @@ use App\Models\FishName;
 use App\Services\FishNameService;
 use App\Services\SessionService;
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -40,6 +41,30 @@ class FishNameController extends Controller
       } catch (Throwable $e) {
          Log::error($e);
          return back()->with(['message' => '魚名の追加に失敗しました', 'status' => 'error']);
+      }
+   }
+
+   /**
+    * 新規メモ作成から新規魚名を保存するメソッド
+    * @param StoreFishRequest $request
+    * @return JsonResponse
+    * @throws Throwable
+    */
+   public function storeAjax(StoreFishRequest $request): JsonResponse
+   {
+      try {
+         $fish = FishNameService::createFishName($request->input('fish_name'));
+
+         return response()->json([
+            'id' => $fish->id,
+            'name' => $fish->name,
+         ], 201);
+      } catch (Throwable $e) {
+         Log::error($e);
+         return response()->json([
+            'message' => '魚名の登録に失敗しました。',
+            'status' => 'error'
+         ], 500);
       }
    }
 

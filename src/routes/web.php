@@ -61,6 +61,7 @@ Route::prefix('/')->as('user.')->group(function () {
         Route::controller(RodController::class)->prefix('rod')
             ->group(function () {
                 Route::post('/store', 'store')->name('rod.store');
+                Route::post('/store-ajax', 'storeAjax')->name('rod.store.ajax');
                 Route::get('/edit/{rod}', 'edit')->name('rod.edit');
                 Route::patch('/update', 'update')->name('rod.update');
                 Route::delete('/destroy', 'destroy')->name('rod.destroy');
@@ -70,6 +71,7 @@ Route::prefix('/')->as('user.')->group(function () {
         Route::controller(HookController::class)->prefix('hook')
             ->group(function () {
                 Route::post('/store', 'store')->name('hook.store');
+                Route::post('/store-ajax', 'storeAjax')->name('hook.store.ajax');
                 Route::get('/edit/{hook}', 'edit')->name('hook.edit');
                 Route::patch('/update', 'update')->name('hook.update');
                 Route::delete('/destroy', 'destroy')->name('hook.destroy');

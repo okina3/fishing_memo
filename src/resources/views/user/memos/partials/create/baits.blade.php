@@ -1,6 +1,12 @@
 <div class="mb-3">
    {{-- エサの入力 --}}
-   <h2 class="sub_heading mb-1">エサ</h2>
+
+   <div class="pt-2 mb-1 flex items-center border-t border-gray-300">
+   <h2 class="sub_heading-2">エサ</h2>
+      {{-- エサの追加 --}}
+      <x-user.ajax-add.bait-add />
+   </div>
+
    @php
       // 初期表示行数（最低1、最大5）
       $initialRows = max(1, min(count(old('baits', [])), 5));
