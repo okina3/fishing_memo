@@ -2,13 +2,13 @@
 
 namespace Tests\User\Unit\Requests;
 
-use App\Http\Requests\User\StoreSpotRequest;
+use App\Http\Requests\User\StoreHookRequest;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Validator;
 use Tests\User\TestCase;
 
-class StoreSpotRequestTest extends TestCase
+class StoreHookRequestTest extends TestCase
 {
    use RefreshDatabase;
 
@@ -28,8 +28,8 @@ class StoreSpotRequestTest extends TestCase
    // authorizeメソッドが、常にtrueを返すことを検証するテスト
    public function testAuthorizeReturnsTrue()
    {
-      // StoreSpotRequestのインスタンスを初期化
-      $request = new StoreSpotRequest();
+      // StoreHookRequestのインスタンスを初期化
+      $request = new StoreHookRequest();
       // user() が認証ユーザーを返すように UserResolver を設定
       $request->setUserResolver(function () {
          return $this->user ?? null;
@@ -44,11 +44,11 @@ class StoreSpotRequestTest extends TestCase
    {
       // バリデーション用のデータを設定
       $data = [
-         'spot_name' => 'テスト釣り場'
+         'hook_name' => 'テスト釣り針'
       ];
 
-      // StoreSpotRequestのインスタンスを初期化
-      $request = new StoreSpotRequest();
+      // StoreHookRequestのインスタンスを初期化
+      $request = new StoreHookRequest();
       // データをマージしてバリデータを作成
       $request->merge($data);
       $validator = Validator::make($request->all(), $request->rules());
@@ -62,11 +62,11 @@ class StoreSpotRequestTest extends TestCase
    {
       // 31文字以上を入れて max 制約に引っかける 
       $data = [
-         'spot_name' => str_repeat('あ', 31),
+         'hook_name' => str_repeat('あ', 31),
       ];
 
-      // StoreSpotRequestのインスタンスを初期化
-      $request = new StoreSpotRequest();
+      // StoreHookRequestのインスタンスを初期化
+      $request = new StoreHookRequest();
       // データをマージしてバリデータを作成
       $request->merge($data);
       $validator = Validator::make($request->all(), $request->rules());
@@ -78,17 +78,17 @@ class StoreSpotRequestTest extends TestCase
    // バリデーションエラーメッセージが、正しく設定されていることを確認するテスト
    public function testMessagesMethod()
    {
-      // StoreSpotRequestのインスタンスを初期化
-      $request = new StoreSpotRequest();
+      // StoreHookRequestのインスタンスを初期化
+      $request = new StoreHookRequest();
       // リクエストから、バリデーションメッセージを取得
       $messages = $request->messages();
 
       // 期待されるバリデーションメッセージを定義
       $expectedMessages = [
-         'spot_name.required' => '釣り場を入力してください。',
-         'spot_name.string' => '釣り場名は文字列で入力してください。',
-         'spot_name.max' => '釣り場は、30文字以内で入力してください。',
-         'spot_name.unique' => 'この釣り場はすでに登録されています。',
+         'hook_name.required' => '釣り針を入力してください。',
+         'hook_name.string' => '釣り針名は文字列で入力してください。',
+         'hook_name.max' => '釣り針は、30文字以内で入力してください。',
+         'hook_name.unique' => 'この釣り針はすでに登録されています。',
       ];
 
       // 取得したメッセージが、期待されるバリデーションメッセージと一致することを確認

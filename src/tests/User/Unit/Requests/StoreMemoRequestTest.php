@@ -78,7 +78,7 @@ class StoreMemoRequestTest extends TestCase
       $messages = $request->messages();
       // 期待されるバリデーションメッセージを定義
       $expectedMessages = [
-         // 釣行日・時間・天候・気温・風向
+         // 釣行日・時間・天気・気温・風向
          'fishing_date.required' => '釣行日を指定してください。',
          'fishing_date.date' => '釣行日の形式が不正です。',
          'fishing_date.before_or_equal' => '釣行日は今日以前の日付を指定してください。',
@@ -87,10 +87,6 @@ class StoreMemoRequestTest extends TestCase
          'end_time.required' => '終了時間を指定してください。',
          'end_time.date_format' => '終了時間の形式は HH:MM で指定してください。',
          'end_time.after_or_equal' => '終了時間は開始時間以降を指定してください。',
-         'spot_areas.array' => '釣り場データの形式が不正です。',
-         'spot_areas.*.spot_id.integer' => '釣り場は整数で指定してください。',
-         'spot_areas.*.spot_id.required' => '釣り場を選択してください。また、マスターズ管理から釣り場を登録をしてから選択してください。',
-         'spot_areas.*.spot_id.exists' => '選択された釣り場は存在しません。',
          'weather.in' => '天気の値が不正です。',
          'weather.string' => '天気は文字列で指定してください。',
          'air_temp.integer' => '気温は整数で指定してください。',
@@ -99,6 +95,10 @@ class StoreMemoRequestTest extends TestCase
          'max_wind.integer' => '最大風速は整数で指定してください。',
          'wind_dir.in' => '風向の値が不正です。',
          // 釣り場
+         'spot_areas.array' => '釣り場データの形式が不正です。',
+         'spot_areas.*.spot_id.required' => '釣り場を選択してください。また、マスターズ管理から釣り場を登録をしてください。',
+         'spot_areas.*.spot_id.integer' => '釣り場は整数で指定してください。',
+         'spot_areas.*.spot_id.exists' => '選択された釣り場は存在しません。',
          'spot_areas.*.river_flow.in' => '川の流れの値が不正です。',
          'spot_areas.*.turbidity.in' => '濁りの値が不正です。',
          'spot_areas.*.water_level.numeric' => '水位は数値で指定してください。',
@@ -107,6 +107,28 @@ class StoreMemoRequestTest extends TestCase
          'spot_areas.*.water_temp.integer' => '水温は整数で指定してください。',
          'spot_areas.*.water_temp.min' => '水温は 0 以上で指定してください。',
          'spot_areas.*.water_temp.max' => '水温は 99 以下で指定してください。',
+         // 釣り竿
+         'rod_areas.array' => '釣り竿データの形式が不正です。',
+         'rod_areas.*.rod_id.required' => '釣り竿を選択してください。また、マスターズ管理から釣り竿を登録をしてください。',
+         'rod_areas.*.rod_id.integer' => '釣り竿は整数で指定してください。',
+         'rod_areas.*.rod_id.exists' => '選択された釣り竿は存在しません。',
+         'rod_areas.*.main_line.numeric' => '道糸は数値で指定してください。',
+         'rod_areas.*.main_line.min' => '道糸は 0 以上で指定してください。',
+         'rod_areas.*.main_line.max' => '道糸は 99.9 以下で指定してください。',
+         // 釣り針
+         'hook_areas.array' => '仕掛けデータの形式が不正です。',
+         'hook_areas.*.hook_id.required' => '釣り針を選択してください。また、マスターズ管理から釣り針を登録をしてください。',
+         'hook_areas.*.hook_id.integer' => '釣り針は整数で指定してください。',
+         'hook_areas.*.hook_id.exists' => '選択された釣り針は存在しません。',
+         'hook_areas.*.leader_size.numeric' => 'ハリス（太さ）は数値で指定してください。',
+         'hook_areas.*.leader_size.min' => 'ハリス（太さ）は 0 以上で指定してください。',
+         'hook_areas.*.leader_size.max' => 'ハリス（太さ）は 99.9 以下で指定してください。',
+         'hook_areas.*.leader_upper_cm.integer' => '上ハリス（長さ）は整数で指定してください。',
+         'hook_areas.*.leader_upper_cm.min' => '上ハリス（長さ）は 0 以上で指定してください。',
+         'hook_areas.*.leader_upper_cm.max' => '上ハリス（長さ）は 999 以下で指定してください。',
+         'hook_areas.*.leader_lower_cm.integer' => '下ハリス（長さ）は整数で指定してください。',
+         'hook_areas.*.leader_lower_cm.min' => '下ハリス（長さ）は 0 以上で指定してください。',
+         'hook_areas.*.leader_lower_cm.max' => '下ハリス（長さ）は 999 以下で指定してください。',
          // エサ
          'baits.array' => 'エサの形式が不正です。',
          'baits.*.integer' => 'エサの選択値が不正です。',

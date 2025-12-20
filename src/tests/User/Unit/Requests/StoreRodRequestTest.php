@@ -2,13 +2,13 @@
 
 namespace Tests\User\Unit\Requests;
 
-use App\Http\Requests\User\StoreSpotRequest;
+use App\Http\Requests\User\StoreRodRequest;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Validator;
 use Tests\User\TestCase;
 
-class StoreSpotRequestTest extends TestCase
+class StoreRodRequestTest extends TestCase
 {
    use RefreshDatabase;
 
@@ -28,8 +28,8 @@ class StoreSpotRequestTest extends TestCase
    // authorizeメソッドが、常にtrueを返すことを検証するテスト
    public function testAuthorizeReturnsTrue()
    {
-      // StoreSpotRequestのインスタンスを初期化
-      $request = new StoreSpotRequest();
+      // StoreRodRequestのインスタンスを初期化
+      $request = new StoreRodRequest();
       // user() が認証ユーザーを返すように UserResolver を設定
       $request->setUserResolver(function () {
          return $this->user ?? null;
@@ -44,11 +44,11 @@ class StoreSpotRequestTest extends TestCase
    {
       // バリデーション用のデータを設定
       $data = [
-         'spot_name' => 'テスト釣り場'
+         'rod_name' => 'テスト竿'
       ];
 
-      // StoreSpotRequestのインスタンスを初期化
-      $request = new StoreSpotRequest();
+      // StoreRodRequestのインスタンスを初期化
+      $request = new StoreRodRequest();
       // データをマージしてバリデータを作成
       $request->merge($data);
       $validator = Validator::make($request->all(), $request->rules());
@@ -62,11 +62,11 @@ class StoreSpotRequestTest extends TestCase
    {
       // 31文字以上を入れて max 制約に引っかける 
       $data = [
-         'spot_name' => str_repeat('あ', 31),
+         'rod_name' => str_repeat('あ', 31),
       ];
 
-      // StoreSpotRequestのインスタンスを初期化
-      $request = new StoreSpotRequest();
+      // StoreRodRequestのインスタンスを初期化
+      $request = new StoreRodRequest();
       // データをマージしてバリデータを作成
       $request->merge($data);
       $validator = Validator::make($request->all(), $request->rules());
@@ -78,17 +78,17 @@ class StoreSpotRequestTest extends TestCase
    // バリデーションエラーメッセージが、正しく設定されていることを確認するテスト
    public function testMessagesMethod()
    {
-      // StoreSpotRequestのインスタンスを初期化
-      $request = new StoreSpotRequest();
+      // StoreRodRequestのインスタンスを初期化
+      $request = new StoreRodRequest();
       // リクエストから、バリデーションメッセージを取得
       $messages = $request->messages();
 
       // 期待されるバリデーションメッセージを定義
       $expectedMessages = [
-         'spot_name.required' => '釣り場を入力してください。',
-         'spot_name.string' => '釣り場名は文字列で入力してください。',
-         'spot_name.max' => '釣り場は、30文字以内で入力してください。',
-         'spot_name.unique' => 'この釣り場はすでに登録されています。',
+         'rod_name.required' => '釣り竿を入力してください。',
+         'rod_name.string' => '釣り竿名は文字列で入力してください。',
+         'rod_name.max' => '釣り竿は、30文字以内で入力してください。',
+         'rod_name.unique' => 'この釣り竿はすでに登録されています。',
       ];
 
       // 取得したメッセージが、期待されるバリデーションメッセージと一致することを確認
