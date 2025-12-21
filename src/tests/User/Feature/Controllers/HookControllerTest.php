@@ -155,8 +155,8 @@ class HookControllerTest extends TestCase
 
       // ステータスコード200（OK）であることを検証
       $response->assertOk();
-      // 返却されるビューが期待通り（user.masters.hooks.edit-hook）であることを検証
-      $response->assertViewIs('user.masters.hooks.edit-hook');
+      // 返却されるビューが期待通りであることを検証
+      $response->assertViewIs('user.masters.partials.hooks.edit-hook');
       // ビューに渡される主要なデータ（選択釣り針）が存在することを検証
       $response->assertViewHas('hook');
    }
