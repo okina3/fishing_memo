@@ -80,7 +80,7 @@ class FishNameController extends Controller
       // ブラウザバック対策（値を持たせる）
       SessionService::setBrowserBackSession();
 
-      return view('user.masters.fish-names.edit-fish-name', compact('fish_name'));
+      return view('user.masters.partials.fish-names.edit-fish-name', compact('fish_name'));
    }
 
    /**

@@ -155,8 +155,8 @@ class FishNameControllerTest extends TestCase
 
       // ステータスコード200（OK）であることを検証
       $response->assertOk();
-      // 返却されるビューが期待通り（user.masters.fish-names.edit-fish-name）であることを検証
-      $response->assertViewIs('user.masters.fish-names.edit-fish-name');
+      // 返却されるビューが期待通りであることを検証
+      $response->assertViewIs('user.masters.partials.fish-names.edit-fish-name');
       // ビューに渡される主要なデータ（編集対象魚名）が存在することを検証
       $response->assertViewHas('fish_name');
    }

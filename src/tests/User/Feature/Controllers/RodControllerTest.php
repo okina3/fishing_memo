@@ -155,8 +155,8 @@ class RodControllerTest extends TestCase
 
       // ステータスコード200（OK）であることを検証
       $response->assertOk();
-      // 返却されるビューが期待通り（user.masters.rods.edit-rod）であることを検証
-      $response->assertViewIs('user.masters.rods.edit-rod');
+      // 返却されるビューが期待通りであることを検証
+      $response->assertViewIs('user.masters.partials.rods.edit-rod');
       // ビューに渡される主要なデータ（選択釣り竿）が存在することを検証
       $response->assertViewHas('rod');
    }

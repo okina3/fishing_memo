@@ -155,8 +155,8 @@ class BaitControllerTest extends TestCase
 
       // ステータスコード200（OK）であることを検証
       $response->assertOk();
-      // 返却されるビューが期待通り（user.masters.baits.edit-bait）であることを検証
-      $response->assertViewIs('user.masters.baits.edit-bait');
+      // 返却されるビューが期待通りであることを検証
+      $response->assertViewIs('user.masters.partials.baits.edit-bait');
       // ビューに渡される主要なデータ（選択エサ）が存在することを検証
       $response->assertViewHas('bait');
    }
