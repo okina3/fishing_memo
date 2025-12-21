@@ -1,6 +1,6 @@
 <div class="mb-3">
    {{-- エサの入力 --}}
-   <div class="pt-2 mb-1 flex items-center border-t border-gray-300">
+   <div class="pt-2 mb-1 flex items-center gap-28 border-t border-gray-300">
       <h2 class="sub_heading-2">エサ</h2>
       {{-- エサの追加 --}}
       <x-user.ajax-add.bait-add />

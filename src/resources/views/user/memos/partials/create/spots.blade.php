@@ -1,6 +1,6 @@
 <div class="mb-3">
    {{-- 場所の入力 --}}
-   <div class="pt-2 flex items-center border-t border-gray-300">
+   <div class="pt-2 flex items-center gap-24 border-t border-gray-300">
       <h2 class="sub_heading-2">場所</h2>
       {{-- 釣り場の追加 --}}
       <x-user.ajax-add.spot-add />

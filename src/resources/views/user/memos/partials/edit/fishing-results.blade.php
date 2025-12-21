@@ -1,6 +1,6 @@
 <div class="mb-3">
    {{-- 釣果の入力 --}}
-   <div class="pt-2 flex items-center border-t border-gray-300">
+   <div class="pt-2 flex items-center gap-28 border-t border-gray-300">
       <h2 class="sub_heading-2">釣果</h2>
       {{-- 魚名の追加 --}}
       <x-user.ajax-add.fish-name-add />
