@@ -8,6 +8,7 @@ use App\Models\Hook;
 use App\Services\HookService;
 use App\Services\SessionService;
 use Closure;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -40,6 +41,30 @@ class HookController extends Controller
       } catch (Throwable $e) {
          Log::error($e);
          return back()->with(['message' => '釣り針の追加に失敗しました', 'status' => 'error']);
+      }
+   }
+
+   /**
+    * Ajaxで、釣り針を保存するメソッド。
+    * @param StoreHookRequest $request
+    * @return JsonResponse
+    * @throws Throwable
+    */
+   public function storeAjax(StoreHookRequest $request): JsonResponse
+   {
+      try {
+         $hook = HookService::createHook((string) $request->input('hook_name'));
+
+         return response()->json([
+            'id' => $hook->id,
+            'name' => $hook->name,
+         ], 201);
+      } catch (Throwable $e) {
+         Log::error($e);
+         return response()->json([
+            'message' => '釣り針の登録に失敗しました。',
+            'status' => 'error'
+         ], 500);
       }
    }
 
