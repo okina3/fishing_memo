@@ -1,9 +1,23 @@
 {{-- エサのタブ内容 --}}
 @if ($tab === 'baits')
-   {{-- タイトル --}}
-   <h2 class="sub_heading mb-1">エサ名</h2>
+   {{-- エサの登録フォーム --}}
+   <div class="mb-5">
+      <form action="{{ route('user.bait.store') }}" method="POST">
+         @csrf
+         <h2 class="sub_heading-2">エサの登録</h2>
+         <div class="flex gap-2 items-center">
+            <input class="w-60 rounded" type="text" name="bait_name" value="{{ old('bait_name') }}"
+               placeholder="例: アオイソメ">
+            <button type="submit" class="btn bg-blue-800 hover:bg-blue-700">保存</button>
+         </div>
+         {{-- エラーメッセージ（エサの登録） --}}
+         <x-input-error class="mt-2" :messages="$errors->get('bait_name')" />
+      </form>
+   </div>
+   {{-- 既存のエサ一覧 --}}
+   <h2 class="sub_heading-2 pb-1 border-b">エサ一覧</h2>
    @foreach ($baits as $bait)
-      <div class="py-3 flex justify-between items-center border-b border-slate-300">
+      <div class="py-2 flex justify-between items-center border-b border-slate-300">
          {{-- エサ名の表示 --}}
          <p class="mr-5 md:w-[70%] truncate">
             {{ $bait->name }}

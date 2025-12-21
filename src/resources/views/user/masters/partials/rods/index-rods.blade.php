@@ -1,9 +1,23 @@
 {{-- 釣り竿のタブ内容 --}}
 @if ($tab === 'rods')
-   {{-- タイトル --}}
-   <h2 class="sub_heading mb-1">釣り竿</h2>
+   {{-- 釣り竿の登録フォーム --}}
+   <div class="mb-5">
+      <form action="{{ route('user.rod.store') }}" method="POST">
+         @csrf
+         <h2 class="sub_heading-2">釣り竿の登録</h2>
+         <div class="flex gap-2 items-center">
+            <input class="w-60 rounded" type="text" name="rod_name" value="{{ old('rod_name') }}"
+               placeholder="例: D社 サンプルロッド 12尺">
+            <button class="btn bg-blue-800 hover:bg-blue-700" type="submit">保存</button>
+         </div>
+         {{-- エラーメッセージ（釣り竿の登録） --}}
+         <x-input-error class="mt-2" :messages="$errors->get('rod_name')" />
+      </form>
+   </div>
+   {{-- 既存の釣り竿一覧 --}}
+   <h2 class="sub_heading-2 pb-1 border-b">釣り竿一覧</h2>
    @foreach ($rods as $rod)
-      <div class="py-3 flex justify-between items-center border-b border-slate-300">
+      <div class="py-2 flex justify-between items-center border-b border-slate-300">
          {{-- 釣り竿名の表示 --}}
          <p class="mr-5 md:w-[70%] truncate">
             {{ $rod->name }}

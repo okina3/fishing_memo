@@ -6,21 +6,19 @@
          <div class="p-3 h-[85vh] overflow-y-scroll overscroll-none bg-white">
             {{-- フラッシュメッセージ --}}
             <x-common.flash-message status="session('status')" />
-            {{-- 新規登録フォーム --}}
-            @include('user.masters.partials.index.create-forms')
             {{-- タブ表示と検索エリア --}}
             @include('user.masters.partials.index.tab-search')
             {{-- 選択された各タブの内容表示エリア --}}
             {{-- 釣り場の表示 --}}
-            @include('user.masters.spots.index-spots')
+            @include('user.masters.partials.spots.index-spots')
             {{-- 釣り竿の表示 --}}
-            @include('user.masters.rods.index-rods')
+            @include('user.masters.partials.rods.index-rods')
             {{-- 釣り針の表示 --}}
-            @include('user.masters.hooks.index-hooks')
+            @include('user.masters.partials.hooks.index-hooks')
             {{-- エサの表示 --}}
-            @include('user.masters.baits.index-baits')
+            @include('user.masters.partials.baits.index-baits')
             {{-- 魚名の表示 --}}
-            @include('user.masters.fish-names.index-fish-names')
+            @include('user.masters.partials.fish-names.index-fish-names')
          </div>
       </section>
    </div>
