@@ -9,7 +9,7 @@
       </button>
    </div>
    {{-- メモ一覧 --}}
-   <div class="p-2 h-[85vh] overflow-y-scroll overscroll-none bg-white">
+   <div class="p-2 bg-white">
       @foreach ($all_memos as $memo)
          <div class="mb-3 p-2 border border-gray-400 rounded-lg shadow">
             {{-- 共有中のメモの目印 --}}
