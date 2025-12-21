@@ -1,6 +1,10 @@
 <div class="mb-3">
    {{-- 釣り具の入力 --}}
-   <h2 class="sub_heading">釣り具</h2>
+   <div class="pt-2 flex items-center border-t border-gray-300">
+      <h2 class="sub_heading-2">釣り具</h2>
+      {{-- 釣り竿の追加 --}}
+      <x-user.ajax-add.rod-add />
+   </div>
 
    @php
       // 初期表示行数（最低1、最大2）
@@ -35,7 +39,8 @@
             {{-- 釣り竿選択 --}}
             <div>
                <label class="block text-sm text-gray-700">釣り竿</label>
-               <select name="rod_areas[{{ $i }}][rod_id]" class="w-60 rounded">
+               <select name="rod_areas[{{ $i }}][rod_id]" class="w-60 rounded"
+                  @if ($i === 0) id="rod-select" @endif>
                   <option value="">竿を選択してください</option>
                   @foreach ($all_rods as $rod)
                      <option value="{{ $rod->id }}" @selected(($entry['rod_id'] ?? '') == $rod->id)>{{ $rod->name }}</option>
