@@ -34,8 +34,7 @@
    </div>
 </div>
 
-{{-- 固有の JavaScript の読み込み --}}
-{{-- ajax-fish-name-add.js: 魚名を追加ボタンの AJAX 処理と UI 表示 --}}
+{{-- JavaScript の読み込み（AJAX 処理） --}}
 @unless (app()->environment('testing'))
-   @vite(['resources/js/user/memos/ajax-fish-name-add.js'])
+   @vite(['resources/js/user/ajax/ajax-fish-name-add.js'])
 @endunless

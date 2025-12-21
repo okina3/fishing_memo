@@ -34,8 +34,7 @@
    </div>
 </div>
 
-{{-- 固有の JavaScript の読み込み --}}
-{{-- ajax-spot-add.js: 釣り場を追加ボタンの AJAX 処理と UI 表示 --}}
+{{-- JavaScript の読み込み（AJAX 処理） --}}
 @unless (app()->environment('testing'))
-   @vite(['resources/js/user/memos/ajax-spot-add.js'])
+   @vite(['resources/js/user/ajax/ajax-spot-add.js'])
 @endunless
