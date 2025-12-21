@@ -1,15 +1,15 @@
 {{-- ブラウザの表示 --}}
 <a data-micromodal-trigger="modal-add-bait" href='javascript:'
-   class="btn-2 btn-bk bg-yellow-500 hover:bg-yellow-400">＋エサを追加
+   class="btn-2 btn-bk bg-yellow-500 hover:bg-yellow-400">＋エサを登録
 </a>
 
-{{-- エサ追加モーダルウィンドウ --}}
+{{-- エサ登録モーダルウィンドウ --}}
 <div class="modal micromodal-slide" id="modal-add-bait" aria-hidden="true">
    <div class="modal__overlay" tabindex="-1" data-micromodal-close>
       <div class="modal__container md:p-7" role="dialog" aria-modal="true" aria-labelledby="modal-add-bait-title">
          <header class="modal__header">
             {{-- モーダルウィンドウでのタイトル --}}
-            <h2 class="modal__title" id="modal-add-bait-title">エサを追加</h2>
+            <h2 class="modal__title" id="modal-add-bait-title">エサを登録</h2>
             {{-- 閉じるボタン --}}
             <button type="button" class="modal__close" aria-label="Close modal" data-micromodal-close></button>
          </header>
@@ -21,10 +21,11 @@
                      value="{{ old('bait_name') }}" placeholder="例:アオイソメ">
                   <button type="button" id="add_bait_btn" data-url="{{ route('user.bait.store.ajax') }}"
                      class="btn bg-blue-800 hover:bg-blue-700">
-                     追加
+                     登録
                   </button>
                </div>
-               {{-- エラーメッセージ（エサを追加） --}}
+               <p class="mt-5 text-sm">＊登録すると選択エリアから選択可能になります。</p>
+               {{-- エラーメッセージ（エサを登録） --}}
                <x-input-error class="mt-2" :messages="$errors->get('bait_name')" />
                {{-- AJAX 用メッセージ表示領域 --}}
                <div id="bait_message" class="mt-2 text-sm" aria-live="polite"></div>
