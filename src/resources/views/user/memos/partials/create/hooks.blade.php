@@ -1,6 +1,10 @@
 <div class="mb-3">
    {{-- 仕掛けの入力 --}}
-   <h2 class="sub_heading">仕掛け</h2>
+   <div class="pt-2 flex items-center border-t border-gray-300">
+      <h2 class="sub_heading-2">仕掛け</h2>
+      {{-- 釣り針の追加 --}}
+      <x-user.ajax-add.hook-add />
+   </div>
 
    @php
       // 初期表示行数（最低1、最大5）
@@ -20,8 +24,9 @@
          <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10 hook-area-row">
             {{-- 釣り針選択 --}}
             <div>
-               <label class="block text-sm text-gray-700">釣り針<span class="text-red-600">（必須）</span></label>
-               <select name="hook_areas[{{ $i }}][hook_id]" class="w-60 rounded">
+               <label class="block text-sm text-gray-700">釣り針</label>
+               <select name="hook_areas[{{ $i }}][hook_id]" class="w-60 rounded"
+                  @if ($i === 0) id="hook-select" @endif>
                   <option value="">針を選択してください</option>
                   @foreach ($all_hooks as $hook)
                      <option value="{{ $hook->id }}" @selected(($entry['hook_id'] ?? '') == $hook->id)>{{ $hook->name }}</option>
