@@ -1,7 +1,7 @@
 {{-- メモ一覧の表示エリア --}}
 <section class="text-gray-600 border border-gray-500 rounded-lg overflow-hidden">
    {{-- タイトル --}}
-   <div class="heading_bg py-1.5 flex justify-between items-center">
+   <div class="heading_bg !py-1.5 flex justify-between items-center">
       <h1 class="heading">メモ一覧</h1>
       {{-- メモ新規作成ボタン --}}
       <button class="btn btn-bk bg-yellow-500 hover:bg-yellow-400" onclick="location.href='{{ route('user.create') }}'">
@@ -11,7 +11,7 @@
    {{-- メモ一覧 --}}
    <div class="p-2 h-[85vh] overflow-y-scroll overscroll-none bg-white">
       @foreach ($all_memos as $memo)
-         <div class="mb-5 p-2 border border-gray-400 rounded-lg shadow">
+         <div class="mb-3 p-2 border border-gray-400 rounded-lg shadow">
             {{-- 共有中のメモの目印 --}}
             @if ($memo->status)
                <div class="mark_bg">
@@ -20,7 +20,7 @@
             @endif
             <div class="mb-2">
                {{-- メモの釣行日 --}}
-               <p class="sub_heading mb-1 truncate">
+               <p class="sub_heading truncate">
                   {{ optional(optional($memo)->fishing_date)->format('Y-m-d') ?? '-' }}
                </p>
                {{-- メモの備考 --}}

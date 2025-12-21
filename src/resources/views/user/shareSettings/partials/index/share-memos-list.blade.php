@@ -5,7 +5,7 @@
    {{-- 共有中のメモ一覧 --}}
    <div class="p-2 h-[60vh] md:h-[85vh] overflow-y-scroll overscroll-none bg-white">
       @foreach ($shared_memos as $shared_memo)
-         <div class="mb-5 p-2 border border-gray-400 rounded-lg">
+         <div class="mb-3 p-2 border border-gray-400 rounded-lg">
             {{-- 共有メモの情報エリア --}}
             <div class="mb-2">
                {{-- 共有中のメモのユーザーの名前 --}}
@@ -16,7 +16,7 @@
                   <span class="ml-1">さん のメモ</span>
                </div>
                {{-- メモの釣行日 --}}
-               <p class="sub_heading mb-1 truncate">
+               <p class="sub_heading truncate">
                   {{ optional(optional($shared_memo)->fishing_date)->format('Y-m-d') ?? '-' }}
                </p>
                {{-- メモの備考 --}}
