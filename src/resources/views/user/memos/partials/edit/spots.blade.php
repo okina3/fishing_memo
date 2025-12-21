@@ -1,6 +1,10 @@
 <div class="mb-3">
    {{-- 場所の入力 --}}
-   <h2 class="sub_heading">場所</h2>
+   <div class="pt-2 flex items-center border-t border-gray-300">
+      <h2 class="sub_heading-2">場所</h2>
+      {{-- 釣り場の追加 --}}
+      <x-user.ajax-add.spot-add />
+   </div>
 
    @php
       // 初期表示行数（最低1、最大2）
@@ -40,8 +44,9 @@
          <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10 spot-area-row">
             {{-- 釣り場選択 --}}
             <div>
-               <label class="block text-sm text-gray-700">釣り場<span class="text-red-600">（必須）</span></label>
-               <select class="w-60 rounded" name="spot_areas[{{ $i }}][spot_id]">
+               <label class="block text-sm text-gray-700">釣り場</label>
+               <select name="spot_areas[{{ $i }}][spot_id]" class="w-60 rounded"
+                  @if ($i === 0) id="fishing_spot_select" @endif>
                   <option value="">場所を選択してください</option>
                   @foreach ($all_spots as $spot)
                      <option value="{{ $spot->id }}" @selected(($entry['spot_id'] ?? '') == $spot->id)>{{ $spot->name }}</option>
@@ -115,5 +120,5 @@
 
 {{-- 固有の JavaScript の読み込み --}}
 @unless (app()->environment('testing'))
-   @vite(['resources/js/user/memos/spot-area-add.js'])
+   @vite(['resources/js/user/areas/spot-area-add.js'])
 @endunless

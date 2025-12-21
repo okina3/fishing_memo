@@ -34,8 +34,7 @@
    </div>
 </div>
 
-{{-- 固有の JavaScript の読み込み --}}
-{{-- ajax-rod-add.js: 釣り竿を追加ボタンの AJAX 処理と UI 表示 --}}
+{{-- JavaScript の読み込み（AJAX 処理） --}}
 @unless (app()->environment('testing'))
-   @vite(['resources/js/user/memos/ajax-rod-add.js'])
+   @vite(['resources/js/user/ajax/ajax-rod-add.js'])
 @endunless

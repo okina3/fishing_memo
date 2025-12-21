@@ -1,6 +1,10 @@
 <div class="mb-3">
    {{-- 釣果の入力 --}}
-   <h2 class="sub_heading">釣果</h2>
+   <div class="pt-2 flex items-center border-t border-gray-300">
+      <h2 class="sub_heading-2">釣果</h2>
+      {{-- 魚名の追加 --}}
+      <x-user.ajax-add.fish-name-add />
+   </div>
 
    @php
       // 初期表示行数（最低1、最大5）
@@ -35,7 +39,8 @@
             {{-- 魚名の選択 --}}
             <div>
                <label class="block text-sm font-semibold text-gray-700">魚名</label>
-               <select class="w-60 rounded" name="fishing_results[{{ $i }}][fish_name_id]">
+               <select name="fishing_results[{{ $i }}][fish_name_id]" class="w-60 rounded"
+                  @if ($i === 0) id="fish-name-select" @endif>
                   <option value="">魚名を選択してください</option>
                   @foreach ($all_fish_names as $fish)
                      <option value="{{ $fish->id }}" @selected(($entry['fish_name_id'] ?? '') == $fish->id)>{{ $fish->name }}
@@ -88,5 +93,5 @@
 {{-- 固有の JavaScript の読み込み --}}
 {{-- fishing-result-add.js: 釣果入力エリアの追加/削除などの UI 制御 --}}
 @unless (app()->environment('testing'))
-   @vite(['resources/js/user/memos/fishing-result-add.js'])
+   @vite(['resources/js/user/areas/fishing-result-add.js'])
 @endunless

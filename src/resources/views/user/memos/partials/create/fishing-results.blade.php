@@ -78,5 +78,5 @@
 {{-- 固有の JavaScript の読み込み --}}
 {{-- fishing-result-add.js: 釣果入力エリアの追加/削除などの UI 制御 --}}
 @unless (app()->environment('testing'))
-   @vite(['resources/js/user/memos/fishing-result-add.js'])
+   @vite(['resources/js/user/areas/fishing-result-add.js'])
 @endunless

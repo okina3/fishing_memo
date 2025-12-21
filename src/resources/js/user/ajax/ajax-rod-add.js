@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
          if (res.status === 422) {
             const data = await res.json().catch(() => ({}));
             const serverMsg = data?.errors?.rod_name?.[0] ?? data?.message;
+            // 通常のバリデーションではじかれた場合のエラーメッセージ（保険）。
             showMessage(serverMsg ?? '入力に誤りがあります', 'error');
             return;
          }
@@ -84,13 +85,16 @@ document.addEventListener('DOMContentLoaded', () => {
          try {
             const otherData = await res.json().catch(() => ({}));
             const otherMsg = otherData?.errors?.rod_name?.[0] ?? otherData?.message;
+            // 通常のバリデーションではじかれた場合のエラーメッセージ（保険）。
             showMessage(otherMsg ?? '追加に失敗しました。時間をおいて再試行してください。', 'error');
          } catch (err) {
+            // 通常のバリデーションではじかれた場合のエラーメッセージ（保険）。
             showMessage('追加に失敗しました。時間をおいて再試行してください。', 'error');
          }
 
       } catch (e) {
          console.error(e);
+         // 通常のバリデーションではじかれた場合のエラーメッセージ（保険）。
          showMessage('通信エラーが発生しました', 'error');
       } finally {
          addBtn.disabled = false;
@@ -100,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
    // 追加ボタンにクリックイベントリスナーを追加
    addBtn.addEventListener('click', () => {
+      // メッセージをクリアし、入力値をトリムしてサーバーへ送信
       clearMessage();
       const newRod = input.value.trim();
       if (!newRod) {
