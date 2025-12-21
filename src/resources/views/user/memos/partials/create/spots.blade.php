@@ -101,5 +101,5 @@
 
 {{-- 固有の JavaScript の読み込み --}}
 @unless (app()->environment('testing'))
-   @vite(['resources/js/user/memos/spot-area-add.js'])
+   @vite(['resources/js/user/areas/spot-area-add.js'])
 @endunless

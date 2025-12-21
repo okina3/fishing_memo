@@ -105,5 +105,5 @@
 
 {{-- 固有の JavaScript の読み込み --}}
 @unless (app()->environment('testing'))
-   @vite(['resources/js/user/memos/hook-area-add.js'])
+   @vite(['resources/js/user/areas/hook-area-add.js'])
 @endunless

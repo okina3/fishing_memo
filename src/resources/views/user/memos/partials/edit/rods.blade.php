@@ -75,5 +75,5 @@
 
 {{-- 固有の JavaScript の読み込み --}}
 @unless (app()->environment('testing'))
-   @vite(['resources/js/user/memos/rod-area-add.js'])
+   @vite(['resources/js/user/areas/rod-area-add.js'])
 @endunless

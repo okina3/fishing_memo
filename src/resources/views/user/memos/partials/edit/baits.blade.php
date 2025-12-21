@@ -42,5 +42,5 @@
 {{-- 固有の JavaScript の読み込み --}}
 {{-- bait-area-add.js: エサ入力エリアの追加/削除などの UI 制御 --}}
 @unless (app()->environment('testing'))
-   @vite(['resources/js/user/memos/bait-area-add.js'])
+   @vite(['resources/js/user/areas/bait-area-add.js'])
 @endunless
