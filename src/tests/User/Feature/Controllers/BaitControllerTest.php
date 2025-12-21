@@ -82,6 +82,68 @@ class BaitControllerTest extends TestCase
       ]);
    }
 
+   // エサを保存するテスト（AJAX想定のJSONレスポンス）
+   public function testStoreAjaxBaitController()
+   {
+      // リクエストデータを作成
+      $payload = [
+         'bait_name' => 'テストエサ',
+      ];
+
+      // エサを保存するの為に、リクエスト送信
+      $response = $this->post(route('user.bait.store.ajax'), $payload);
+
+      // ステータスコード201 が返ることを検証
+      $response->assertStatus(201);
+      // JSONに、id とname キーが含まれる構造であることを検証
+      $response->assertJsonStructure(['id', 'name']);
+      // name が送信したエサと一致することを検証
+      $response->assertJson(['name' => 'テストエサ']);
+
+      // エサが作成されていることを検証
+      $this->assertDatabaseHas('baits', [
+         'user_id' => $this->user->id,
+         'name' => 'テストエサ',
+      ]);
+   }
+
+   // エサを保存する時のエラーハンドリングをテスト（AJAX想定のJSONレスポンス）
+   #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
+   #[\PHPUnit\Framework\Attributes\PreserveGlobalState(false)]
+   public function testErrorStoreAjaxBaitController()
+   {
+      // リクエストデータを作成
+      $payload = [
+         'bait_name' => '失敗するエサ',
+      ];
+
+      // BaitService::createBait が例外を投げるようにエイリアスモック（checkUserBait は通過）
+      $baitServiceMock = Mockery::mock('alias:App\\Services\\BaitService');
+      $baitServiceMock->shouldReceive('checkUserBait')->andReturnNull();
+      $baitServiceMock->shouldReceive('createBait')
+         ->once()->andThrow(new Exception('DBエラー'));
+
+      // Log::errorメソッドが呼び出されるときに、例外がログに記録されることを確認
+      Log::shouldReceive('error')->once()->withAnyArgs();
+
+      // エサを保存するの為に、リクエスト送信
+      $response = $this->post(route('user.bait.store.ajax'), $payload);
+
+      // ステータスコード500 が返ることを検証
+      $response->assertStatus(500);
+      // エラーがフラッシュされていることを検証
+      $response->assertJson([
+         'message' => 'エサの登録に失敗しました。',
+         'status' => 'error',
+      ]);
+
+      // レコードが保存されていないことを検証
+      $this->assertDatabaseMissing('baits', [
+         'user_id' => $this->user->id,
+         'name' => '失敗するエサ',
+      ]);
+   }
+
    // エサの編集画面が正しく表示されることをテスト
    public function testEditBaitController()
    {

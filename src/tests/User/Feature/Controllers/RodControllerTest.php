@@ -82,6 +82,68 @@ class RodControllerTest extends TestCase
       ]);
    }
 
+   // 釣り竿を保存するテスト（AJAX想定のJSONレスポンス）
+   public function testStoreAjaxRodController()
+   {
+      // リクエストデータを作成
+      $payload = [
+         'rod_name' => 'テスト竿',
+      ];
+
+      // 釣り竿を保存するの為に、リクエスト送信
+      $response = $this->post(route('user.rod.store.ajax'), $payload);
+
+      // ステータスコード201 が返ることを検証
+      $response->assertStatus(201);
+      // JSONに、id とname キーが含まれる構造であることを検証
+      $response->assertJsonStructure(['id', 'name']);
+      // name が送信した釣り竿名と一致することを検証
+      $response->assertJson(['name' => 'テスト竿']);
+
+      // 釣り竿が作成されていることを検証
+      $this->assertDatabaseHas('rods', [
+         'user_id' => $this->user->id,
+         'name' => 'テスト竿',
+      ]);
+   }
+
+   // 釣り竿を保存する時のエラーハンドリングをテスト（AJAX想定のJSONレスポンス）
+   #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
+   #[\PHPUnit\Framework\Attributes\PreserveGlobalState(false)]
+   public function testErrorStoreAjaxRodController()
+   {
+      // リクエストデータを作成
+      $payload = [
+         'rod_name' => '失敗竿',
+      ];
+
+      // RodService::createRod が例外を投げるようにエイリアスモック（checkUserRod は通過）
+      $rodServiceMock = Mockery::mock('alias:App\\Services\\RodService');
+      $rodServiceMock->shouldReceive('checkUserRod')->andReturnNull();
+      $rodServiceMock->shouldReceive('createRod')
+         ->once()->andThrow(new Exception('DBエラー'));
+
+      // Log::errorメソッドが呼び出されるときに、例外がログに記録されることを確認
+      Log::shouldReceive('error')->once()->withAnyArgs();
+
+      // 釣り竿を保存するの為に、リクエスト送信
+      $response = $this->post(route('user.rod.store.ajax'), $payload);
+
+      // ステータスコード500 が返ることを検証
+      $response->assertStatus(500);
+      // エラーがJSONで返却されていることを検証
+      $response->assertJson([
+         'message' => '釣り竿の登録に失敗しました。',
+         'status' => 'error',
+      ]);
+
+      // レコードが保存されていないことを検証
+      $this->assertDatabaseMissing('rods', [
+         'user_id' => $this->user->id,
+         'name' => '失敗竿',
+      ]);
+   }
+
    // 釣り竿の編集画面が正しく表示されることをテスト
    public function testEditRodController()
    {
