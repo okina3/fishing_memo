@@ -82,6 +82,68 @@ class HookControllerTest extends TestCase
       ]);
    }
 
+   // 釣り針を保存するテスト（AJAX想定のJSONレスポンス）
+   public function testStoreAjaxHookController()
+   {
+      // リクエストデータを作成
+      $payload = [
+         'hook_name' => 'テスト釣り針',
+      ];
+
+      // 釣り針を保存するの為に、リクエスト送信
+      $response = $this->post(route('user.hook.store.ajax'), $payload);
+
+      // ステータスコード201 が返ることを検証
+      $response->assertStatus(201);
+      // JSONに、id とname キーが含まれる構造であることを検証
+      $response->assertJsonStructure(['id', 'name']);
+      // name が送信した釣り針と一致することを検証
+      $response->assertJson(['name' => 'テスト釣り針']);
+
+      // 釣り針が作成されていることを検証
+      $this->assertDatabaseHas('hooks', [
+         'user_id' => $this->user->id,
+         'name' => 'テスト釣り針',
+      ]);
+   }
+
+   // 釣り針を保存する時のエラーハンドリングをテスト（AJAX想定のJSONレスポンス）
+   #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
+   #[\PHPUnit\Framework\Attributes\PreserveGlobalState(false)]
+   public function testErrorStoreAjaxHookController()
+   {
+      // リクエストデータを作成
+      $payload = [
+         'hook_name' => '失敗釣り針',
+      ];
+
+      // HookService::createHook が例外を投げるようにエイリアスモック（checkUserHook は通過）
+      $hookServiceMock = Mockery::mock('alias:App\\Services\\HookService');
+      $hookServiceMock->shouldReceive('checkUserHook')->andReturnNull();
+      $hookServiceMock->shouldReceive('createHook')
+         ->once()->andThrow(new Exception('DBエラー'));
+
+      // Log::errorメソッドが呼び出されるときに、例外がログに記録されることを確認
+      Log::shouldReceive('error')->once()->withAnyArgs();
+
+      // 釣り針を保存するの為に、リクエスト送信
+      $response = $this->post(route('user.hook.store.ajax'), $payload);
+
+      // ステータスコード500 が返ることを検証
+      $response->assertStatus(500);
+      // エラーがJSONで返却されていることを検証
+      $response->assertJson([
+         'message' => '釣り針の登録に失敗しました。',
+         'status' => 'error',
+      ]);
+
+      // レコードが保存されていないことを検証
+      $this->assertDatabaseMissing('hooks', [
+         'user_id' => $this->user->id,
+         'name' => '失敗釣り針',
+      ]);
+   }
+
    // 釣り針の編集画面が正しく表示されることをテスト
    public function testEditHookController()
    {

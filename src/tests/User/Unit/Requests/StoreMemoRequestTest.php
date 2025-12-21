@@ -96,7 +96,7 @@ class StoreMemoRequestTest extends TestCase
          'wind_dir.in' => '風向の値が不正です。',
          // 釣り場
          'spot_areas.array' => '釣り場データの形式が不正です。',
-         'spot_areas.*.spot_id.required' => '釣り場を選択してください。また、マスターズ管理から釣り場を登録をしてください。',
+         'spot_areas.*.spot_id.required' => '釣り場を選択してください。',
          'spot_areas.*.spot_id.integer' => '釣り場は整数で指定してください。',
          'spot_areas.*.spot_id.exists' => '選択された釣り場は存在しません。',
          'spot_areas.*.river_flow.in' => '川の流れの値が不正です。',
@@ -109,7 +109,7 @@ class StoreMemoRequestTest extends TestCase
          'spot_areas.*.water_temp.max' => '水温は 99 以下で指定してください。',
          // 釣り竿
          'rod_areas.array' => '釣り竿データの形式が不正です。',
-         'rod_areas.*.rod_id.required' => '釣り竿を選択してください。また、マスターズ管理から釣り竿を登録をしてください。',
+         'rod_areas.*.rod_id.required' => '釣り竿を選択してください。',
          'rod_areas.*.rod_id.integer' => '釣り竿は整数で指定してください。',
          'rod_areas.*.rod_id.exists' => '選択された釣り竿は存在しません。',
          'rod_areas.*.main_line.numeric' => '道糸は数値で指定してください。',
@@ -117,7 +117,7 @@ class StoreMemoRequestTest extends TestCase
          'rod_areas.*.main_line.max' => '道糸は 99.9 以下で指定してください。',
          // 釣り針
          'hook_areas.array' => '仕掛けデータの形式が不正です。',
-         'hook_areas.*.hook_id.required' => '釣り針を選択してください。また、マスターズ管理から釣り針を登録をしてください。',
+         'hook_areas.*.hook_id.required' => '釣り針を選択してください。',
          'hook_areas.*.hook_id.integer' => '釣り針は整数で指定してください。',
          'hook_areas.*.hook_id.exists' => '選択された釣り針は存在しません。',
          'hook_areas.*.leader_size.numeric' => 'ハリス（太さ）は数値で指定してください。',

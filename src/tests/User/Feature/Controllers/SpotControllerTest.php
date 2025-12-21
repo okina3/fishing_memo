@@ -82,6 +82,68 @@ class SpotControllerTest extends TestCase
       ]);
    }
 
+   // 釣り場を保存するテスト（AJAX想定のJSONレスポンス）
+   public function testStoreAjaxSpotController()
+   {
+      // リクエストデータを作成
+      $payload = [
+         'spot_name' => 'テスト釣り場',
+      ];
+
+      // 釣り場を保存するの為に、リクエスト送信
+      $response = $this->post(route('user.spot.store.ajax'), $payload);
+
+      // ステータスコード201 が返ることを検証
+      $response->assertStatus(201);
+      // JSONに、id とname キーが含まれる構造であることを検証
+      $response->assertJsonStructure(['id', 'name']);
+      // name が送信した釣り場と一致することを検証
+      $response->assertJson(['name' => 'テスト釣り場']);
+
+      // 釣り場が作成されていることを検証
+      $this->assertDatabaseHas('spots', [
+         'user_id' => $this->user->id,
+         'name' => 'テスト釣り場',
+      ]);
+   }
+
+   // 釣り場を保存する時のエラーハンドリングをテスト（AJAX想定のJSONレスポンス）
+   #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
+   #[\PHPUnit\Framework\Attributes\PreserveGlobalState(false)]
+   public function testErrorStoreAjaxSpotController()
+   {
+      // リクエストデータを作成
+      $payload = [
+         'spot_name' => '失敗する釣り場',
+      ];
+
+      // SpotService::createSpot が例外を投げるようにエイリアスモック（checkUserSpot は通過）
+      $spotServiceMock = Mockery::mock('alias:App\\Services\\SpotService');
+      $spotServiceMock->shouldReceive('checkUserSpot')->andReturnNull();
+      $spotServiceMock->shouldReceive('createSpot')
+         ->once()->andThrow(new Exception('DBエラー'));
+
+      // Log::errorメソッドが呼び出されるときに、例外がログに記録されることを確認
+      Log::shouldReceive('error')->once()->withAnyArgs();
+
+      // 釣り場を保存するの為に、リクエスト送信
+      $response = $this->post(route('user.spot.store.ajax'), $payload);
+
+      // ステータスコード500 が返ることを検証
+      $response->assertStatus(500);
+      // エラーがフラッシュされていることを検証
+      $response->assertJson([
+         'message' => '釣り場の登録に失敗しました。',
+         'status' => 'error',
+      ]);
+
+      // レコードが保存されていないことを検証
+      $this->assertDatabaseMissing('spots', [
+         'user_id' => $this->user->id,
+         'name' => '失敗する釣り場',
+      ]);
+   }
+
    // 釣り場の編集画面が正しく表示されることをテスト
    public function testEditSpotController()
    {

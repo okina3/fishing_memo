@@ -82,6 +82,68 @@ class FishNameControllerTest extends TestCase
       ]);
    }
 
+   // 魚名を保存するテスト（AJAX想定のJSONレスポンス）
+   public function testStoreAjaxFishNameController()
+   {
+      // リクエストデータを作成
+      $payload = [
+         'fish_name' => 'テスト魚名',
+      ];
+
+      // 魚名を保存するの為に、リクエスト送信
+      $response = $this->post(route('user.fish-name.store.ajax'), $payload);
+
+      // ステータスコード201 が返ることを検証
+      $response->assertStatus(201);
+      // JSONに、id とname キーが含まれる構造であることを検証
+      $response->assertJsonStructure(['id', 'name']);
+      // name が送信した魚名と一致することを検証
+      $response->assertJson(['name' => 'テスト魚名']);
+
+      // 魚名が作成されていることを検証
+      $this->assertDatabaseHas('fish_names', [
+         'user_id' => $this->user->id,
+         'name' => 'テスト魚名',
+      ]);
+   }
+
+   // 魚名を保存する時のエラーハンドリングをテスト（AJAX想定のJSONレスポンス）
+   #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
+   #[\PHPUnit\Framework\Attributes\PreserveGlobalState(false)]
+   public function testErrorStoreAjaxFishNameController()
+   {
+      // リクエストデータを作成
+      $payload = [
+         'fish_name' => '失敗する魚名',
+      ];
+
+      // FishNameService::createFishName が例外を投げるようにエイリアスモック（checkUserFishName は通過）
+      $serviceMock = Mockery::mock('alias:App\\Services\\FishNameService');
+      $serviceMock->shouldReceive('checkUserFishName')->andReturnNull();
+      $serviceMock->shouldReceive('createFishName')
+         ->once()->andThrow(new Exception('DBエラー'));
+
+      // Log::errorメソッドが呼び出されるときに、例外がログに記録されることを確認
+      Log::shouldReceive('error')->once()->withAnyArgs();
+
+      // 魚名を保存するの為に、リクエスト送信
+      $response = $this->post(route('user.fish-name.store.ajax'), $payload);
+
+      // ステータスコード500 が返ることを検証
+      $response->assertStatus(500);
+      // エラーがフラッシュされていることを検証
+      $response->assertJson([
+         'message' => '魚名の登録に失敗しました。',
+         'status' => 'error',
+      ]);
+
+      // レコードが保存されていないことを検証
+      $this->assertDatabaseMissing('fish_names', [
+         'user_id' => $this->user->id,
+         'name' => '失敗する魚名',
+      ]);
+   }
+
    // 魚名の編集画面が正しく表示されることをテスト
    public function testEditFishNameController()
    {
