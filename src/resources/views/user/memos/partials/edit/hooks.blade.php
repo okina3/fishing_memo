@@ -38,7 +38,7 @@
          <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10 hook-area-row">
             {{-- 釣り針選択 --}}
             <div>
-               <label class="block text-sm text-gray-700">釣り針<span class="text-red-600">（必須）</span></label>
+               <label class="block text-sm text-gray-700">釣り針</label>
                <select name="hook_areas[{{ $i }}][hook_id]" class="w-60 rounded">
                   <option value="">針を選択してください</option>
                   @foreach ($all_hooks as $hook)

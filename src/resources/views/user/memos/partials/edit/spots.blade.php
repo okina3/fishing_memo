@@ -40,7 +40,7 @@
          <div class="flex flex-wrap items-center gap-x-6 gap-y-1 md:gap-x-10 spot-area-row">
             {{-- 釣り場選択 --}}
             <div>
-               <label class="block text-sm text-gray-700">釣り場<span class="text-red-600">（必須）</span></label>
+               <label class="block text-sm text-gray-700">釣り場</label>
                <select class="w-60 rounded" name="spot_areas[{{ $i }}][spot_id]">
                   <option value="">場所を選択してください</option>
                   @foreach ($all_spots as $spot)

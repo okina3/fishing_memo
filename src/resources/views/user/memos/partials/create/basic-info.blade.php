@@ -1,10 +1,10 @@
 <div class="mb-4">
    {{-- 基本情報 --}}
-   <h2 class="sub_heading">基本情報</h2>
+   <h2 class="sub_heading-2">基本情報</h2>
    <div class="flex flex-row flex-wrap items-start gap-x-6 gap-y-1 md:gap-x-10">
       {{-- 釣行日 --}}
       <div>
-         <label class="block text-sm text-gray-700">釣行日<span class="text-red-600">（必須）</span></label>
+         <label class="block text-sm text-gray-700">釣行日</label>
          <input class="rounded" type="date" name="fishing_date" value="{{ old('fishing_date') }}"
             max="{{ now()->toDateString() }}" />
          {{-- エラーメッセージ（釣行日） --}}
@@ -12,7 +12,7 @@
       </div>
       {{-- 釣行時間 --}}
       <div>
-         <label class="block text-sm text-gray-700">釣行時間<span class="text-red-600">（必須）</span></label>
+         <label class="block text-sm text-gray-700">釣行時間</label>
          <div class="flex items-center w-full">
             <input class="text-center rounded" type="time" name="start_time" value="{{ old('start_time') }}"
                step="60" />
