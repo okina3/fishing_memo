@@ -1,6 +1,6 @@
 <div class="mb-3">
    {{-- 仕掛けの入力 --}}
-   <div class="pt-2 flex items-center border-t border-gray-300">
+   <div class="pt-2 flex items-center gap-20 border-t border-gray-300">
       <h2 class="sub_heading-2">仕掛け</h2>
       {{-- 釣り針の追加 --}}
       <x-user.ajax-add.hook-add />

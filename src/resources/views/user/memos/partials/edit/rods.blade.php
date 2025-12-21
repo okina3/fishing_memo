@@ -1,6 +1,6 @@
 <div class="mb-3">
    {{-- 釣り具の入力 --}}
-   <div class="pt-2 flex items-center border-t border-gray-300">
+   <div class="pt-2 flex items-center gap-20 border-t border-gray-300">
       <h2 class="sub_heading-2">釣り具</h2>
       {{-- 釣り竿の追加 --}}
       <x-user.ajax-add.rod-add />
