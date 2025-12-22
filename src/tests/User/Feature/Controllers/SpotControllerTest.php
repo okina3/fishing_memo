@@ -59,7 +59,7 @@ class SpotControllerTest extends TestCase
       $payload = ['spot_name' => '失敗スポット'];
 
       // SpotService::createSpot が例外を投げるようにエイリアスモック（checkUserSpot は通過）
-      $serviceMock = Mockery::mock('alias:App\\Services\\SpotService');
+      $serviceMock = Mockery::mock('alias:App\\Services\\User\\SpotService');
       $serviceMock->shouldReceive('checkUserSpot')->andReturnNull();
       $serviceMock->shouldReceive('createSpot')
          ->once()->andThrow(new Exception('DBエラー'));
@@ -118,7 +118,7 @@ class SpotControllerTest extends TestCase
       ];
 
       // SpotService::createSpot が例外を投げるようにエイリアスモック（checkUserSpot は通過）
-      $spotServiceMock = Mockery::mock('alias:App\\Services\\SpotService');
+      $spotServiceMock = Mockery::mock('alias:App\\Services\\User\\SpotService');
       $spotServiceMock->shouldReceive('checkUserSpot')->andReturnNull();
       $spotServiceMock->shouldReceive('createSpot')
          ->once()->andThrow(new Exception('DBエラー'));
@@ -202,7 +202,7 @@ class SpotControllerTest extends TestCase
       ];
 
       // SpotService::updateSpot が例外を投げるようにエイリアスモック（checkUserSpot は通過）
-      $spotServiceMock = Mockery::mock('alias:App\\Services\\SpotService');
+      $spotServiceMock = Mockery::mock('alias:App\\Services\\User\\SpotService');
       $spotServiceMock->shouldReceive('checkUserSpot')->andReturnNull();
       $spotServiceMock->shouldReceive('updateSpot')
          ->once()->andThrow(new Exception('DBエラー'));

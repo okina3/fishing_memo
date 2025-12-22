@@ -72,7 +72,7 @@ class UsersControllerTest extends TestCase
         $user = User::factory()->create();
 
         // UserService::deleteUserShareSettingAll が例外を投げるようにエイリアスモック
-        $userServiceMock = Mockery::mock('alias:App\\Services\\UserService');
+        $userServiceMock = Mockery::mock('alias:App\\Services\\Admin\\UserService');
         $userServiceMock->shouldReceive('deleteUserShareSettingAll')
             ->once()->andThrow(new Exception('DBエラー'));
 

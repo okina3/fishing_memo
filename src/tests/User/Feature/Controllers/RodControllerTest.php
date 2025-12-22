@@ -59,7 +59,7 @@ class RodControllerTest extends TestCase
       $payload = ['rod_name' => '失敗竿'];
 
       // RodService::createRod が例外を投げるようにエイリアスモック（checkUserRod は通過）
-      $serviceMock = Mockery::mock('alias:App\\Services\\RodService');
+      $serviceMock = Mockery::mock('alias:App\\Services\\User\\RodService');
       $serviceMock->shouldReceive('checkUserRod')->andReturnNull();
       $serviceMock->shouldReceive('createRod')
          ->once()->andThrow(new Exception('DBエラー'));
@@ -118,7 +118,7 @@ class RodControllerTest extends TestCase
       ];
 
       // RodService::createRod が例外を投げるようにエイリアスモック（checkUserRod は通過）
-      $rodServiceMock = Mockery::mock('alias:App\\Services\\RodService');
+      $rodServiceMock = Mockery::mock('alias:App\\Services\\User\\RodService');
       $rodServiceMock->shouldReceive('checkUserRod')->andReturnNull();
       $rodServiceMock->shouldReceive('createRod')
          ->once()->andThrow(new Exception('DBエラー'));
@@ -202,7 +202,7 @@ class RodControllerTest extends TestCase
       ];
 
       // RodService::updateRod が例外を投げるようにエイリアスモック（checkUserRod は通過）
-      $rodServiceMock = Mockery::mock('alias:App\\Services\\RodService');
+      $rodServiceMock = Mockery::mock('alias:App\\Services\\User\\RodService');
       $rodServiceMock->shouldReceive('checkUserRod')->andReturnNull();
       $rodServiceMock->shouldReceive('updateRod')
          ->once()->andThrow(new Exception('DBエラー'));
