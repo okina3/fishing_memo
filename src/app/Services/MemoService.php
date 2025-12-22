@@ -32,7 +32,7 @@ class MemoService
      * @param int $perPage
      * @return mixed
      */
-    public static function searchMemos(?string $keyword = null, int $perPage = 10): mixed
+    public static function searchMemos(?string $keyword = null, int $perPage = 15): mixed
     {
         // 全メモ、または、検索されたメモを取得
         $memos = Memo::availableAllMemos()->searchKeyword($keyword)->paginate($perPage);
