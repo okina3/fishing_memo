@@ -3,7 +3,7 @@
       <section class="text-gray-600 border border-gray-400 rounded-lg  overflow-hidden">
          {{-- マスターズ管理ページのタイトル --}}
          <h1 class="heading heading_bg">マスターズ管理</h1>
-         <div class="p-3 h-[85vh] overflow-y-scroll overscroll-none bg-white">
+         <div class="p-3 bg-white">
             {{-- フラッシュメッセージ --}}
             <x-common.flash-message status="session('status')" />
             {{-- タブ表示と検索エリア --}}

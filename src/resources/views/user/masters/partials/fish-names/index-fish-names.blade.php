@@ -43,4 +43,10 @@
          </div>
       </div>
    @endforeach
+   {{-- ページネーション --}}
+   @if (method_exists($fishNames, 'links'))
+      <div class="mt-4">
+         {{ $fishNames->appends(request()->query())->links() }}
+      </div>
+   @endif
 @endif
