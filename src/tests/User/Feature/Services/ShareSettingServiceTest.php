@@ -6,7 +6,7 @@ use App\Http\Requests\User\ShareStartRequest;
 use App\Models\Memo;
 use App\Models\ShareSetting;
 use App\Models\User;
-use App\Services\ShareSettingService;
+use App\Services\User\ShareSettingService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

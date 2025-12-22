@@ -4,7 +4,7 @@ namespace App\Services\Admin;
 
 use App\Models\Image;
 use App\Models\User;
-use App\Services\ImageService;
+use App\Services\User\ImageService;
 use Illuminate\Support\Facades\DB;
 
 class WarningUsersService

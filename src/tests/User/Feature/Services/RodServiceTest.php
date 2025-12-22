@@ -4,7 +4,7 @@ namespace Tests\User\Feature\Services;
 
 use App\Models\Rod;
 use App\Models\User;
-use App\Services\RodService;
+use App\Services\User\RodService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;

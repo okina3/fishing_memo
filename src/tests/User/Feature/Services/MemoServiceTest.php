@@ -11,7 +11,7 @@ use App\Models\Rod;
 use App\Models\ShareSetting;
 use App\Models\Spot;
 use App\Models\User;
-use App\Services\MemoService;
+use App\Services\User\MemoService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;

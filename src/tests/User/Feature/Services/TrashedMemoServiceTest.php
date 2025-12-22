@@ -8,7 +8,7 @@ use App\Models\Image;
 use App\Models\Memo;
 use App\Models\Spot;
 use App\Models\User;
-use App\Services\TrashedMemoService;
+use App\Services\User\TrashedMemoService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\User\TestCase;
 

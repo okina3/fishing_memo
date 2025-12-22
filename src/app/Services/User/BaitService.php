@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\User;
 
 use App\Models\Bait;
 use Illuminate\Database\Eloquent\Collection;
