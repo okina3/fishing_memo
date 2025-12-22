@@ -27,16 +27,17 @@ class MastersController extends Controller
       // 表示するタブを取得
       $tab = $request->get('tab', 'spots');
       // 各マスターズデータを検索する
+      $perPage = 15;
       $spots = Spot::with('user')
-         ->searchKeyword($request->keyword)->availableAllSpots()->get();
+         ->searchKeyword($request->keyword)->availableAllSpots()->paginate($perPage);
       $rods = Rod::with('user')
-         ->searchKeyword($request->keyword)->availableAllRods()->get();
+         ->searchKeyword($request->keyword)->availableAllRods()->paginate($perPage);
       $hooks = Hook::with('user')
-         ->searchKeyword($request->keyword)->availableAllHooks()->get();
+         ->searchKeyword($request->keyword)->availableAllHooks()->paginate($perPage);
       $baits = Bait::with('user')
-         ->searchKeyword($request->keyword)->availableAllBaits()->get();
+         ->searchKeyword($request->keyword)->availableAllBaits()->paginate($perPage);
       $fishNames = FishName::with('user')
-         ->searchKeyword($request->keyword)->availableAllFishNames()->get();
+         ->searchKeyword($request->keyword)->availableAllFishNames()->paginate($perPage);
       // 検索後に入力欄がクリア
       $keyword = '';
 

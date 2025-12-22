@@ -8,6 +8,12 @@
          {{-- メモ一覧の表示エリア --}}
          @include('user.memos.partials.index.memos-list')
       </div>
+      {{-- ページネーション --}}
+      @if (method_exists($all_memos, 'links'))
+         <div class="mt-4">
+            {{ $all_memos->appends(request()->query())->links() }}
+         </div>
+      @endif
    </div>
    <script>
       'use strict'

@@ -19,8 +19,13 @@ class TrashedContactController extends Controller
      */
     public function index(SearchKeywordRequest $request): View
     {
-        // 警告したユーザーを取得する
-        $all_trashed_contacts = Contact::onlyTrashed()->availableAllContacts()->get();
+        // 全てのソフトデリートした問い合わせを取得する
+        $perPage = 15;
+        $all_trashed_contacts = Contact::onlyTrashed()
+            ->searchKeyword($request->keyword)
+            ->availableAllContacts()
+            ->paginate($perPage)
+            ->appends(request()->query());
 
         return view('admin.trashedContacts.index', compact('all_trashed_contacts'));
     }

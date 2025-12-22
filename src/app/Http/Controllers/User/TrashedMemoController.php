@@ -24,7 +24,12 @@ class TrashedMemoController extends Controller
         // ブラウザバック対策（値を削除する）
         SessionService::resetBrowserBackSession();
 
-        $all_trashed_memos = Memo::availableAllTrashedMemos()->get();
+        $perPage = 10;
+        $keyword = request()->query('keyword');
+        $all_trashed_memos = Memo::availableAllTrashedMemos()
+            ->searchKeyword($keyword)
+            ->paginate($perPage)
+            ->appends(request()->query());
 
         return view('user.trashedMemos.index', compact('all_trashed_memos'));
     }

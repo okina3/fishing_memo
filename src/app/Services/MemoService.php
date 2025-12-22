@@ -29,12 +29,13 @@ class MemoService
     /**
      * メモを一覧表示するメソッド。
      * @param string|null $keyword
+     * @param int $perPage
      * @return mixed
      */
-    public static function searchMemos(?string $keyword = null): mixed
+    public static function searchMemos(?string $keyword = null, int $perPage = 15): mixed
     {
         // 全メモ、または、検索されたメモを取得
-        $memos = Memo::availableAllMemos()->searchKeyword($keyword)->get();
+        $memos = Memo::availableAllMemos()->searchKeyword($keyword)->paginate($perPage);
         // 共有されているメモにはステータスを付与
         foreach ($memos as $memo) {
             if ($memo->shareSettings->isNotEmpty()) {

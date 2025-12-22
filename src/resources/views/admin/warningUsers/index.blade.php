@@ -7,6 +7,10 @@
       {{-- 警告されたユーザー一覧の表示エリア --}}
       @include('admin.warningUsers.partials.warning-users-list')
    </div>
+   {{-- ページネーション --}}
+   <div class="p-2 bg-white border-t border-gray-200">
+      {{ $all_warning_users->links() }}
+   </div>
    <script>
       'use strict'
 

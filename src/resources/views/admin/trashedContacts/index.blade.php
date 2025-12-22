@@ -7,6 +7,10 @@
       {{-- ユーザーからの問い合わせ一覧の表示エリア --}}
       @include('admin.trashedContacts.partials.contacts')
    </div>
+   {{-- ページネーション --}}
+   <div class="p-2 bg-white border-t border-gray-200">
+      {{ $all_trashed_contacts->links() }}
+   </div>
    <script>
       'use strict'
 

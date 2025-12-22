@@ -44,4 +44,10 @@
          </div>
       </div>
    @endforeach
+   {{-- ページネーション --}}
+   @if (method_exists($spots, 'links'))
+      <div class="mt-4">
+         {{ $spots->appends(request()->query())->links() }}
+      </div>
+   @endif
 @endif
