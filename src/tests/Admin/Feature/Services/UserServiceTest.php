@@ -5,7 +5,7 @@ namespace Tests\Admin\Feature\Services;
 use App\Models\Memo;
 use App\Models\ShareSetting;
 use App\Models\User;
-use App\Services\UserService;
+use App\Services\Admin\UserService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\User\TestCase;
 

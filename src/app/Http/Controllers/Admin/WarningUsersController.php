@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DeleteUserRequest;
 use App\Http\Requests\Admin\SearchKeywordRequest;
 use App\Models\User;
-use App\Services\WarningUsersService;
+use App\Services\Admin\WarningUsersService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;

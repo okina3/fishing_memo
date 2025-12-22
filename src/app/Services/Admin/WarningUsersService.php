@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Admin;
 
 use App\Models\Image;
 use App\Models\User;
+use App\Services\ImageService;
 use Illuminate\Support\Facades\DB;
 
 class WarningUsersService
