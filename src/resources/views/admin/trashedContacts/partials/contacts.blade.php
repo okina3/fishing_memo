@@ -3,7 +3,7 @@
    {{-- タイトル --}}
    <h1 class="heading heading_bg bg-rose-900">削除済み問い合わせ一覧</h1>
    {{-- ユーザーからの問い合わせ一覧 --}}
-   <div class="p-2 h-[73vh] overflow-y-scroll overscroll-none">
+   <div class="p-2">
       @foreach ($all_trashed_contacts as $contact)
          <div class="mb-5 p-2 md:flex justify-between items-center border border-gray-500 rounded-lg  bg-white">
             <div class="md:w-[70%] mr-5 font-semibold">

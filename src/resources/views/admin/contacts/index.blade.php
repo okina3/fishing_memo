@@ -7,4 +7,8 @@
       {{-- ユーザーからの問い合わせ一覧の表示エリア --}}
       @include('admin.contacts.partials.index.contacts-list')
    </div>
+   {{-- ページネーション --}}
+   <div class="p-2 bg-white border-t border-gray-200">
+      {{ $all_contact->links() }}
+   </div>
 </x-app-layout>

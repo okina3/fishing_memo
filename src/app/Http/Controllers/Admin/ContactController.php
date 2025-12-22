@@ -20,10 +20,14 @@ class ContactController extends Controller
     public function index(SearchKeywordRequest $request): View
     {
         // 全ての問い合わせ情報を取得する
+        $perPage = 15;
         $all_contact = Contact::with(['user' => function ($q) {
             $q->withTrashed();
         }])
-            ->searchKeyword($request->keyword)->availableAllContacts()->get();
+            ->searchKeyword($request->keyword)
+            ->availableAllContacts()
+            ->paginate($perPage)
+            ->appends(request()->query());
 
         return view('admin.contacts.index', compact('all_contact'));
     }
