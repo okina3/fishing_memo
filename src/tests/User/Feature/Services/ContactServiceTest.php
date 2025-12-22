@@ -4,7 +4,7 @@ namespace Tests\User\Feature\Services;
 
 use App\Http\Requests\User\ContactRequest;
 use App\Models\User;
-use App\Services\ContactService;
+use App\Services\User\ContactService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\User\TestCase;
 

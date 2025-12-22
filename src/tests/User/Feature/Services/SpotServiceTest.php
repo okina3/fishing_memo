@@ -4,7 +4,7 @@ namespace Tests\User\Feature\Services;
 
 use App\Models\Spot;
 use App\Models\User;
-use App\Services\SpotService;
+use App\Services\User\SpotService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;

@@ -4,7 +4,7 @@ namespace Tests\User\Feature\Services;
 
 use App\Models\FishName;
 use App\Models\User;
-use App\Services\FishNameService;
+use App\Services\User\FishNameService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;

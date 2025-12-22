@@ -59,7 +59,7 @@ class FishNameControllerTest extends TestCase
       $payload = ['fish_name' => '失敗魚名'];
 
       // FishNameService::createFishName が例外を投げるようにエイリアスモック（checkUserFishName は通過）
-      $serviceMock = Mockery::mock('alias:App\\Services\\FishNameService');
+      $serviceMock = Mockery::mock('alias:App\\Services\\User\\FishNameService');
       $serviceMock->shouldReceive('checkUserFishName')->andReturnNull();
       $serviceMock->shouldReceive('createFishName')
          ->once()->andThrow(new Exception('DBエラー'));
@@ -118,7 +118,7 @@ class FishNameControllerTest extends TestCase
       ];
 
       // FishNameService::createFishName が例外を投げるようにエイリアスモック（checkUserFishName は通過）
-      $serviceMock = Mockery::mock('alias:App\\Services\\FishNameService');
+      $serviceMock = Mockery::mock('alias:App\\Services\\User\\FishNameService');
       $serviceMock->shouldReceive('checkUserFishName')->andReturnNull();
       $serviceMock->shouldReceive('createFishName')
          ->once()->andThrow(new Exception('DBエラー'));
@@ -202,7 +202,7 @@ class FishNameControllerTest extends TestCase
       ];
 
       // FishNameService::updateFishName が例外を投げるようにエイリアスモック（checkUserFishName は通過）
-      $serviceMock = Mockery::mock('alias:App\\Services\\FishNameService');
+      $serviceMock = Mockery::mock('alias:App\\Services\\User\\FishNameService');
       $serviceMock->shouldReceive('checkUserFishName')->andReturnNull();
       $serviceMock->shouldReceive('updateFishName')
          ->once()->andThrow(new Exception('DBエラー'));

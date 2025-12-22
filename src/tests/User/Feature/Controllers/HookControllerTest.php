@@ -59,7 +59,7 @@ class HookControllerTest extends TestCase
       $payload = ['hook_name' => '失敗釣り針'];
 
       // HookService::createHook が例外を投げるようにエイリアスモック（checkUserHook は通過）
-      $serviceMock = Mockery::mock('alias:App\\Services\\HookService');
+      $serviceMock = Mockery::mock('alias:App\\Services\\User\\HookService');
       $serviceMock->shouldReceive('checkUserHook')->andReturnNull();
       $serviceMock->shouldReceive('createHook')
          ->once()->andThrow(new Exception('DBエラー'));
@@ -118,7 +118,7 @@ class HookControllerTest extends TestCase
       ];
 
       // HookService::createHook が例外を投げるようにエイリアスモック（checkUserHook は通過）
-      $hookServiceMock = Mockery::mock('alias:App\\Services\\HookService');
+      $hookServiceMock = Mockery::mock('alias:App\\Services\\User\\HookService');
       $hookServiceMock->shouldReceive('checkUserHook')->andReturnNull();
       $hookServiceMock->shouldReceive('createHook')
          ->once()->andThrow(new Exception('DBエラー'));
@@ -202,7 +202,7 @@ class HookControllerTest extends TestCase
       ];
 
       // HookService::updateHook が例外を投げるようにエイリアスモック（checkUserHook は通過）
-      $hookServiceMock = Mockery::mock('alias:App\\Services\\HookService');
+      $hookServiceMock = Mockery::mock('alias:App\\Services\\User\\HookService');
       $hookServiceMock->shouldReceive('checkUserHook')->andReturnNull();
       $hookServiceMock->shouldReceive('updateHook')
          ->once()->andThrow(new Exception('DBエラー'));

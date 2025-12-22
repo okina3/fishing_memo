@@ -4,7 +4,7 @@ namespace Tests\Admin\Feature\Services;
 
 use App\Models\Image;
 use App\Models\User;
-use App\Services\WarningUsersService;
+use App\Services\Admin\WarningUsersService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use Tests\User\TestCase;

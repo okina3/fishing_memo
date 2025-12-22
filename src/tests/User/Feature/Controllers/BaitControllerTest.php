@@ -59,7 +59,7 @@ class BaitControllerTest extends TestCase
       $payload = ['bait_name' => '失敗エサ'];
 
       // BaitService::createBait が例外を投げるようにエイリアスモック（checkUserBait は通過）
-      $serviceMock = Mockery::mock('alias:App\\Services\\BaitService');
+      $serviceMock = Mockery::mock('alias:App\\Services\\User\\BaitService');
       $serviceMock->shouldReceive('checkUserBait')->andReturnNull();
       $serviceMock->shouldReceive('createBait')
          ->once()->andThrow(new Exception('DBエラー'));
@@ -118,7 +118,7 @@ class BaitControllerTest extends TestCase
       ];
 
       // BaitService::createBait が例外を投げるようにエイリアスモック（checkUserBait は通過）
-      $baitServiceMock = Mockery::mock('alias:App\\Services\\BaitService');
+      $baitServiceMock = Mockery::mock('alias:App\\Services\\User\\BaitService');
       $baitServiceMock->shouldReceive('checkUserBait')->andReturnNull();
       $baitServiceMock->shouldReceive('createBait')
          ->once()->andThrow(new Exception('DBエラー'));
@@ -202,7 +202,7 @@ class BaitControllerTest extends TestCase
       ];
 
       // BaitService::updateBait が例外を投げるようにエイリアスモック（checkUserBait は通過）
-      $baitServiceMock = Mockery::mock('alias:App\\Services\\BaitService');
+      $baitServiceMock = Mockery::mock('alias:App\\Services\\User\\BaitService');
       $baitServiceMock->shouldReceive('checkUserBait')->andReturnNull();
       $baitServiceMock->shouldReceive('updateBait')
          ->once()->andThrow(new Exception('DBエラー'));

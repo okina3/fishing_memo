@@ -5,7 +5,7 @@ namespace Tests\User\Feature\Services;
 use App\Models\Image;
 use App\Models\Memo;
 use App\Models\User;
-use App\Services\ImageService;
+use App\Services\User\ImageService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;

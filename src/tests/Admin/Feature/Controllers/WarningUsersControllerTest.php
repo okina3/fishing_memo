@@ -94,7 +94,7 @@ class WarningUsersControllerTest extends TestCase
         $user = User::factory()->create(['deleted_at' => now()]);
 
         // WarningUsersService::permanentlyDeleteUser が例外を投げるようにエイリアスモック
-        $serviceMock = Mockery::mock('alias:App\\Services\\WarningUsersService');
+        $serviceMock = Mockery::mock('alias:App\\Services\\Admin\\WarningUsersService');
         $serviceMock->shouldReceive('permanentlyDeleteUser')
             ->once()->andThrow(new Exception('forced error'));
 

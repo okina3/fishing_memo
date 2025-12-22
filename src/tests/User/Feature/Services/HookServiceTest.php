@@ -4,7 +4,7 @@ namespace Tests\User\Feature\Services;
 
 use App\Models\Hook;
 use App\Models\User;
-use App\Services\HookService;
+use App\Services\User\HookService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
