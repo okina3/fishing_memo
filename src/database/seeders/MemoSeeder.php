@@ -402,5 +402,24 @@ class MemoSeeder extends Seeder
         // }
 
         // DB::table('memos')->insert($extraUser1Memos);
+
+        // ユーザー1のソフトデリート済みダミーデータを追加で20件作成（ペジネーション/テスト用）
+        // $softDeletedUser1 = [];
+        // for ($i = 1; $i <= 20; $i++) {
+        //     $day = str_pad((string)$i, 2, '0', STR_PAD_LEFT);
+        //     $softDeletedUser1[] = [
+        //         'fishing_date' => "2025-03-{$day}",
+        //         'start_time' => '08:00:00',
+        //         'end_time' => '12:00:00',
+        //         'weather' => '曇り',
+        //         'air_temp' => 18 + ($i % 10),
+        //         'wind_dir' => '南',
+        //         'content' => "ユーザー１のソフトデリートダミーデータ{$i}",
+        //         'user_id' => 1,
+        //         'deleted_at' => now(),
+        //         'created_at' => '2023/01/01 11:11:11',
+        //     ];
+        // }
+        // DB::table('memos')->insert($softDeletedUser1);
     }
 }

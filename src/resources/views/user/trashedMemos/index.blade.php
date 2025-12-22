@@ -4,7 +4,7 @@
          {{-- 削除済みメモの管理ページのタイトル --}}
          <h1 class="heading heading_bg">削除済みメモ一覧</h1>
          {{-- 削除済みメモを管理するエリア --}}
-         <div class="p-3 h-[85vh] overflow-y-scroll overscroll-none bg-white">
+         <div class="p-3 bg-white">
             {{-- フラッシュメッセージ --}}
             <x-common.flash-message status="session('status')" />
             {{-- ソフトデリートされたメモ一覧 --}}
@@ -13,6 +13,10 @@
             <div class="mt-2"><x-user.button.back-button /></div>
          </div>
       </section>
+   </div>
+   {{-- ページネーション --}}
+   <div class="mt-3">
+      {{ $all_trashed_memos->links() }}
    </div>
    <script>
       'use strict'
