@@ -113,5 +113,19 @@ class FishNameSeeder extends Seeder
                 'updated_at' => '2023-10-01 11:11:11',
             ],
         ]);
+
+        // ユーザー1のダミーデータを追加で20件作成（ペジネーション/テスト用）
+        // $extraFishNames = [];
+        // for ($i = 1; $i <= 20; $i++) {
+        //     $num = str_pad((string)$i, 2, '0', STR_PAD_LEFT);
+        //     $extraFishNames[] = [
+        //         'name' => "1-EX-魚名 {$num}",
+        //         'user_id' => 1,
+        //         'created_at' => '2023-01-01 11:11:11',
+        //         'updated_at' => '2023-01-01 11:11:11',
+        //     ];
+        // }
+
+        // DB::table('fish_names')->insert($extraFishNames);
     }
 }

@@ -382,5 +382,25 @@ class MemoSeeder extends Seeder
                 'created_at' => '2023/10/05 11:11:11'
             ],
         ]);
+
+        // ユーザー1のダミーデータを追加で20件作成（ペジネーション/テスト用）
+        // $extraUser1Memos = [];
+        // for ($i = 1; $i <= 20; $i++) {
+        //     $day = str_pad((string)$i, 2, '0', STR_PAD_LEFT);
+        //     $extraUser1Memos[] = [
+        //         'fishing_date' => "2025-02-{$day}",
+        //         'start_time' => '08:00:00',
+        //         'end_time' => '12:00:00',
+        //         'weather' => '晴れ',
+        //         'air_temp' => 20 + ($i % 10),
+        //         'wind_dir' => '東',
+        //         'content' => "ユーザー１のダミーデータ{$i}",
+        //         'user_id' => 1,
+        //         'deleted_at' => null,
+        //         'created_at' => '2023/01/01 11:11:11',
+        //     ];
+        // }
+
+        // DB::table('memos')->insert($extraUser1Memos);
     }
 }
