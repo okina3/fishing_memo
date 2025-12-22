@@ -7,6 +7,10 @@
       {{-- 登録ユーザー一覧の表示エリア --}}
       @include('admin.users.partials.users-list')
    </div>
+   {{-- ページネーション --}}
+   <div class="p-2 bg-white border-t border-gray-200">
+      {{ $all_users->links() }}
+   </div>
    <script>
       'use strict'
 

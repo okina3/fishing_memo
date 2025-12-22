@@ -3,7 +3,7 @@
    {{-- タイトル --}}
    <h1 class="heading heading_bg bg-rose-900">警告したユーザー 一覧</h1>
    {{-- 警告されたユーザー一覧 --}}
-   <div class="p-2 h-[76vh] overflow-y-scroll overscroll-none">
+   <div class="p-2">
       @foreach ($all_warning_users as $warning_user)
          <div class="mb-5 p-2 md:flex justify-between items-center border border-slate-400 rounded-lg bg-white">
             <div class="md:w-[70%] mr-5 font-semibold">
