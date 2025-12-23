@@ -1,26 +1,26 @@
 {{-- 選択した問い合わせ情報の詳細を表示するエリア --}}
 <section class="text-gray-600 border border-gray-400 rounded-lg overflow-hidden">
    {{-- タイトル --}}
-   <h1 class="heading heading_bg bg-rose-900">ユーザーからの問い合わせの詳細</h1>
-   <div class="p-3 h-[85vh]">
+   <h1 class="heading heading_bg !bg-rose-900">ユーザーからの問い合わせの詳細</h1>
+   <div class="p-3 h-[85vh] bg-white">
       {{-- 選択した問い合わせ情報のユーザー名を表示 --}}
       <div class="mb-5">
-         <h2 class="sub_heading mb-1">ユーザー名</h2>
-         <p class="p-2 border border-gray-500 rounded bg-white">
+         <h2 class="sub_heading-2 mb-1">ユーザー名</h2>
+         <p class="p-2 border border-gray-500 rounded ">
             {{ optional($select_contact->user)->name ?? '' }}
          </p>
       </div>
       {{-- 選択した問い合わせ情報のメールアドレスを表示 --}}
       <div class="mb-5">
          <h2 class="sub_heading mb-1">メールアドレス</h2>
-         <p class="p-2 border border-gray-500 rounded bg-white">
+         <p class="p-2 border border-gray-500 rounded">
             {{ optional($select_contact->user)->email ?? '' }}
          </p>
       </div>
       {{-- 選択した問い合わせ情報の件名を表示 --}}
       <div class="mb-5">
          <h2 class="sub_heading mb-1">件名</h2>
-         <p class="p-2 border border-gray-500 rounded bg-white">{{ $select_contact->subject }}</p>
+         <p class="p-2 border border-gray-500 rounded">{{ $select_contact->subject }}</p>
       </div>
       {{-- 選択した問い合わせ情報の内容を表示 --}}
       <div class="mb-5">

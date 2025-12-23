@@ -1,11 +1,11 @@
 {{-- 登録ユーザー一覧の表示エリア --}}
 <section class="text-gray-600 border border-gray-500 rounded-lg overflow-hidden">
    {{-- タイトル --}}
-   <h1 class="heading heading_bg bg-rose-900">ユーザー 一覧</h1>
+   <h1 class="heading heading_bg !bg-rose-900">ユーザー 一覧</h1>
    {{-- 登録ユーザー一覧 --}}
    <div class="p-2">
       @foreach ($all_users as $user)
-         <div class="mb-5 p-2 md:flex justify-between items-center border border-gray-500 rounded-lg bg-white">
+         <div class="mb-3 p-2 md:flex justify-between items-center border border-gray-500 rounded-lg bg-white">
             <div class="md:w-4/5 font-semibold">
                {{-- ユーザーの名前 --}}
                <p class="mb-1 truncate">

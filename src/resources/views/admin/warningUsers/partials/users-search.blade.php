@@ -1,5 +1,5 @@
 {{-- ユーザーの検索の表示エリア --}}
-<section class="mb-5 px-3 py-2 text-slate-100 border border-gray-500 rounded-lg bg-rose-900">
+<section class="mb-3 px-3 py-1 text-slate-100 border border-gray-500 rounded-lg bg-rose-900">
    <form action="{{ route('admin.warning.index') }}" method="get">
       <div class="sm:flex items-center">
          <div class="heading">メールアドレスから検索</div>

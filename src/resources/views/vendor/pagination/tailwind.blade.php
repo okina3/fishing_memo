@@ -45,12 +45,11 @@
                <span class="font-medium">{{ $paginator->total() }}</span>
                {!! __('results') !!}
             </p> --}}
-            
             {{-- ペジネーションのレイアウトの調整 --}}
             <p class="text-sm text-gray-700 leading-5">
                表示
                <span class="font-medium">{{ $paginator->firstItem() }}</span>〜
-               <span class="font-medium">{{ $paginator->lastItem() }}</span>／全
+               <span class="font-medium">{{ $paginator->lastItem() }}</span>件／全
                <span class="font-medium">{{ $paginator->total() }}</span>件
             </p>
          </div>

@@ -1,5 +1,5 @@
 <x-app-layout>
-   <div class="px-2 py-2 bg-slate-200">
+   <div class="p-2 bg-slate-200">
       {{-- フラッシュメッセージ --}}
       <x-common.flash-message status="session('status')" />
       <div class="mb-2">
