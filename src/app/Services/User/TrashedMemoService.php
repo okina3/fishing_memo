@@ -2,15 +2,31 @@
 
 namespace App\Services\User;
 
+use App\Models\Memo;
 use App\Models\MemoBait;
 use App\Models\MemoFishName;
 use App\Models\MemoHook;
 use App\Models\MemoImage;
 use App\Models\MemoRod;
 use App\Models\MemoSpot;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class TrashedMemoService
 {
+   /**
+    * ソフトデリートしたメモ一覧を表示するメソッド。
+    * @param string|null $keyword
+    * @param int $perPage
+    * @return LengthAwarePaginator
+    */
+   public static function allTrashedMemos(?string $keyword, int $perPage = 15): LengthAwarePaginator
+   {
+      return Memo::availableAllTrashedMemos()
+         ->searchKeyword($keyword)
+         ->paginate($perPage)
+         ->withQueryString();
+   }
+
    /**
     * 選択したメモの中間テーブルを削除するメソッド。
     *
