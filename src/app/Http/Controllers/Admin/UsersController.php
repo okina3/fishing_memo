@@ -23,12 +23,7 @@ class UsersController extends Controller
     */
    public function index(SearchKeywordRequest $request): View
    {
-      // 全ユーザー、また、検索したユーザーをページネーションで取得
-      $perPage = 15;
-      $all_users = User::availableAllUsers()
-         ->searchKeyword($request->keyword)
-         ->paginate($perPage)
-         ->withQueryString();
+      $all_users = UserService::allUsers($request->keyword);
 
       return view('admin.users.index', compact('all_users'));
    }
