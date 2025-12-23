@@ -48,28 +48,28 @@ class UserSeeder extends Seeder
         ]);
 
         // 追加のダミーユーザーを20件作成（ペジネーション/テスト用）
-        // $additional = [];
-        // for ($i = 1; $i <= 20; $i++) {
-        //     $additional[] = [
-        //         'name' => 'ダミーユーザー' . $i,
-        //         'email' => sprintf('dummy%02d@example.com', $i),
-        //         'password' => Hash::make('password'),
-        //         'created_at' => now(),
-        //     ];
-        // }
-        // DB::table('users')->insert($additional);
+        $additional = [];
+        for ($i = 1; $i <= 20; $i++) {
+            $additional[] = [
+                'name' => 'ダミーユーザー' . $i,
+                'email' => sprintf('dummy%02d@example.com', $i),
+                'password' => Hash::make('password'),
+                'created_at' => now(),
+            ];
+        }
+        DB::table('users')->insert($additional);
 
         // ソフトデリートされたダミーユーザーを20件作成（ペジネーション/テスト用）
-        // $softDeleted = [];
-        // for ($i = 1; $i <= 20; $i++) {
-        //     $softDeleted[] = [
-        //         'name' => '削除ユーザー' . $i,
-        //         'email' => sprintf('deleted_dummy%02d@example.com', $i),
-        //         'password' => Hash::make('password'),
-        //         'created_at' => now(),
-        //         'deleted_at' => now(),
-        //     ];
-        // }
-        // DB::table('users')->insert($softDeleted);
+        $softDeleted = [];
+        for ($i = 1; $i <= 20; $i++) {
+            $softDeleted[] = [
+                'name' => '削除ユーザー' . $i,
+                'email' => sprintf('deleted_dummy%02d@example.com', $i),
+                'password' => Hash::make('password'),
+                'created_at' => now(),
+                'deleted_at' => now(),
+            ];
+        }
+        DB::table('users')->insert($softDeleted);
     }
 }
