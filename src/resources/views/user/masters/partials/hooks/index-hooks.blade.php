@@ -44,10 +44,10 @@
          </div>
       </div>
    @endforeach
-   {{-- ページネーション --}}
-   @if (method_exists($hooks, 'links'))
+   {{-- ページネーション（ページが複数あるときのみ表示） --}}
+   @if (isset($hooks) && $hooks->hasPages())
       <div class="mt-4">
-         {{ $hooks->appends(request()->query())->links() }}
+         {{ $hooks->links() }}
       </div>
    @endif
 @endif

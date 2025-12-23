@@ -7,8 +7,10 @@
       {{-- ユーザーからの問い合わせ一覧の表示エリア --}}
       @include('admin.contacts.partials.index.contacts-list')
    </div>
-   {{-- ページネーション --}}
+   {{-- ページネーション（ページが複数あるときのみ表示） --}}
    <div class="p-2 bg-white border-t border-gray-200">
-      {{ $all_contact->links() }}
+      @if (isset($all_contact) && $all_contact->hasPages())
+         {{ $all_contact->links() }}
+      @endif
    </div>
 </x-app-layout>

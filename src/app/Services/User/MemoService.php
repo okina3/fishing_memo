@@ -3,6 +3,7 @@
 namespace App\Services\User;
 
 use App\Models\Memo;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class MemoService
@@ -30,12 +31,15 @@ class MemoService
     * メモを一覧表示するメソッド。
     * @param string|null $keyword
     * @param int $perPage
-    * @return mixed
+    * @return LengthAwarePaginator
     */
-   public static function searchMemos(?string $keyword = null, int $perPage = 15): mixed
+   public static function searchMemos(?string $keyword = null, int $perPage = 15): LengthAwarePaginator
    {
       // 全メモ、または、検索されたメモを取得
-      $memos = Memo::availableAllMemos()->searchKeyword($keyword)->paginate($perPage);
+      $memos = Memo::availableAllMemos()
+         ->searchKeyword($keyword)
+         ->paginate($perPage)
+         ->withQueryString();
       // 共有されているメモにはステータスを付与
       foreach ($memos as $memo) {
          if ($memo->shareSettings->isNotEmpty()) {

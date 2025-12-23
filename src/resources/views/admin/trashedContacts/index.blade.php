@@ -7,9 +7,11 @@
       {{-- ユーザーからの問い合わせ一覧の表示エリア --}}
       @include('admin.trashedContacts.partials.contacts')
    </div>
-   {{-- ページネーション --}}
+   {{-- ページネーション（ページが複数あるときのみ表示） --}}
    <div class="p-2 bg-white border-t border-gray-200">
-      {{ $all_trashed_contacts->links() }}
+      @if (isset($all_trashed_contacts) && $all_trashed_contacts->hasPages())
+         {{ $all_trashed_contacts->links() }}
+      @endif
    </div>
    <script>
       'use strict'

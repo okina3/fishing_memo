@@ -44,10 +44,10 @@
          </div>
       </div>
    @endforeach
-   {{-- ページネーション --}}
-   @if (method_exists($rods, 'links'))
+   {{-- ページネーション（ページが複数あるときのみ表示） --}}
+   @if (isset($rods) && $rods->hasPages())
       <div class="mt-4">
-         {{ $spots->appends(request()->query())->links() }}
+         {{ $rods->links() }}
       </div>
    @endif
 @endif

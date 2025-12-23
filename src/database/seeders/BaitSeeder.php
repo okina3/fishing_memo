@@ -100,16 +100,16 @@ class BaitSeeder extends Seeder
       ]);
 
       // ユーザー1のダミーデータを追加で20件作成（ペジネーション/テスト用）
-      // $extraBaits = [];
-      // for ($i = 1; $i <= 20; $i++) {
-      //    $num = str_pad((string)$i, 2, '0', STR_PAD_LEFT);
-      //    $extraBaits[] = [
-      //       'name' => "1-EX-エサ {$num}",
-      //       'user_id' => 1,
-      //       'created_at' => '2023-01-01 11:11:11',
-      //    ];
-      // }
+      $extraBaits = [];
+      for ($i = 1; $i <= 20; $i++) {
+         $num = str_pad((string)$i, 2, '0', STR_PAD_LEFT);
+         $extraBaits[] = [
+            'name' => "1-EX-エサ {$num}",
+            'user_id' => 1,
+            'created_at' => '2023-01-01 11:11:11',
+         ];
+      }
 
-      // DB::table('baits')->insert($extraBaits);
+      DB::table('baits')->insert($extraBaits);
    }
 }

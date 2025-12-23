@@ -29,7 +29,7 @@ class TrashedMemoController extends Controller
       $all_trashed_memos = Memo::availableAllTrashedMemos()
          ->searchKeyword($keyword)
          ->paginate($perPage)
-         ->appends(request()->query());
+         ->withQueryString();
 
       return view('user.trashedMemos.index', compact('all_trashed_memos'));
    }

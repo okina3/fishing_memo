@@ -14,10 +14,12 @@
          </div>
       </section>
    </div>
-   {{-- ページネーション --}}
-   <div class="mt-3">
-      {{ $all_trashed_memos->links() }}
-   </div>
+   {{-- ページネーション（ページが複数あるときのみ表示） --}}
+   @if (isset($all_trashed_memos) && $all_trashed_memos->hasPages())
+      <div class="mt-4">
+         {{ $all_trashed_memos->links() }}
+      </div>
+   @endif
    <script>
       'use strict'
 
