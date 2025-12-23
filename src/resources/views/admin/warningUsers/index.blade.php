@@ -7,9 +7,11 @@
       {{-- 警告されたユーザー一覧の表示エリア --}}
       @include('admin.warningUsers.partials.warning-users-list')
    </div>
-   {{-- ページネーション --}}
+   {{-- ページネーション（ページが複数あるときのみ表示） --}}
    <div class="p-2 bg-white border-t border-gray-200">
-      {{ $all_warning_users->links() }}
+      @if (isset($all_warning_users) && $all_warning_users->hasPages())
+         {{ $all_warning_users->links() }}
+      @endif
    </div>
    <script>
       'use strict'

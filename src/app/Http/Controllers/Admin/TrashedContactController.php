@@ -12,47 +12,47 @@ use Illuminate\View\View;
 
 class TrashedContactController extends Controller
 {
-    /**
-     * ソフトデリートした問い合わせ一覧を表示するメソッド。
-     * @param SearchKeywordRequest $request
-     * @return View
-     */
-    public function index(SearchKeywordRequest $request): View
-    {
-        // 全てのソフトデリートした問い合わせを取得する
-        $perPage = 15;
-        $all_trashed_contacts = Contact::onlyTrashed()
-            ->searchKeyword($request->keyword)
-            ->availableAllContacts()
-            ->paginate($perPage)
-            ->appends(request()->query());
+   /**
+    * ソフトデリートした問い合わせ一覧を表示するメソッド。
+    * @param SearchKeywordRequest $request
+    * @return View
+    */
+   public function index(SearchKeywordRequest $request): View
+   {
+      // 全てのソフトデリートした問い合わせを取得する
+      $perPage = 15;
+      $all_trashed_contacts = Contact::onlyTrashed()
+         ->searchKeyword($request->keyword)
+         ->availableAllContacts()
+         ->paginate($perPage)
+         ->withQueryString();
 
-        return view('admin.trashedContacts.index', compact('all_trashed_contacts'));
-    }
+      return view('admin.trashedContacts.index', compact('all_trashed_contacts'));
+   }
 
-    /**
-     * ソフトデリートした問い合わせを元に戻すメソッド。
-     * @param DeleteContactRequest $request
-     * @return RedirectResponse
-     */
-    public function undo(DeleteContactRequest $request): RedirectResponse
-    {
-        Contact::onlyTrashed()->availableSelectContact($request->contentId)->restore();
+   /**
+    * ソフトデリートした問い合わせを元に戻すメソッド。
+    * @param DeleteContactRequest $request
+    * @return RedirectResponse
+    */
+   public function undo(DeleteContactRequest $request): RedirectResponse
+   {
+      Contact::onlyTrashed()->availableSelectContact($request->contentId)->restore();
 
-        return to_route('admin.trashed-contact.index')
-            ->with(['message' => 'ユーザーの問い合わせを、元に戻しました。', 'status' => 'success']);
-    }
+      return to_route('admin.trashed-contact.index')
+         ->with(['message' => 'ユーザーの問い合わせを、元に戻しました。', 'status' => 'success']);
+   }
 
-    /**
-     * ソフトデリートした問い合わせをを完全削除するメソッド。
-     * @param DeleteContactRequest $request
-     * @return RedirectResponse
-     */
-    public function destroy(DeleteContactRequest $request): RedirectResponse
-    {
-        Contact::onlyTrashed()->availableSelectContact($request->contentId)->forceDelete();
+   /**
+    * ソフトデリートした問い合わせをを完全削除するメソッド。
+    * @param DeleteContactRequest $request
+    * @return RedirectResponse
+    */
+   public function destroy(DeleteContactRequest $request): RedirectResponse
+   {
+      Contact::onlyTrashed()->availableSelectContact($request->contentId)->forceDelete();
 
-        return to_route('admin.trashed-contact.index')
-            ->with(['message' => 'ユーザーの問い合わせを、完全に削除しました。', 'status' => 'success']);
-    }
+      return to_route('admin.trashed-contact.index')
+         ->with(['message' => 'ユーザーの問い合わせを、完全に削除しました。', 'status' => 'success']);
+   }
 }

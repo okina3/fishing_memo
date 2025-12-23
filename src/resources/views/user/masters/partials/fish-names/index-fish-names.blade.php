@@ -43,10 +43,10 @@
          </div>
       </div>
    @endforeach
-   {{-- ページネーション --}}
-   @if (method_exists($fishNames, 'links'))
+   {{-- ページネーション（ページが複数あるときのみ表示） --}}
+   @if (isset($fishNames) && $fishNames->hasPages())
       <div class="mt-4">
-         {{ $fishNames->appends(request()->query())->links() }}
+         {{ $fishNames->links() }}
       </div>
    @endif
 @endif

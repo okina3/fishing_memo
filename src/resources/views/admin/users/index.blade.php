@@ -7,9 +7,11 @@
       {{-- 登録ユーザー一覧の表示エリア --}}
       @include('admin.users.partials.users-list')
    </div>
-   {{-- ページネーション --}}
+   {{-- ページネーション（ページが複数あるときのみ表示） --}}
    <div class="p-2 bg-white border-t border-gray-200">
-      {{ $all_users->links() }}
+      @if (isset($all_users) && $all_users->hasPages())
+         {{ $all_users->links() }}
+      @endif
    </div>
    <script>
       'use strict'

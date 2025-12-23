@@ -12,6 +12,7 @@
       @if (isset($all_memos) && $all_memos->hasPages())
          <div class="mt-4">
             {{ $all_memos->links() }}
+         </div>
       @endif
    </div>
    <script>
