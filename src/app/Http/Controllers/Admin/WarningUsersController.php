@@ -22,13 +22,7 @@ class WarningUsersController extends Controller
     */
    public function index(SearchKeywordRequest $request): View
    {
-      // 警告したユーザーをページネーションで取得する
-      $perPage = 15;
-      $all_warning_users = User::onlyTrashed()
-         ->searchKeyword($request->keyword)
-         ->availableAllUsers()
-         ->paginate($perPage)
-         ->withQueryString();
+      $all_warning_users = WarningUsersService::allWarningUsers($request->keyword);
 
       return view('admin.warningUsers.index', compact('all_warning_users'));
    }

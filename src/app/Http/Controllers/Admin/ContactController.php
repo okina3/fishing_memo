@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DeleteContactRequest;
 use App\Http\Requests\Admin\SearchKeywordRequest;
 use App\Models\Contact;
+use App\Services\Admin\ContactService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -13,21 +14,13 @@ use Illuminate\View\View;
 class ContactController extends Controller
 {
    /**
-    * ユーザーの問い合わせ一覧を表示するメソッド。
+    * ユーザーからの問い合わせ一覧を表示するメソッド。
     * @param SearchKeywordRequest $request
     * @return View
     */
    public function index(SearchKeywordRequest $request): View
    {
-      // 全ての問い合わせ情報を取得する
-      $perPage = 15;
-      $all_contact = Contact::with(['user' => function ($q) {
-         $q->withTrashed();
-      }])
-         ->searchKeyword($request->keyword)
-         ->availableAllContacts()
-         ->paginate($perPage)
-         ->withQueryString();
+      $all_contact = ContactService::allContacts($request->keyword);
 
       return view('admin.contacts.index', compact('all_contact'));
    }

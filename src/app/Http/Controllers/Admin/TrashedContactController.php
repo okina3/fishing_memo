@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\DeleteContactRequest;
 use App\Http\Requests\Admin\SearchKeywordRequest;
 use App\Models\Contact;
+use App\Services\Admin\TrashedContactService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -19,13 +20,7 @@ class TrashedContactController extends Controller
     */
    public function index(SearchKeywordRequest $request): View
    {
-      // 全てのソフトデリートした問い合わせを取得する
-      $perPage = 15;
-      $all_trashed_contacts = Contact::onlyTrashed()
-         ->searchKeyword($request->keyword)
-         ->availableAllContacts()
-         ->paginate($perPage)
-         ->withQueryString();
+      $all_trashed_contacts = TrashedContactService::allTrashedContacts($request->keyword);
 
       return view('admin.trashedContacts.index', compact('all_trashed_contacts'));
    }

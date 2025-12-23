@@ -5,10 +5,26 @@ namespace App\Services\Admin;
 use App\Models\Image;
 use App\Models\User;
 use App\Services\User\ImageService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class WarningUsersService
 {
+   /**
+    * 警告したユーザー一覧を表示するメソッド。
+    * @param string|null $keyword
+    * @param int $perPage
+    * @return LengthAwarePaginator
+    */
+   public static function allWarningUsers(?string $keyword, int $perPage = 15): LengthAwarePaginator
+   {
+      return User::onlyTrashed()
+         ->searchKeyword($keyword)
+         ->availableAllUsers()
+         ->paginate($perPage)
+         ->withQueryString();
+   }
+
    /**
     * 選択したユーザー、関連データを完全削除するメソッド。
     * @param int $userId
