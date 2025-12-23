@@ -1,6 +1,6 @@
 {{-- 検索の表示エリア --}}
 <section class="mb-5 px-3 py-2 text-slate-100 border border-gray-500 rounded-lg bg-rose-900">
-   <form action="{{ route('admin.contact.index') }}" method="get">
+   <form action="{{ route($routeName ?? 'admin.contact.index') }}" method="get">
       <div class="sm:flex items-center">
          <div class="heading">キーワードから検索</div>
          <div class="hidden sm:block">・・・・・</div>
