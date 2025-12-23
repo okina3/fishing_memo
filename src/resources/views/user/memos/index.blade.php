@@ -8,11 +8,10 @@
          {{-- メモ一覧の表示エリア --}}
          @include('user.memos.partials.index.memos-list')
       </div>
-      {{-- ページネーション --}}
-      @if (method_exists($all_memos, 'links'))
+      {{-- ページネーション（ページが複数あるときのみ表示） --}}
+      @if (isset($all_memos) && $all_memos->hasPages())
          <div class="mt-4">
-            {{ $all_memos->appends(request()->query())->links() }}
-         </div>
+            {{ $all_memos->links() }}
       @endif
    </div>
    <script>
