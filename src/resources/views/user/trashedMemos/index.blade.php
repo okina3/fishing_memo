@@ -1,25 +1,18 @@
 <x-app-layout>
-   <div class="px-2 py-2 bg-slate-200">
-      <section class="text-gray-600 border border-gray-400 rounded-lg overflow-hidden">
-         {{-- 削除済みメモの管理ページのタイトル --}}
-         <h1 class="heading heading_bg">削除済みメモ一覧</h1>
-         {{-- 削除済みメモを管理するエリア --}}
-         <div class="p-3 bg-white">
-            {{-- フラッシュメッセージ --}}
-            <x-common.flash-message status="session('status')" />
-            {{-- ソフトデリートされたメモ一覧 --}}
-            @include('user.trashedMemos.partials.index.trashed-memos-list')
-            {{-- 戻るボタン --}}
-            <div class="mt-2"><x-user.button.back-button /></div>
-         </div>
-      </section>
-   </div>
-   {{-- ページネーション（ページが複数あるときのみ表示） --}}
-   @if (isset($all_trashed_memos) && $all_trashed_memos->hasPages())
-      <div class="mt-4">
-         {{ $all_trashed_memos->links() }}
+   <div class="p-2 bg-slate-200">
+      {{-- フラッシュメッセージ --}}
+      <x-common.flash-message status="session('status')" />
+      <div class="mb-2">
+         {{-- ソフトデリートされたメモ一覧 --}}
+         @include('user.trashedMemos.partials.index.trashed-memos-list')
       </div>
-   @endif
+      {{-- ページネーション（ページが複数あるときのみ表示） --}}
+      @if (isset($all_trashed_memos) && $all_trashed_memos->hasPages())
+         <div class="mt-4">
+            {{ $all_trashed_memos->links() }}
+         </div>
+      @endif
+   </div>
    <script>
       'use strict'
 
