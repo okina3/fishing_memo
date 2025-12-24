@@ -34,10 +34,10 @@ class ShareSettingController extends Controller
    {
       // ブラウザバック対策（値を削除する）
       SessionService::resetBrowserBackSession();
-      // 一旦全ての共有されたメモを取得
+      // ユーザー一覧作成用に、全共有設定のみ取得
       $share_setting_memos = ShareSetting::availableAllSharedMemos()->get();
-      // パラメーターから、全ての共有メモ、ユーザー別の共有メモを、切り分ける。
-      $shared_memos = ShareSettingService::searchSharedMemos($share_setting_memos);
+      // 共有メモ一覧
+      $shared_memos = ShareSettingService::searchSharedMemos();
       // メモを共有しているユーザー名を取得する。
       $shared_users = ShareSettingService::searchSharedUser($share_setting_memos);
 
