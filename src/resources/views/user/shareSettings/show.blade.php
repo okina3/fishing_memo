@@ -29,7 +29,7 @@
             {{-- 選択した共有メモに紐づいた画像の表示 --}}
             <x-user.images.big-select-image :getMemoImages='$get_memo_images' />
             {{-- 戻るボタン --}}
-            <x-user.button.back-button-shared />
+            <x-common.back-button routeName="user.share-setting.index" />
          </div>
       </section>
    </div>

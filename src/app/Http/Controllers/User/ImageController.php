@@ -36,7 +36,7 @@ class ImageController extends Controller
       // ブラウザバック対策（値を削除する）
       SessionService::resetBrowserBackSession();
       // 全画像を取得する
-      $all_images = Image::availableAllImages()->paginate(16);
+      $all_images = Image::availableAllImages()->paginate(12);
 
       return view('user.images.index', compact('all_images'));
    }
