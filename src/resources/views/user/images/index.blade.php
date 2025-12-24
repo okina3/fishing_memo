@@ -1,8 +1,8 @@
 <x-app-layout>
-   <div class="px-2 py-2 bg-slate-200">
+   <div class="p-2 bg-slate-200">
       <section class="text-gray-600 border border-gray-400 rounded-lg bg-white overflow-hidden">
          {{-- 画像一覧表示ページのタイトル --}}
-         <div class="heading_bg py-1.5 flex justify-between items-center">
+         <div class="heading_bg !py-1.5 flex justify-between items-center">
             <h1 class="heading">登録画像一覧</h1>
             {{-- 画像新規登録ボタン --}}
             <button class="btn btn-bk bg-yellow-500 hover:bg-yellow-400"
@@ -11,7 +11,7 @@
             </button>
          </div>
          {{-- 登録した画像の表示エリア --}}
-         <div class="md:p-3 h-[85vh] overflow-y-scroll overscroll-none">
+         <div class="md:p-2">
             {{-- フラッシュメッセージ --}}
             <x-common.flash-message status="session('status')" />
             <div class="flex flex-wrap">
@@ -26,10 +26,13 @@
                   </div>
                @endforeach
             </div>
-            <div class="m-2">
-               {{ $all_images->links() }}
-            </div>
          </div>
       </section>
+      {{-- ページネーション（ページが複数あるときのみ表示） --}}
+      @if (isset($all_images) && $all_images->hasPages())
+         <div class="mt-4">
+            {{ $all_images->links() }}
+         </div>
+      @endif
    </div>
 </x-app-layout>
