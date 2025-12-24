@@ -25,7 +25,7 @@
                </div>
             </form>
             {{-- 戻るボタン --}}
-            <x-user.button.back-button-image />
+            <x-common.back-button routeName="user.image.index" />
          </div>
       </section>
    </div>

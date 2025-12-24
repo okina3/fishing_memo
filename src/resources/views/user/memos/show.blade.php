@@ -35,7 +35,7 @@
                {{-- 画像の表示 --}}
                <x-user.images.big-select-image :getMemoImages='$get_memo_images' />
                {{-- 戻るボタン --}}
-               <x-user.button.back-button />
+               <x-common.back-button routeName="user.index" />
             </div>
          </div>
       </section>

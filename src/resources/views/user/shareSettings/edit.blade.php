@@ -42,7 +42,7 @@
                </div>
             </form>
             {{-- 戻るボタン --}}
-            <x-user.button.back-button-shared />
+            <x-common.back-button routeName="user.share-setting.index" />
          </div>
       </section>
    </div>

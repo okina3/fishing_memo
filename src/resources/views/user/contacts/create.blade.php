@@ -30,7 +30,7 @@
                </div>
             </form>
             {{-- 戻るボタン --}}
-            <x-user.button.back-button />
+            <x-common.back-button routeName="user.index" />
          </div>
       </section>
    </div>
