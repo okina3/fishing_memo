@@ -102,10 +102,10 @@ class ShareSettingServiceTest extends TestCase
       // ユーザーを指定して、共有メモを検索する（ユーザーのIDをパラメーターに追加）
       request()->merge(['user' => encrypt($this->tertiaryUser->id)]);
       // 共有メモを検索するサービスメソッドを実行
-      $result = ShareSettingService::searchSharedMemos($shareSettings);
+      $paginator = ShareSettingService::searchSharedMemos(5);
 
       // サービスメソッドから取得した情報をコレクションに変換
-      $result = collect($result);
+      $result = collect($paginator->items());
       // 取得したメモが、特定のユーザーからのものであることを確認
       $this->assertTrue($result->pluck('user_id')->every(function ($userId) {
          return $userId === $this->tertiaryUser->id;
@@ -114,10 +114,10 @@ class ShareSettingServiceTest extends TestCase
       // ユーザーを指定しないで、全ての共有メモを検索する（ユーザーのIDをパラメーターから削除）
       request()->replace([]);
       // 共有メモを検索するサービスメソッドを実行
-      $result = ShareSettingService::searchSharedMemos($shareSettings);
+      $paginator = ShareSettingService::searchSharedMemos(5);
 
       // サービスメソッドから取得した情報をコレクションに変換
-      $result = collect($result);
+      $result = collect($paginator->items());
       // 作成した共有設定の、memo_id配列が、取得した共有メモのID配列と一致することを確認
       $this->assertEquals($shareSettings->pluck('memo_id')->toArray(), $result->pluck('id')->toArray());
    }
