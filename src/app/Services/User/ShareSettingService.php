@@ -4,46 +4,45 @@ namespace App\Services\User;
 
 use App\Http\Requests\User\ShareStartRequest;
 use App\Models\ShareSetting;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 
 class ShareSettingService
 {
    /**
     * パラメーターから、全ての共有メモ、ユーザー別の共有メモを、切り分けるメソッド。
-    * @param Collection $share_setting_memos
-    * @return array
+    * @param int $perPage
+    * @return LengthAwarePaginator
     */
-   public static function searchSharedMemos(Collection $share_setting_memos): array
+   public static function searchSharedMemos(int $perPage = 5): LengthAwarePaginator
    {
       // クエリパラメータを取得。
       $get_url_user_id = request()->query('user');
+
+      // 自分に共有されている設定をベースに、メモとユーザーを一括読み込み
+      $query = ShareSetting::availableAllSharedMemos()->with(['memo.user']);
 
       // クエリパラメータの有無の処理
       if (!empty($get_url_user_id)) {
          // クエリパラメータの暗号化を元に戻す
          $decrypted_user_id = decrypt($get_url_user_id);
          // クエリーパラメーターから絞り込んだユーザーの、自分に共有しているメモを取得
-         return $share_setting_memos
-            ->filter(function ($share_setting_memo) use ($decrypted_user_id) {
-               return $share_setting_memo->memo->user_id === $decrypted_user_id;
-            })
-            ->map(function ($share_setting_memo) {
-               // 自分に共有しているメモに、詳細のみか、編集可能か、の判定の情報を追加
-               $share_setting_memo->memo->access = $share_setting_memo->edit_access;
-               return $share_setting_memo->memo;
-            })
-            ->values()
-            ->all();
-      } else {
-         // 自分に共有されている全てのメモを取得
-         return $share_setting_memos
-            ->map(function ($share_setting_memo) {
-               // 自分に共有しているメモに、詳細のみか、編集可能か、の判定の情報を追加
-               $share_setting_memo->memo->access = $share_setting_memo->edit_access;
-               return $share_setting_memo->memo;
-            })
-            ->all();
+         $query->whereHas('memo', function ($q) use ($decrypted_user_id) {
+            $q->where('user_id', $decrypted_user_id);
+         });
       }
+
+      // 自分に共有しているメモに、詳細のみか、編集可能か、の判定の情報を追加
+      return $query
+         ->paginate($perPage)
+         ->withQueryString()
+         ->through(function ($share_setting) {
+            $memo = $share_setting->memo;
+            if ($memo) {
+               $memo->access = $share_setting->edit_access;
+            }
+            return $memo;
+         });
    }
 
    /**

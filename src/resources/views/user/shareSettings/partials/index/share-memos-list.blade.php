@@ -3,8 +3,8 @@
    {{-- タイトル --}}
    <h1 class="heading heading_bg">共有されているメモ</h1>
    {{-- 共有中のメモ一覧 --}}
-   <div class="p-2 h-[60vh] md:h-[85vh] overflow-y-scroll overscroll-none bg-white">
-      @foreach ($shared_memos as $shared_memo)
+   <div class="p-2 bg-white">
+      @forelse ($shared_memos as $shared_memo)
          <div class="mb-3 p-2 border border-gray-400 rounded-lg">
             {{-- 共有メモの情報エリア --}}
             <div class="mb-2">
@@ -40,6 +40,14 @@
                @endif
             </div>
          </div>
-      @endforeach
+      @empty
+         <div class="p-4 text-center text-gray-500">共有されたメモはありません。</div>
+      @endforelse
    </div>
+   {{-- ページネーション（ページが複数あるときのみ表示） --}}
+   @if (isset($shared_memos) && $shared_memos->hasPages())
+      <div class="mt-4">
+         {{ $shared_memos->links() }}
+      </div>
+   @endif
 </section>
