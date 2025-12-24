@@ -2,8 +2,8 @@
    <div class="p-2 bg-rose-100">
       {{-- フラッシュメッセージ --}}
       <x-common.flash-message status="session('status')" />
-      {{-- ユーザーの検索の表示エリア --}}
-      @include('admin.warningUsers.partials.users-search')
+      {{-- 検索の表示エリア --}}
+      <x-admin.search.users-search routeName="admin.warning.index" />
       {{-- 警告されたユーザー一覧の表示エリア --}}
       @include('admin.warningUsers.partials.warning-users-list')
       {{-- ページネーション（ページが複数あるときのみ表示） --}}
