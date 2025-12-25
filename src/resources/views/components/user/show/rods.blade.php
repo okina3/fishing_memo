@@ -26,7 +26,7 @@
 
             </div>
          @empty
-            <div class="text-gray-600">道具は登録されていません。</div>
+            <div class="text-gray-600">釣り具は登録されていません。</div>
          @endforelse
       </div>
    </div>
