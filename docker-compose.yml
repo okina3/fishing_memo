@@ -4,7 +4,7 @@ services:
   database:
     image: mysql:5.7
     container_name: db_fishing_memo
-    # restart: unless-stopped
+    restart: unless-stopped
     environment:
       MYSQL_DATABASE: db_mysql
       MYSQL_ROOT_PASSWORD: password
@@ -21,7 +21,7 @@ services:
   database-test:
     image: mysql:5.7
     container_name: db_fishing_memo_test
-    # restart: always
+    restart: always
     environment:
       MYSQL_DATABASE: db_mysql_test
       MYSQL_ROOT_PASSWORD: password
@@ -38,7 +38,7 @@ services:
     container_name: php_apache_fishing_memo
     build:
       context: ./php
-    # restart: always
+    restart: always
     ports:
       - "8000:80"
       - "5173:5173"
@@ -51,7 +51,7 @@ services:
   mail:
     image: axllent/mailpit:v1.8
     container_name: mailpit_fishing_memo
-    # restart: always
+    restart: always
     ports:
       - 8025:8025
       - 1025:1025
