@@ -12,6 +12,7 @@ use App\Http\Controllers\User\RodController;
 use App\Http\Controllers\User\ShareSettingController;
 use App\Http\Controllers\User\SpotController;
 use App\Http\Controllers\User\TrashedMemoController;
+use App\Http\Middleware\KeepBackFlashForAjax;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -51,7 +52,7 @@ Route::prefix('/')->as('user.')->group(function () {
         Route::controller(SpotController::class)->prefix('spot')
             ->group(function () {
                 Route::post('/store', 'store')->name('spot.store');
-                Route::post('/store-ajax', 'storeAjax')->name('spot.store.ajax');
+                Route::post('/store-ajax', 'storeAjax')->name('spot.store.ajax')->middleware(KeepBackFlashForAjax::class);
                 Route::get('/edit/{spot}', 'edit')->name('spot.edit');
                 Route::patch('/update', 'update')->name('spot.update');
                 Route::delete('/destroy', 'destroy')->name('spot.destroy');
@@ -61,7 +62,7 @@ Route::prefix('/')->as('user.')->group(function () {
         Route::controller(RodController::class)->prefix('rod')
             ->group(function () {
                 Route::post('/store', 'store')->name('rod.store');
-                Route::post('/store-ajax', 'storeAjax')->name('rod.store.ajax');
+                Route::post('/store-ajax', 'storeAjax')->name('rod.store.ajax')->middleware(KeepBackFlashForAjax::class);
                 Route::get('/edit/{rod}', 'edit')->name('rod.edit');
                 Route::patch('/update', 'update')->name('rod.update');
                 Route::delete('/destroy', 'destroy')->name('rod.destroy');
@@ -71,7 +72,7 @@ Route::prefix('/')->as('user.')->group(function () {
         Route::controller(HookController::class)->prefix('hook')
             ->group(function () {
                 Route::post('/store', 'store')->name('hook.store');
-                Route::post('/store-ajax', 'storeAjax')->name('hook.store.ajax');
+                Route::post('/store-ajax', 'storeAjax')->name('hook.store.ajax')->middleware(KeepBackFlashForAjax::class);
                 Route::get('/edit/{hook}', 'edit')->name('hook.edit');
                 Route::patch('/update', 'update')->name('hook.update');
                 Route::delete('/destroy', 'destroy')->name('hook.destroy');
@@ -81,7 +82,7 @@ Route::prefix('/')->as('user.')->group(function () {
         Route::controller(BaitController::class)->prefix('bait')
             ->group(function () {
                 Route::post('/store', 'store')->name('bait.store');
-                Route::post('/store-ajax', 'storeAjax')->name('bait.store.ajax');
+                Route::post('/store-ajax', 'storeAjax')->name('bait.store.ajax')->middleware(KeepBackFlashForAjax::class);
                 Route::get('/edit/{bait}', 'edit')->name('bait.edit');
                 Route::patch('/update', 'update')->name('bait.update');
                 Route::delete('/destroy', 'destroy')->name('bait.destroy');
@@ -91,7 +92,7 @@ Route::prefix('/')->as('user.')->group(function () {
         Route::controller(FishNameController::class)->prefix('fish-name')
             ->group(function () {
                 Route::post('/store', 'store')->name('fish-name.store');
-                Route::post('/store-ajax', 'storeAjax')->name('fish-name.store.ajax');
+                Route::post('/store-ajax', 'storeAjax')->name('fish-name.store.ajax')->middleware(KeepBackFlashForAjax::class);
                 Route::get('/edit/{fishName}', 'edit')->name('fish-name.edit');
                 Route::patch('/update', 'update')->name('fish-name.update');
                 Route::delete('/destroy', 'destroy')->name('fish-name.destroy');
