@@ -3,8 +3,7 @@
 ![トップ画面](readme_images/top.png)
 
 # サービスURL
-
-<!-- https://portfoliomy-memo-app.click -->
+https://fishing-memo-app.link
 
 # 機能一覧
 
