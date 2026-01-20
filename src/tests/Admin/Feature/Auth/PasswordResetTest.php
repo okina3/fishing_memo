@@ -1,0 +1,77 @@
+<?php
+
+namespace Tests\Admin\Feature\Auth;
+
+use App\Models\Admin;
+use App\Notifications\Admin\ResetPasswordNotification;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
+use Tests\Admin\TestCase;
+
+class PasswordResetTest extends TestCase
+{
+    use RefreshDatabase;
+
+    // パスワードリセットリンク画面が正常に表示されることをテスト。
+    public function test_reset_password_link_screen_can_be_rendered(): void
+    {
+        $response = $this->get('/admin/forgot-password');
+
+        $response->assertStatus(200);
+    }
+
+    // パスワードリセットリンクが正常に送信されることをテスト。
+    public function test_reset_password_link_can_be_requested(): void
+    {
+        Notification::fake();
+
+        $user = Admin::factory()->create();
+
+        $this->post('/admin/forgot-password', ['email' => $user->email]);
+
+        Notification::assertSentTo($user, ResetPasswordNotification::class);
+    }
+
+    // パスワードリセット画面（通知内トークン付きURL）に正常にアクセスできることをテスト。
+    public function test_reset_password_screen_can_be_rendered(): void
+    {
+        Notification::fake();
+
+        $user = Admin::factory()->create();
+
+        $this->post('/admin/forgot-password', ['email' => $user->email]);
+
+        Notification::assertSentTo($user, ResetPasswordNotification::class, function ($notification) {
+            $response = $this->get('/reset-password/' . $notification->token);
+
+            $response->assertStatus(200);
+
+            return true;
+        });
+    }
+
+    // 有効なトークンを使用してパスワードが正常にリセットできることをテスト。
+    public function test_password_can_be_reset_with_valid_token(): void
+    {
+        Notification::fake();
+
+        $user = Admin::factory()->create();
+
+        $this->post('/admin/forgot-password', ['email' => $user->email]);
+
+        Notification::assertSentTo($user, ResetPasswordNotification::class, function ($notification) use ($user) {
+            $response = $this->post('/admin/reset-password', [
+                'token' => $notification->token,
+                'email' => $user->email,
+                'password' => 'password',
+                'password_confirmation' => 'password',
+            ]);
+
+            $response
+                ->assertSessionHasNoErrors()
+                ->assertRedirect(route('admin.login'));
+
+            return true;
+        });
+    }
+}

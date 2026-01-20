@@ -1,0 +1,146 @@
+<?php
+
+namespace Tests\User\Feature\Services;
+
+use App\Models\Image;
+use App\Models\Memo;
+use App\Models\User;
+use App\Services\User\ImageService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Tests\User\TestCase;
+
+class ImageServiceTest extends TestCase
+{
+   use RefreshDatabase;
+
+   private User $user;
+   private User $secondaryUser;
+
+   // テスト前の初期設定（各テストメソッドの実行前に毎回呼び出される）
+   protected function setUp(): void
+   {
+      // 親クラスのsetUpメソッドを呼び出し
+      parent::setUp();
+      // ユーザーを作成
+      $this->user = User::factory()->create();
+      // 2人目の別のユーザーを作成
+      $this->secondaryUser = User::factory()->create();
+      // 認証済みのユーザーを返す
+      $this->actingAs($this->user, 'users');
+   }
+
+   // 別のユーザーの画像を見られなくするメソッドのテスト
+   public function testCheckUserImage()
+   {
+      // 2人目のユーザーを作成
+      $secondaryUser = User::factory()->create();
+      // 2人目のユーザーの画像を作成
+      $secondaryUserMemo = Image::factory()->create(['user_id' => $secondaryUser->id]);
+
+      // リクエストを作成
+      $request = Request::create('/images/' . $secondaryUserMemo->id);
+      // リクエストのルートを設定
+      $request->setRouteResolver(function () use ($request) {
+         // 新しいルートオブジェクトを作成し、リクエストにバインド
+         return (new Route('GET', '/images/{image}', []))->bind($request);
+      });
+
+      // 異常なユーザーの画像アクセスは、例外の発生を期待（404エラー）
+      $this->expectException(NotFoundHttpException::class);
+      // 画像の所有者を確認するサービスメソッドを実行
+      ImageService::checkUserImage($request);
+   }
+
+   // 画像名を保存するテスト
+   public function testCreateImage()
+   {
+      // 画像のファイル名を作成
+      $imageFilename = 'test_image.jpg';
+      // 画像情報を保存
+      $image = ImageService::createImage($imageFilename);
+
+      // 作成された画像がDBに存在するかを確認
+      $this->assertDatabaseHas('images', [
+         'id' => $image->id,
+         'filename' => $imageFilename,
+         'user_id' => $this->user->id,
+      ]);
+   }
+
+   // 選択したメモに紐づいた画像を取得するテスト
+   public function testGetMemoImages()
+   {
+      // 1件の自分のメモを作成
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      // メモに2件の画像を関連付け
+      $attachImages = Image::factory()->count(2)->create();
+      $memo->images()->attach($attachImages->pluck('id')->toArray());
+      // 選択したメモに紐づいた画像を取得するサービスメソッドを実行
+      $memo_images = ImageService::getMemoImages($attachImages);
+
+      // サービスメソッドから取得した情報をコレクションに変換
+      $memo_images = collect($memo_images);
+      // 画像のID配列がメモの関連IDと一致するか確認（順序非依存）
+      $this->assertEqualsCanonicalizing($attachImages->pluck('id')
+         ->toArray(), $memo_images->pluck('id')->toArray());
+   }
+
+   // 選択したメモに紐づいた画像のidを取得するテスト
+   public function testGetMemoImagesId()
+   {
+      // 1件の自分のメモを作成
+      $memo = Memo::factory()->create(['user_id' => $this->user->id]);
+      // メモに2件の画像を関連付け
+      $attachImages = Image::factory()->count(2)->create();
+      $memo->images()->attach($attachImages->pluck('id')->toArray());
+      // 選択したメモに紐づいた画像を取得するサービスメソッドを実行
+      $memo_images = ImageService::getMemoImagesId($attachImages);
+
+      // 画像のID配列がメモの関連IDと一致するか確認（順序非依存）
+      $this->assertEqualsCanonicalizing($attachImages->pluck('id')
+         ->toArray(), $memo_images);
+   }
+
+   // 画像をリサイズして、Laravelのフォルダ内に保存するテスト
+   public function testAfterResizingImage()
+   {
+      // ストレージをモックし、ファイル操作をシミュレーション
+      Storage::fake('public');
+
+      // テスト用の画像ファイルをアップロード
+      $uploadedFile = UploadedFile::fake()->image('test_image.jpg');
+      // ImageManagerの初期化
+      $manager = new ImageManager(new Driver());
+      // 画像リサイズ後のファイル名を取得するサービスメソッドを実行
+      $fileName = ImageService::afterResizingImage($uploadedFile, $manager);
+
+      // リサイズ後の画像がストレージに存在することを確認
+      $this->assertTrue(Storage::disk('public')->exists($fileName));
+   }
+
+   // Storageフォルダ内の画像ファイルを削除するテスト
+   public function testDeleteStorage()
+   {
+      // ダミー画像のファイル名を定義
+      $imageFilename = 'test_image.jpg';
+      // テスト用に `public` ディスクをフェイクし、実ファイル操作を隔離
+      Storage::fake('public');
+      // public ディスクにダミー画像ファイルを作成
+      Storage::disk('public')->put($imageFilename, $imageFilename);
+      // ストレージにファイルが存在することを確認
+      $this->assertTrue(Storage::disk('public')->exists($imageFilename));
+
+      // ストレージの画像ファイルを削除するサービスメソッドを実行
+      ImageService::deleteStorage($imageFilename);
+
+      // 画像ファイルが削除されたことを確認
+      $this->assertFalse(Storage::disk('public')->exists($imageFilename));
+   }
+}

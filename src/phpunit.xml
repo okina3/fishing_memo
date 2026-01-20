@@ -5,17 +5,38 @@
          colors="true"
 >
     <testsuites>
-        <testsuite name="Unit">
-            <directory>tests/Unit</directory>
+        <!-- 管理者用 -->
+        <testsuite name="AdminUnit">
+            <directory suffix="Test.php">tests/Admin/Unit</directory>
         </testsuite>
-        <testsuite name="Feature">
-            <directory>tests/Feature</directory>
+        <testsuite name="AdminFeature">
+            <directory suffix="Test.php">tests/Admin/Feature</directory>
+        </testsuite>
+        <!-- ユーザー用 -->
+        <testsuite name="UserUnit">
+            <directory suffix="Test.php">tests/User/Unit</directory>
+        </testsuite>
+        <testsuite name="UserFeature">
+            <directory suffix="Test.php">tests/User/Feature</directory>
+        </testsuite>
+        <!-- 共通用 -->
+        <testsuite name="Common">
+            <directory suffix="Test.php">tests/Common</directory>
         </testsuite>
     </testsuites>
     <source>
         <include>
             <directory>app</directory>
         </include>
+        <!-- テストを除外するファイル -->
+        <exclude>
+            <!-- カスタムパスワードリセットを使用の為、未使用 -->
+            <file>./app/Http/Controllers/Admin/Auth/EmailVerificationNotificationController.php</file>
+            <file>./app/Http/Controllers/User/Auth/EmailVerificationNotificationController.php</file>
+            <!-- プロフィール機能未実装の為、未使用 -->
+            <file>./app/Http/Controllers/ProfileController.php</file>
+            <file>./app/Http/Requests/ProfileUpdateRequest.php</file>
+        </exclude>
     </source>
     <php>
         <env name="APP_ENV" value="testing"/>
@@ -23,8 +44,9 @@
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
         <env name="CACHE_STORE" value="array"/>
-        <env name="DB_CONNECTION" value="sqlite"/>
-        <env name="DB_DATABASE" value=":memory:"/>
+        <!-- .env.testing のDB設定を使用するのでコメントアウト -->
+        <!-- <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/> -->
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
@@ -32,4 +54,11 @@
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
     </php>
+    <!-- カバレッジ出力設定 -->
+    <coverage>
+        <report>
+            <clover outputFile="coverage.xml"/>
+            <html outputDirectory="coverage"/>
+        </report>
+    </coverage>
 </phpunit>

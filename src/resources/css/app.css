@@ -1,3 +1,6 @@
+@import "./common.css";
+@import "./accordion.css";
+@import "./micromodal.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

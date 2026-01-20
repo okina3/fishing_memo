@@ -1,0 +1,169 @@
+<?php
+
+namespace App\Http\Controllers\User;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\User\ShareEndRequest;
+use App\Http\Requests\User\ShareStartRequest;
+use App\Http\Requests\User\UpdateSharedMemoRequest;
+use App\Models\Memo;
+use App\Models\ShareSetting;
+use App\Models\User;
+use App\Services\SessionService;
+use App\Services\User\BaitService;
+use App\Services\User\FishNameService;
+use App\Services\User\HookService;
+use App\Services\User\ImageService;
+use App\Services\User\RodService;
+use App\Services\User\ShareSettingService;
+use App\Services\User\SpotService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
+use Throwable;
+
+class ShareSettingController extends Controller
+{
+   /**
+    * 共有されているメモの一覧を表示するメソッド。
+    * @return View
+    */
+   public function index(): View
+   {
+      // ブラウザバック対策（値を削除する）
+      SessionService::resetBrowserBackSession();
+      // ユーザー一覧作成用に、全共有設定のみ取得
+      $share_setting_memos = ShareSetting::availableAllSharedMemos()->get();
+      // 共有メモ一覧
+      $shared_memos = ShareSettingService::searchSharedMemos();
+      // メモを共有しているユーザー名を取得する。
+      $shared_users = ShareSettingService::searchSharedUser($share_setting_memos);
+
+      return view('user.shareSettings.index', compact('shared_memos', 'shared_users'));
+   }
+
+   /**
+    * メモを共有する為のメソッド。
+    * @param ShareStartRequest $request
+    * @return RedirectResponse
+    * @throws Throwable
+    */
+   public function store(ShareStartRequest $request): RedirectResponse
+   {
+      try {
+         DB::transaction(function () use ($request) {
+            // メールアドレスから、ユーザーを特定
+            $shared_user = User::availableSelectMailUser($request->share_user_start)->first();
+            // 共有設定が、重複していたら、共有設定を、一旦解除する。
+            ShareSettingService::resetDuplicateShareSettings($request->memoId, $shared_user->id);
+            // ユーザーを特定できたら、DBに保存する
+            ShareSettingService::createSetting($request, $shared_user->id);
+         }, 10);
+
+         return to_route('user.index')->with(['message' => 'メモを共有しました。', 'status' => 'success']);
+      } catch (Throwable $e) {
+         Log::error($e);
+         return back()->with(['message' => '共有の登録に失敗しました。', 'status' => 'error']);
+      }
+   }
+
+   /**
+    *  共有されているメモの詳細を表示するメソッド。
+    * @param int $id
+    * @return View
+    */
+   public function show(int $id): View
+   {
+      // 共有されていないメモの詳細を見られなくする
+      ShareSettingService::checkSharedMemoShow($id);
+      // 選択した共有メモを、一件取得
+      $select_memo = Memo::with('images.user')->where('id', $id)->first();
+      // 選択したメモに紐づいた釣り場の名前を取得
+      $get_memo_spots_name = SpotService::getMemoSpotsResults($select_memo->spots);
+      // 選択したメモに紐づいた釣り竿の名前を取得
+      $get_memo_rods_name = RodService::getMemoRodsResults($select_memo->rods);
+      // 選択したメモに紐づいた釣り針の名前を取得
+      $get_memo_hooks_name = HookService::getMemoHooksResults($select_memo->hooks);
+      // 選択したメモに紐づいたエサの名前を取得
+      $get_memo_baits_name = BaitService::getMemoBaitsName($select_memo->baits);
+      // 選択したメモに紐づいた釣果のデータを取得（名前・匹数・長さ）
+      $get_memo_fish_results = FishNameService::getMemoFishResults($select_memo->fish_names);
+      // 選択したメモに紐づいた画像を取得
+      $get_memo_images = ImageService::getMemoImages($select_memo->images);
+      // 選択した共有メモのユーザーを取得
+      $select_user = $select_memo->user;
+
+      return view(
+         'user.shareSettings.show',
+         compact('select_memo', 'get_memo_spots_name', 'get_memo_rods_name', 'get_memo_hooks_name', 'get_memo_baits_name', 'get_memo_fish_results', 'get_memo_images', 'select_user')
+      );
+   }
+
+   /**
+    * 共有されているメモの編集画面を表示するメソッド。
+    * @param int $id
+    * @return View
+    */
+   public function edit(int $id): View
+   {
+      // 共有、許可されていない、メモの編集をできなくする
+      ShareSettingService::checkSharedMemoEdit($id);
+      // 選択した共有メモを、一件取得
+      $select_memo = Memo::with('images.user')->where('id', $id)->first();
+      // 選択したメモに紐づいた釣り場の名前を取得
+      $get_memo_spots_name = SpotService::getMemoSpotsResults($select_memo->spots);
+      // 選択したメモに紐づいた釣り竿の名前を取得
+      $get_memo_rods_name = RodService::getMemoRodsResults($select_memo->rods);
+      // 選択したメモに紐づいた釣り針の名前を取得
+      $get_memo_hooks_name = HookService::getMemoHooksResults($select_memo->hooks);
+      // 選択したメモに紐づいたエサの名前を取得
+      $get_memo_baits_name = BaitService::getMemoBaitsName($select_memo->baits);
+      // 選択したメモに紐づいた釣果のデータを取得（名前・匹数・長さ）
+      $get_memo_fish_results = FishNameService::getMemoFishResults($select_memo->fish_names);
+      // 選択したメモに紐づいた画像を取得
+      $get_memo_images = ImageService::getMemoImages($select_memo->images);
+      // 選択した共有メモのユーザーを取得
+      $select_user = $select_memo->user;
+
+      return view(
+         'user.shareSettings.edit',
+         compact('select_memo', 'get_memo_spots_name', 'get_memo_rods_name', 'get_memo_hooks_name', 'get_memo_baits_name', 'get_memo_fish_results', 'get_memo_images', 'select_user')
+      );
+   }
+
+   /**
+    * 共有されているメモの更新をするメソッド。
+    * @param UpdateSharedMemoRequest $request
+    * @return RedirectResponse
+    */
+   public function update(UpdateSharedMemoRequest $request): RedirectResponse
+   {
+      // バリデーション済みデータを使う（警告を抑制）
+      $validated = $request->validated();
+      // 編集許可があるかをチェック
+      ShareSettingService::checkSharedMemoEdit($validated['memoId']);
+
+      $memo = Memo::findOrFail($validated['memoId']);
+      $memo->content = $validated['content'] ?? null;
+      $memo->save();
+
+      return to_route('user.share-setting.index')
+         ->with(['message' => '共有されたメモを更新しました。', 'status' => 'success']);
+   }
+
+   /**
+    * @param ShareEndRequest $request
+    * @return RedirectResponse
+    */
+   public function destroy(ShareEndRequest $request): RedirectResponse
+   {
+      // メールアドレスから、ユーザーを特定
+      $shared_user = User::availableSelectMailUser($request->share_user_end)->first();
+      //ユーザーを特定できたら、共有を解除する
+      ShareSetting::availableSelectSetting($shared_user->id, $request->memoId)->delete();
+
+      return to_route('user.index')->with(['message' => '共有を解除しました。', 'status' => 'success']);
+   }
+}
